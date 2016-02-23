@@ -44,17 +44,51 @@
         ]
       }
     },
-    "RestApi" : {
-      "Type" : "Custom::RestApi",
-      "Properties" : {
+    "S3FullAccessPolicy": {
+      "Type": "AWS::IAM::Policy",
+      "Properties": {
+        "PolicyName": "S3FullAccess",
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Effect": "Allow",
+              "Action": "s3:*",
+              "Resource": "*"
+            }
+          ]
+        },
+        "Roles": [
+          {
+            "Ref": "LambdaRole"
+          }
+        ]
+      }
+    },
+    "GetJobsLambdaFunction": {
+      "Type": "AWS::Lambda::Function",
+      "Properties": {
+        "Code": {
+          "ZipFile": "exports.handler = function(event, context) { context.fail('Not Implemented'); };"
+        },
+        "Description": "Get All Jobs",
+        "Handler": "lib/index.handler",
+        "MemorySize": 128,
+        "Role": { "Fn::GetAtt": [ "LambdaRole", "Arn" ] },
+        "Runtime": "nodejs",
+        "Timeout": 30
+      }
+    },
+    "RestApi": {
+      "Type": "Custom::RestApi",
+      "Properties": {
         "ServiceToken": { "Ref": "ServiceToken" },
         "name": "Scraper Queue",
         "description": "API for adding jobs to scraper queue and viewing status and results"
       }
     },
-    "JobsApiResource" : {
-      "Type" : "Custom::ApiResource",
-      "Properties" : {
+    "JobsApiResource": {
+      "Type": "Custom::ApiResource",
+      "Properties": {
         "ServiceToken": { "Ref": "ServiceToken" },
         "restApiId": { "Ref": "RestApi" },
         "restApiId": { "Fn::GetAtt": [ "RestApi", "id" ] },
@@ -66,9 +100,9 @@
         }
       }
     },
-    "GetJobsApiMethod" : {
-      "Type" : "Custom::ApiMethod",
-      "Properties" : {
+    "GetJobsApiMethod": {
+      "Type": "Custom::ApiMethod",
+      "Properties": {
         "ServiceToken": { "Ref": "ServiceToken" },
         "restApiId": { "Fn::GetAtt": [ "RestApi", "id" ] },
         "resourceId": { "Fn::GetAtt": [ "JobsApiResource", "id" ] },
