@@ -1,0 +1,68 @@
+{
+  "AWSTemplateFormatVersion": "2010-09-09",
+  "Description": "API Gateway + Lambda + S3 for Scraping Websites",
+  "Parameters" : {
+    "TagName" : {
+      "Description" : "Tag for resources",
+      "Type" : "String"
+    },
+    "ServiceToken" : {
+      "Description" : "ARN for ApiGatewayCloudFormation-LambdaFunction",
+      "Type" : "String"
+    }
+  },
+  "Resources": {
+    "RestApi" : {
+      "Type" : "Custom::RestApi",
+      "Properties" : {
+        "ServiceToken": { "Ref": "ServiceToken" },
+        "name": "Scraper Queue",
+        "description": "API for adding jobs to scraper queue and viewing status and results"
+      }
+    },
+    "JobsApiResource" : {
+      "Type" : "Custom::ApiResource",
+      "Properties" : {
+        "ServiceToken": { "Ref": "ServiceToken" },
+        "restApiId": { "Ref": "RestApi" },
+        "restApiId": { "Fn::GetAtt": [ "RestApi", "id" ] },
+        "parentId": { "Fn::GetAtt": [ "RestApi", "parentResourceId" ] },
+        "pathPart": "jobs",
+        "corsConfiguration": {
+          "allowMethods": [ "GET", "POST" ],
+          "allowDefaultHeaders": true
+        }
+      }
+    },
+    "GetJobsApiMethod" : {
+      "Type" : "Custom::ApiMethod",
+      "Properties" : {
+        "ServiceToken": { "Ref": "ServiceToken" },
+        "restApiId": { "Fn::GetAtt": [ "RestApi", "id" ] },
+        "resourceId": { "Fn::GetAtt": [ "JobsApiResource", "id" ] },
+        "method": {
+          "httpMethod": "GET"
+        },
+        "integration": {
+          "type": "MOCK",
+          "requestTemplates": {
+            "application/json": "{\"statusCode\": 200}"
+          },
+          "requestParameters": {
+            "integration.request.querystring.sortBy": "'hardcodedValue'"
+          }
+        },
+        "responses": {
+          "default": {
+            "statusCode": "200"
+          },
+          ".*NotFound.*": {
+            "statusCode": "404"
+          }
+        }
+      }
+    }
+  },
+  "Outputs": {
+  }
+}
