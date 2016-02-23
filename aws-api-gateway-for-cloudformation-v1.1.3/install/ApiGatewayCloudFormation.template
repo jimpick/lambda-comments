@@ -1,0 +1,78 @@
+{
+    "AWSTemplateFormatVersion": "2010-09-09",
+    "Description": "Creates Lambda function API Gateway CustomResource CloudFormation handler",
+    "Resources": {
+        "LambdaBasePolicy": {
+            "Type": "AWS::IAM::ManagedPolicy",
+            "Properties": {
+                "Description" : "managed Policy for API Gateway Lambda function",
+                "Path" : "/infrastructure/base/lambda/",
+                "PolicyDocument": {
+                    "Version" : "2012-10-17",
+                    "Statement": [
+                        {
+                            "Effect": "Allow",
+                            "Action": [
+                                "logs:CreateLogGroup",
+                                "logs:CreateLogStream",
+                                "logs:PutLogEvents"
+                            ],
+                            "Resource": "arn:aws:logs:*:*:*"
+                        },
+                        {
+                            "Effect": "Allow",
+                            "Action": [
+                                "apigateway:*"
+                            ],
+                            "Resource": "*"
+                        },
+                        {
+                            "Effect": "Allow",
+                            "Action": [
+                                "iam:PassRole"
+                            ],
+                            "Resource": "*"
+                        }
+                    ]
+                }
+            }
+        },
+        "LambdaFunctionRole": {
+            "Type": "AWS::IAM::Role",
+            "Properties": {
+                "AssumeRolePolicyDocument": {
+                    "Version": "2012-10-17",
+                    "Statement": [
+                        {
+                            "Effect": "Allow",
+                            "Principal": {
+                                "Service": "lambda.amazonaws.com"
+                            },
+                            "Action": "sts:AssumeRole"
+                        }
+                    ]
+                },
+                "ManagedPolicyArns": [{ "Ref": "LambdaBasePolicy" }]
+            }
+        },
+        "LambdaFunction": {
+            "Type": "AWS::Lambda::Function",
+            "Properties": {
+                "Code": {
+                    "ZipFile": "exports.handler = function(event, context) { context.fail('Not Implemented'); };"
+                },
+                "Description": "Api Gateway CloudFormation.",
+                "Handler": "lib/index.handler",
+                "MemorySize": 256,
+                "Role": { "Fn::GetAtt": ["LambdaFunctionRole", "Arn"] },
+                "Runtime": "nodejs",
+                "Timeout": 10
+            }
+        }
+    },
+    "Outputs": {
+        "LambdaFunction": {
+            "Value": { "Fn::GetAtt": ["LambdaFunction", "Arn"] }
+        }
+    }
+}
