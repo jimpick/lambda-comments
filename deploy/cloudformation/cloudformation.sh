@@ -2,7 +2,7 @@
 
 TAG='lambda-scraper-queue'
 DIR=$(dirname $0)
-SERVICE_TOKEN=$(cat $DIR/../SERVICE_TOKEN)
+SERVICE_TOKEN=$(cat $DIR/../../SERVICE_TOKEN)
 
 if [ "$1" = "create" ]; then
   ACTION=create-stack
@@ -15,7 +15,7 @@ fi
 
 aws cloudformation $ACTION \
     --region us-west-2 \
-    --stack-name lambdaScraperQueue2 \
+    --stack-name lambdaScraperQueue3 \
     --template-body file://$DIR/lambda-scraper-queue.json \
     --capabilities CAPABILITY_IAM \
     --parameters \
