@@ -1,4 +1,7 @@
+import path from 'path'
 import fs from 'fs'
+import rimraf from 'rimraf'
+import mkdirp from 'mkdirp'
 import config from '../config'
 import cloudFormationResources from '../cloudFormation'
 
@@ -23,8 +26,9 @@ const apexProjectTemplate = {
   nameTemplate: '{{.Project.Name}}-{{.Function.Name}}',
   handler: 'index.handler'
 }
-fs.writeFileSync(
-  `${__dirname}/../deploy/apex/project.json`,
-  JSON.stringify(apexProjectTemplate, null, 2)
-)
-console.log('project.json written')
+const json = JSON.stringify(apexProjectTemplate, null, 2)
+const buildDir = path.normalize(`${__dirname}/../build/apex`)
+rimraf.sync(buildDir)
+mkdirp.sync(buildDir)
+fs.writeFileSync(`${buildDir}/project.json`, json)
+console.log('build/apex/project.json created')
