@@ -14,5 +14,8 @@
     "babel-polyfill": "^6.5.0",
     "babel-preset-es2015": "^6.5.0",
     "babel-preset-stage-0": "^6.5.0"
+  },
+  "dependencies": {
+    "aws-sdk": "^2.2.38"
   }
 }
