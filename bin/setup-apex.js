@@ -3,16 +3,18 @@ import fs from 'fs'
 import rimraf from 'rimraf'
 import mkdirp from 'mkdirp'
 import config from '../config'
-import cloudFormationResources from '../cloudFormation'
+import cloudFormation from '../cloudFormation'
 
-const resources = cloudFormationResources.reduce((prev, resource) => {
-  const {
-    LogicalResourceId,
-    PhysicalResourceId,
-    StackId
-  } = resource
+const {
+  stack: {
+    Outputs: cloudFormationOutputs
+  }
+} = cloudFormation
+
+const outputs = cloudFormationOutputs.reduce((prev, output) => {
+  const { OutputKey, OutputValue } = output
   return {
-    [LogicalResourceId]: { PhysicalResourceId, StackId },
+    [OutputKey]: OutputValue,
     ...prev
   }
 }, {})
@@ -22,7 +24,7 @@ const apexProjectTemplate = {
   description: 'Scraper Queue Lambda Functions',
   memory: 128,
   timeout: 120,
-  role: resources.LambdaRole.StackId,
+  role: outputs.LambdaRoleArn,
   nameTemplate: '{{.Project.Name}}-{{.Function.Name}}',
   handler: 'index.handler'
 }

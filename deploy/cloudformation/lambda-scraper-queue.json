@@ -1,15 +1,24 @@
 {
   "AWSTemplateFormatVersion": "2010-09-09",
   "Description": "API Gateway + Lambda + S3 for Scraping Websites",
-  "Parameters" : {
-    "TagName" : {
-      "Description" : "Tag for resources",
-      "Type" : "String"
+  "Parameters": {
+    "TagName": {
+      "Description": "Tag for resources",
+      "Type": "String"
     },
-    "ServiceToken" : {
-      "Description" : "ARN for ApiGatewayCloudFormation-LambdaFunction",
-      "Type" : "String"
+    "ServiceToken": {
+      "Description": "ARN for ApiGatewayCloudFormation-LambdaFunction",
+      "Type": "String"
+    },
+    "NewResources": {
+      "Description": "Include new resources (still being developed)",
+      "Default": "false",
+      "Type": "String",
+      "AllowedValues" : ["true", "false"]
     }
+  },
+  "Conditions" : {
+    "CreateNewResources" : {"Fn::Equals" : [{"Ref" : "NewResources"}, "true"]}
   },
   "Resources": {
     "LambdaRole": {
@@ -127,8 +136,50 @@
           }
         }
       }
+    },
+    "WebsiteS3": {
+      "Type": "AWS::S3::Bucket",
+      "Properties": {
+        "WebsiteConfiguration": {
+          "IndexDocument": "index.html"
+        }
+      }
+    },
+    "WebsiteS3BucketPolicy": {
+      "Type": "AWS::S3::BucketPolicy",
+      "Properties": {
+        "Bucket": {
+          "Ref": "WebsiteS3"
+        },
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Effect": "Allow",
+              "Action": [ "s3:*" ],
+              "Principal": {
+                "AWS": { "Fn::GetAtt" : [ "LambdaRole" , "Arn" ] }
+              },
+              "Resource": [
+                { "Fn::Join": [ "", [ "arn:aws:s3:::", { "Ref": "WebsiteS3" }, "/*" ] ] }
+              ]
+            },
+            {
+              "Effect": "Allow",
+              "Action": [ "s3:*" ],
+              "Principal": "*",
+              "Resource": [
+                { "Fn::Join": [ "", [ "arn:aws:s3:::", { "Ref": "WebsiteS3" }, "/*" ] ] }
+              ]
+            }
+          ]
+        }
+      }
     }
   },
   "Outputs": {
+    "LambdaRoleArn": {
+      "Value": { "Fn::GetAtt": [ "LambdaRole", "Arn" ] },
+      "Description": "ARN for LambdaRole"
+    }
   }
 }

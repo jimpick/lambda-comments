@@ -1,5 +1,7 @@
 #! /bin/bash
 
+set -e
+
 if [ "$1" = "create" ]; then
   ACTION=create-stack
 elif [ "$1" = "update" ]; then
@@ -10,9 +12,11 @@ else
 fi
 
 TAG='lambda-scraper-queue'
-DIR=$(dirname $0)
+DIR=`cd $(dirname $0); pwd`
+BABEL_NODE=$DIR/../../node_modules/babel-cli/bin/babel-node.js
+BIN_DIR=$DIR/../../bin
 SERVICE_TOKEN=$(cat $DIR/../../SERVICE_TOKEN)
-STACK_NAME=$(../../node_modules/babel-cli/bin/babel-node.js ../../bin/dump-config.js cloudFormation)
+STACK_NAME=$($BABEL_NODE $BIN_DIR/dump-config.js cloudFormation)
 
 aws cloudformation $ACTION \
     --region us-west-2 \
@@ -21,5 +25,8 @@ aws cloudformation $ACTION \
     --capabilities CAPABILITY_IAM \
     --parameters \
       ParameterKey=TagName,ParameterValue=$TAG,UsePreviousValue=false \
-      ParameterKey=ServiceToken,ParameterValue=$SERVICE_TOKEN,UsePreviousValue=false
+      ParameterKey=ServiceToken,ParameterValue=$SERVICE_TOKEN,UsePreviousValue=false \
+|| true
+
+$BABEL_NODE $BIN_DIR/save-cloudformation-config.js
 
