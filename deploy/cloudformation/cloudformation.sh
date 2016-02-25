@@ -15,7 +15,7 @@ TAG='lambda-scraper-queue'
 DIR=`cd $(dirname $0); pwd`
 BABEL_NODE=$DIR/../../node_modules/babel-cli/bin/babel-node.js
 BIN_DIR=$DIR/../../bin
-SERVICE_TOKEN=$(cat $DIR/../../SERVICE_TOKEN)
+SERVICE_TOKEN=$(cat $DIR/../../deploy/state/SERVICE_TOKEN)
 STACK_NAME=$($BABEL_NODE $BIN_DIR/dump-config.js cloudFormation)
 
 aws cloudformation $ACTION \

@@ -73,13 +73,13 @@
         ]
       }
     },
-    "GetJobsLambdaFunction": {
+    "ListActiveJobsLambdaFunction": {
       "Type": "AWS::Lambda::Function",
       "Properties": {
         "Code": {
           "ZipFile": "exports.handler = function(event, context) { context.fail('Not Implemented'); };"
         },
-        "Description": "Get All Jobs",
+        "Description": "List Active Jobs",
         "Handler": "lib/index.handler",
         "MemorySize": 128,
         "Role": { "Fn::GetAtt": [ "LambdaRole", "Arn" ] },
@@ -87,10 +87,10 @@
         "Timeout": 30
       }
     },
-    "GetJobsLambdaInvokePermission": {
+    "ListActiveJobsLambdaInvokePermission": {
       "Type": "AWS::Lambda::Permission",
       "Properties": {
-        "FunctionName" : { "Fn::GetAtt" : [ "GetJobsLambdaFunction", "Arn" ] },
+        "FunctionName" : { "Fn::GetAtt" : [ "ListActiveJobsLambdaFunction", "Arn" ] },
         "Action": "lambda:InvokeFunction",
         "Principal": "apigateway.amazonaws.com",
         "SourceArn": {
@@ -150,7 +150,7 @@
                 "arn:aws:apigateway:",
                 { "Ref" : "AWS::Region" },
                 ":lambda:path/2015-03-31/functions/",
-                { "Fn::GetAtt" : [ "GetJobsLambdaFunction", "Arn" ] },
+                { "Fn::GetAtt" : [ "ListActiveJobsLambdaFunction", "Arn" ] },
                 "/invocations"
               ]
             ]
@@ -210,9 +210,9 @@
       "Value": { "Fn::GetAtt": [ "LambdaRole", "Arn" ] },
       "Description": "ARN for LambdaRole"
     },
-    "GetJobsArn": {
-      "Value": { "Fn::GetAtt" : [ "GetJobsLambdaFunction", "Arn" ] },
-      "Description": "ARN for GetJobsLambdaFunction"
+    "ListActiveJobsArn": {
+      "Value": { "Fn::GetAtt" : [ "ListActiveJobsLambdaFunction", "Arn" ] },
+      "Description": "ARN for ListActiveJobsLambdaFunction"
     }
   }
 }

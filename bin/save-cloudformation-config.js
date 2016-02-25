@@ -1,4 +1,6 @@
 import fs from 'fs'
+import path from 'path'
+import mkdirp from 'mkdirp'
 import AWS from 'aws-sdk'
 import config from '../config'
 
@@ -39,7 +41,6 @@ function describeStack ({ cloudFormation, stackName }) {
   })
 }
 
-
 async function run () {
   try {
     const { cloudFormation: stackName, region } = config
@@ -48,7 +49,9 @@ async function run () {
     const stack = await describeStack({ cloudFormation, stackName })
     const result = { stack, resources }
     const json = JSON.stringify(result, null, 2)
-    fs.writeFileSync(`${__dirname}/../cloudFormation.json`, json)
+    const dir = path.normalize(`${__dirname}/../deploy/state`)
+    mkdirp.sync(dir)
+    fs.writeFileSync(`${dir}/cloudFormation.json`, json)
     console.log('cloudFormation.json written')
   } catch (error) {
     console.error(error, error.stack)

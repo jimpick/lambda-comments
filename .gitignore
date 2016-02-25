@@ -1,5 +1,4 @@
-SERVICE_TOKEN
 config.js
 node_modules
-cloudFormation.json
+deploy/state
 build
