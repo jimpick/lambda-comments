@@ -4,7 +4,8 @@
   "description": "Web Scraper Queue built with AWS Lambda",
   "main": "config.js",
   "scripts": {
-    "compile-lambda": "./node_modules/.bin/webpack --config deploy/apex/webpack.config.js --display-exclude --display-modules --display-chunks --display-error-details --display-origins --display-cached --display-cached-assets"
+    "compile-lambda": "rm -rf ./build/apex/functions && ./node_modules/.bin/webpack --config deploy/apex/webpack.config.js --display-exclude --display-modules --display-chunks --display-error-details --display-origins --display-cached --display-cached-assets",
+    "deploy-lambda": "cd build/apex && apex deploy"
   },
   "author": "Jim Pick <jim@jimpick.com>",
   "license": "ISC",

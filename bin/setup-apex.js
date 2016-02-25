@@ -3,7 +3,7 @@ import fs from 'fs'
 import rimraf from 'rimraf'
 import mkdirp from 'mkdirp'
 import config from '../config'
-import cloudFormation from '../cloudFormation'
+import cloudFormation from '../cloudFormation.json'
 
 const {
   stack: {
