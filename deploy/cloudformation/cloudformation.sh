@@ -28,5 +28,5 @@ aws cloudformation $ACTION \
       ParameterKey=ServiceToken,ParameterValue=$SERVICE_TOKEN,UsePreviousValue=false \
 || true
 
-$BABEL_NODE $BIN_DIR/save-cloudformation-config.js
+# $BABEL_NODE $BIN_DIR/save-cloudformation-config.js
 

@@ -109,6 +109,48 @@
         }
       }
     },
+    "GetJobStatusLambdaFunction": {
+      "Type": "AWS::Lambda::Function",
+      "Properties": {
+        "Code": {
+          "ZipFile": "exports.handler = function(event, context) { context.fail('Not Implemented'); };"
+        },
+        "Description": "GetJobStatus",
+        "Handler": "lib/index.handler",
+        "MemorySize": 128,
+        "Role": { "Fn::GetAtt": [ "LambdaRole", "Arn" ] },
+        "Runtime": "nodejs",
+        "Timeout": 30
+      }
+    },
+    "QueueJobLambdaFunction": {
+      "Type": "AWS::Lambda::Function",
+      "Properties": {
+        "Code": {
+          "ZipFile": "exports.handler = function(event, context) { context.fail('Not Implemented'); };"
+        },
+        "Description": "QueueJob",
+        "Handler": "lib/index.handler",
+        "MemorySize": 128,
+        "Role": { "Fn::GetAtt": [ "LambdaRole", "Arn" ] },
+        "Runtime": "nodejs",
+        "Timeout": 30
+      }
+    },
+    "WorkerLambdaFunction": {
+      "Type": "AWS::Lambda::Function",
+      "Properties": {
+        "Code": {
+          "ZipFile": "exports.handler = function(event, context) { context.fail('Not Implemented'); };"
+        },
+        "Description": "Worker",
+        "Handler": "lib/index.handler",
+        "MemorySize": 128,
+        "Role": { "Fn::GetAtt": [ "LambdaRole", "Arn" ] },
+        "Runtime": "nodejs",
+        "Timeout": 30
+      }
+    },
     "RestApi": {
       "Type": "Custom::RestApi",
       "Properties": {
@@ -209,10 +251,6 @@
     "LambdaRoleArn": {
       "Value": { "Fn::GetAtt": [ "LambdaRole", "Arn" ] },
       "Description": "ARN for LambdaRole"
-    },
-    "ListActiveJobsArn": {
-      "Value": { "Fn::GetAtt" : [ "ListActiveJobsLambdaFunction", "Arn" ] },
-      "Description": "ARN for ListActiveJobsLambdaFunction"
     }
   }
 }

@@ -16,21 +16,40 @@ const resources = cloudFormationResources.reduce((prev, resource) => {
   }
 }, {})
 
-const [
-  listActiveJobs
-] = [
-  'ListActiveJobsLambdaFunction'
-].map(logicalResourceId => {
-  const resource = resources[logicalResourceId]
-  return resource.PhysicalResourceId.replace(/^[^-]+-/, '')
-})
+const lambdas = [
+  'ListActiveJobs',
+  'GetJobStatus',
+  'QueueJob',
+  'Worker'
+]
+
+const lambdaDirNames = lambdas.reduce((lookupTable, logicalResourceId) => {
+  const resource = resources[`${logicalResourceId}LambdaFunction`]
+  const lambdaDirName = resource.PhysicalResourceId.replace(/^[^-]+-/, '')
+  return {
+    [logicalResourceId]: lambdaDirName,
+    ...lookupTable
+  }
+}, {})
 
 export default {
   entry: {
-    [listActiveJobs]: [
+    [lambdaDirNames['ListActiveJobs']]: [
       'babel-polyfill',
       './src/server/lambdaFunctions/listActiveJobs/index.js'
     ],
+    [lambdaDirNames['GetJobStatus']]: [
+      'babel-polyfill',
+      './src/server/lambdaFunctions/getJobStatus/index.js'
+    ],
+    [lambdaDirNames['QueueJob']]: [
+      'babel-polyfill',
+      './src/server/lambdaFunctions/queueJob/index.js'
+    ],
+    [lambdaDirNames['Worker']]: [
+      'babel-polyfill',
+      './src/server/lambdaFunctions/worker/index.js'
+    ]
   },
   output: {
     path: "./build/apex/functions",
