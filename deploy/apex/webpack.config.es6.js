@@ -17,7 +17,7 @@ const resources = cloudFormationResources.reduce((prev, resource) => {
 }, {})
 
 const [
-  getJobs
+  listActiveJobs
 ] = [
   'GetJobsLambdaFunction'
 ].map(logicalResourceId => {
@@ -27,9 +27,9 @@ const [
 
 export default {
   entry: {
-    [getJobs]: [
+    [listActiveJobs]: [
       'babel-polyfill',
-      './src/hello/index.js'
+      './src/server/lambdaFunctions/listActiveJobs/index.js'
     ],
   },
   output: {
