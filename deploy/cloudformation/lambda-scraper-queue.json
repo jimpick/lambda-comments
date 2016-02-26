@@ -73,6 +73,30 @@
         ]
       }
     },
+    "LambdaClouldWatchLogsPolicy": {
+      "Type": "AWS::IAM::Policy",
+      "Properties": {
+        "PolicyName": "LambdaCloudWatchLogs",
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": [
+                "logs:CreateLogGroup",
+                 "logs:CreateLogStream",
+                 "logs:PutLogEvents"
+              ],
+              "Effect": "Allow",
+              "Resource": "arn:aws:logs:*:*:*"
+            }
+          ]
+        },
+        "Roles": [
+          {
+            "Ref": "LambdaRole"
+          }
+        ]
+      }
+    },
     "ListActiveJobsLambdaFunction": {
       "Type": "AWS::Lambda::Function",
       "Properties": {

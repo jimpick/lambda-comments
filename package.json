@@ -6,6 +6,7 @@
   "scripts": {
     "update-cloudformation": "deploy/cloudformation/cloudformation.sh update",
     "save-cloudformation": "node_modules/babel-cli/bin/babel-node.js bin/save-cloudformation-config.js",
+    "setup-apex": "node_modules/babel-cli/bin/babel-node.js bin/setup-apex.js",
     "compile-lambda": "rm -rf build/apex/functions && node_modules/.bin/webpack --config deploy/apex/webpack.config.js --display-exclude --display-modules --display-chunks --display-error-details --display-origins --display-cached --display-cached-assets",
     "deploy-lambda": "cd build/apex && apex deploy",
     "deploy": "npm run compile-lambda && npm run deploy-lambda",
