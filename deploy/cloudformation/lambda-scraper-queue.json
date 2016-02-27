@@ -147,6 +147,28 @@
         "Timeout": 30
       }
     },
+    "GetJobStatusLambdaInvokePermission": {
+      "Type": "AWS::Lambda::Permission",
+      "Properties": {
+        "FunctionName" : { "Fn::GetAtt" : [ "GetJobStatusLambdaFunction", "Arn" ] },
+        "Action": "lambda:InvokeFunction",
+        "Principal": "apigateway.amazonaws.com",
+        "SourceArn": {
+          "Fn::Join": [
+            "",
+            [
+              "arn:aws:execute-api:",
+              { "Ref" : "AWS::Region" },
+              ":",
+              { "Ref" : "AWS::AccountId" },
+              ":",
+              { "Ref" : "RestApi" },
+              "/*/GET/jobs/*"
+            ]
+          ]
+        }
+      }
+    },
     "QueueJobLambdaFunction": {
       "Type": "AWS::Lambda::Function",
       "Properties": {
@@ -188,7 +210,6 @@
       "Properties": {
         "ServiceToken": { "Ref": "ServiceToken" },
         "restApiId": { "Ref": "RestApi" },
-        "restApiId": { "Fn::GetAtt": [ "RestApi", "id" ] },
         "parentId": { "Fn::GetAtt": [ "RestApi", "parentResourceId" ] },
         "pathPart": "jobs",
         "corsConfiguration": {
@@ -201,8 +222,8 @@
       "Type": "Custom::ApiMethod",
       "Properties": {
         "ServiceToken": { "Ref": "ServiceToken" },
-        "restApiId": { "Fn::GetAtt": [ "RestApi", "id" ] },
-        "resourceId": { "Fn::GetAtt": [ "JobsApiResource", "id" ] },
+        "restApiId": { "Ref": "RestApi" },
+        "resourceId": { "Ref": "JobsApiResource" },
         "method": {
           "httpMethod": "GET"
         },
@@ -220,6 +241,59 @@
                 "/invocations"
               ]
             ]
+          }
+        },
+        "responses": {
+          "default": {
+            "statusCode": "200"
+          },
+          ".*NotFound.*": {
+            "statusCode": "404"
+          }
+        }
+      }
+    },
+    "JobsJobIdApiResource": {
+      "Type": "Custom::ApiResource",
+      "Properties": {
+        "ServiceToken": { "Ref": "ServiceToken" },
+        "restApiId": { "Ref": "RestApi" },
+        "parentId": { "Ref": "JobsApiResource" },
+        "pathPart": "{jobId}",
+        "corsConfiguration": {
+          "allowMethods": [ "GET" ],
+          "allowDefaultHeaders": true
+        }
+      }
+    },
+    "GetJobsJobIdApiMethod": {
+      "Type": "Custom::ApiMethod",
+      "Properties": {
+        "ServiceToken": { "Ref": "ServiceToken" },
+        "restApiId": { "Ref": "RestApi" },
+        "resourceId": { "Ref": "JobsJobIdApiResource" },
+        "method": {
+          "httpMethod": "GET"
+        },
+        "integration": {
+          "type": "AWS",
+          "httpMethod": "POST",
+          "uri": {
+            "Fn::Join": [
+              "",
+              [
+                "arn:aws:apigateway:",
+                { "Ref" : "AWS::Region" },
+                ":lambda:path/2015-03-31/functions/",
+                { "Fn::GetAtt" : [ "GetJobStatusLambdaFunction", "Arn" ] },
+                "/invocations"
+              ]
+            ]
+          },
+          "requestTemplates": {
+            "application/json": {
+              "jobId": "$input.params('jobId')"
+            }
           }
         },
         "responses": {
