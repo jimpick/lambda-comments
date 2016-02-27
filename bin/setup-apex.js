@@ -3,21 +3,7 @@ import fs from 'fs'
 import rimraf from 'rimraf'
 import mkdirp from 'mkdirp'
 import config from '../config'
-import cloudFormation from '../deploy/state/cloudFormation.json'
-
-const {
-  stack: {
-    Outputs: cloudFormationOutputs
-  }
-} = cloudFormation
-
-const outputs = cloudFormationOutputs.reduce((prev, output) => {
-  const { OutputKey, OutputValue } = output
-  return {
-    [OutputKey]: OutputValue,
-    ...prev
-  }
-}, {})
+import { outputs } from '../src/server/lib/cloudFormation'
 
 const apexProjectTemplate = {
   name: config.cloudFormation,

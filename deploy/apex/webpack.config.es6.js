@@ -1,20 +1,8 @@
 import path from 'path'
 import StringReplacePlugin from 'string-replace-webpack-plugin'
-import { resources as cloudFormationResources } from '../../deploy/state/cloudFormation.json'
+import { resources } from '../../src/server/lib/cloudFormation'
 
 const nodeModulesDir = path.normalize(`${__dirname}/../../node_modules`)
-
-const resources = cloudFormationResources.reduce((prev, resource) => {
-  const {
-    LogicalResourceId,
-    PhysicalResourceId,
-    StackId
-  } = resource
-  return {
-    [LogicalResourceId]: { PhysicalResourceId, StackId },
-    ...prev
-  }
-}, {})
 
 const lambdas = [
   'ListActiveJobs',
