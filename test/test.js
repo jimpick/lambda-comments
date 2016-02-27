@@ -1,28 +1,33 @@
-import assert from 'assert'
 import 'babel-polyfill'
+
+const lambdaFunctions = [
+  'getJobStatus',
+  /*
+  'listActiveJobs',
+  'queueJob',
+  'worker' */
+]
+const localTests = lambdaFunctions.reduce((prev, test) => ({
+  [test]: require(`../src/server/lambdaFunctions/${test}/test`).local,
+  ...prev
+}), {})
+const remoteTests = lambdaFunctions.reduce((prev, test) => ({
+  [test]: require(`../src/server/lambdaFunctions/${test}/test`).remote,
+  ...prev
+}), {})
 
 function local () {
   describe('local', function () {
-    describe('Array local', function () {
-      describe('#indexOf()', function () {
-        it('should return -1 when the value is not present', function () {
-          assert.equal(-1, [1,2,3].indexOf(5))
-          assert.equal(-1, [1,2,3].indexOf(0))
-        })
-      })
+    Object.values(localTests).forEach(test => {
+      test()
     })
   })
 }
 
 function remote () {
   describe('remote', function () {
-    describe('Array remote', function () {
-      describe('#indexOf()', function () {
-        it('should return -1 when the value is not present', function () {
-          assert.equal(-1, [1,2,3].indexOf(5))
-          assert.equal(-1, [1,2,3].indexOf(0))
-        })
-      })
+    Object.values(remoteTests).forEach(test => {
+      test()
     })
   })
 }
