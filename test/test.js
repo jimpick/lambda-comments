@@ -2,10 +2,9 @@ import 'babel-polyfill'
 
 const lambdaFunctions = [
   'getJobStatus',
-  /*
-  'listActiveJobs',
-  'queueJob',
-  'worker' */
+  // 'listActiveJobs',
+  'queueJob'
+  // 'worker'
 ]
 const localTests = lambdaFunctions.reduce((prev, test) => ({
   [test]: require(`../src/server/lambdaFunctions/${test}/test`).local,
@@ -34,5 +33,3 @@ function remote () {
 
 local()
 remote()
-
-
