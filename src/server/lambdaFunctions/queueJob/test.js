@@ -2,13 +2,35 @@ import assert from 'assert'
 import supertest from 'supertest'
 import { apiUrl } from '../../lib/cloudFormation'
 import { expect } from 'chai'
+import { handler } from './index'
 
 export function local () {
+
+  describe('Post new job and get jobRef', function () {
+
+    it('should return a jobRef', function (done) {
+
+      const event = {
+        url: 'http://example.com/'
+      }
+      handler(event, {
+        done: (error, body) => {
+          expect(body).to.be.a('object')
+          const { jobRef } = body
+          expect(jobRef).to.be.a('string')
+          done()
+        }
+      })
+
+    })
+
+  })
+
 }
 
 export function remote () {
 
-  describe('Post new job and get jobId', function () {
+  describe('Post new job and get jobRef', function () {
 
     function testResponse(request, done) {
       request
@@ -16,13 +38,13 @@ export function remote () {
         .expect('Content-Type', /json/)
         .expect(({ body }) => {
           expect(body).to.be.a('object')
-          const { jobId } = body
-          expect(jobId).to.be.a('string')
+          const { jobRef } = body
+          expect(jobRef).to.be.a('string')
         })
         .end(done)
     }
 
-    it('should return a jobId', function (done) {
+    it('should return a jobRef', function (done) {
       const request = supertest(apiUrl)
         .post('/jobs')
         .send({ url: 'http://example.com/' })

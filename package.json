@@ -4,6 +4,7 @@
   "description": "Web Scraper Queue built with AWS Lambda",
   "main": "config.js",
   "scripts": {
+    "create-cloudformation": "deploy/cloudformation/cloudformation.sh create",
     "update-cloudformation": "deploy/cloudformation/cloudformation.sh update",
     "save-cloudformation": "node_modules/babel-cli/bin/babel-node.js bin/save-cloudformation-config.js",
     "setup-apex": "node_modules/babel-cli/bin/babel-node.js bin/setup-apex.js",
@@ -32,6 +33,8 @@
     "webpack": "^1.12.14"
   },
   "dependencies": {
-    "aws-sdk": "^2.2.38"
+    "aws-sdk": "^2.2.38",
+    "moment": "^2.11.2",
+    "slugid": "^1.1.0"
   }
 }
