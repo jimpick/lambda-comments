@@ -307,6 +307,9 @@
           "default": {
             "statusCode": "200"
           },
+          ".*Error.*": {
+            "statusCode": "400"
+          },
           ".*NotFound.*": {
             "statusCode": "404"
           }
