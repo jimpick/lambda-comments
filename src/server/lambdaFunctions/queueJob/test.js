@@ -14,22 +14,29 @@ export function local () {
 
   describe('Post new job and get jobRef', function () {
 
+    this.timeout(5000)
+
     it('should return a jobRef', function (done) {
       const event = {
-        url: 'http://example.com/'
+        url: 'http://example.com/',
+        dryRun: true
       }
       handler(event, {
         done: (error, body) => {
           checkBody(body)
           done()
-        }
+        },
+        fail: error => { console.log(error) }
       })
     })
 
     it('should fail if there is no url', function (done) {
       const event = {}
       handler(event, {
-        fail: (error, body) => {
+        done: (error, body) => {
+          console.log('Done', error, body)
+        },
+        fail: error => {
           expect(error).to.be.a('string')
           expect(error).to.equal('[Error: Missing url]')
           done()
@@ -45,6 +52,8 @@ export function remote () {
 
   describe('Post new job and get jobRef', function () {
 
+    this.timeout(5000)
+
     function testResponse(request, done) {
       request
         .expect(200)
@@ -58,7 +67,10 @@ export function remote () {
     it('should return a jobRef', function (done) {
       const request = supertest(apiUrl)
         .post('/jobs')
-        .send({ url: 'http://example.com/' })
+        .send({
+          url: 'http://example.com/',
+          dryRun: true
+        })
       testResponse(request, done)
     })
 
@@ -66,7 +78,10 @@ export function remote () {
       const request = supertest(apiUrl)
         .post('/jobs')
         .type('form') // Makes supertest send x-www-form-urlencoded
-        .send({ url: 'http://example.com/' })
+        .send({
+          url: 'http://example.com/',
+          dryRun: true
+        })
       testResponse(request, done)
     })
 

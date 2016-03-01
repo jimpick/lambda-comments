@@ -1,11 +1,20 @@
 import util from 'util'
 import moment from 'moment'
 import { generateReference } from '../../lib/references'
+import { upload } from '../../lib/s3'
 
-export function handler (event, context) {
+function uploadJson({ dirName, jobRef, jobInfo }) {
+  return upload({
+    key: `${dirName}/${jobRef}/upload.json`,
+    data: JSON.stringify(jobInfo),
+    contentType: 'application/json'
+  })
+}
+
+export async function handler (event, context) {
   try {
     const { done } = context
-    const { url } = event
+    const { url, dryRun } = event
     if (!url) {
       throw new Error('Missing url')
     }
@@ -14,6 +23,9 @@ export function handler (event, context) {
     const jobInfo = {
       jobRef,
       submittedDate: now.toISOString()
+    }
+    if (!dryRun) {
+      await uploadJson({ dirName: 'jobs', jobRef, jobInfo })
     }
     done(null, jobInfo)
   } catch (error) {
