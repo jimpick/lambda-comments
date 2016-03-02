@@ -2,6 +2,7 @@ import util from 'util'
 import moment from 'moment'
 import { generateReference } from '../../lib/references'
 import { upload } from '../../lib/s3'
+import { updateRecord } from '../../lib/dynamoDb'
 
 function uploadJson({ dirName, jobRef, jobInfo }) {
   return upload({
@@ -26,6 +27,7 @@ export async function handler (event, context) {
     }
     if (!dryRun) {
       await uploadJson({ dirName: 'jobs', jobRef, jobInfo })
+      await updateRecord({ key: 'jobRef', value: jobRef })
     }
     done(null, jobInfo)
   } catch (error) {
