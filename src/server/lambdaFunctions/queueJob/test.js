@@ -12,14 +12,15 @@ function checkBody (body) {
 
 export function local () {
 
-  describe('Post new job and get jobRef', function () {
+  describe('Post new job to the queue', function () {
 
     this.timeout(5000)
 
     it('should return a jobRef', function (done) {
       const event = {
         url: 'http://example.com/',
-        dryRun: true
+        dryRun: true,
+        quiet: true
       }
       handler(event, {
         done: (error, body) => {
@@ -44,9 +45,9 @@ export function local () {
       })
     })
 
-    it('should write a json file to S3')
+    // it('should write a json file to S3')
 
-    it('should write to DynamoDB')
+    // it('should write to DynamoDB')
 
   })
 
@@ -54,7 +55,7 @@ export function local () {
 
 export function remote () {
 
-  describe('Post new job and get jobRef', function () {
+  describe('Post new job to the queue', function () {
 
     this.timeout(5000)
 

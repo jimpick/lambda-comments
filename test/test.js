@@ -1,7 +1,7 @@
 import 'babel-polyfill'
 
 const lambdaFunctions = [
-  'getJobStatus',
+  // 'getJobStatus',
   // 'listActiveJobs',
   'queueJob',
   'worker'

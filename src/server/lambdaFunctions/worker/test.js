@@ -6,16 +6,28 @@ import { handler } from './index'
 
 export function local () {
 
-  describe('Post an event to the worker', function () {
+  describe('Worker', function () {
 
     this.timeout(5000)
 
-    it('should return a jobRef', function (done) {
+    it('should process the job', function (done) {
       const event = {
-        url: 'http://example.com/',
-        quiet: true
-        // dryRun: true
+        Records: [
+          {
+            dynamodb: {
+              NewImage: {
+                jobRef: {
+                  S: '2016/03/02/23:21-KqXArbOZTuiL2vFyixAl_g'
+                },
+                url: {
+                  S: 'http://jimpick.com/'
+                }
+              }
+            }
+          }
+        ]
       }
+      event.quiet = true
       handler(event, {
         done: (error, body) => {
           // console.log('Jim', body)
