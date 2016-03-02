@@ -6,23 +6,20 @@ const { region } = config
 const awsDynamoDb = new AWS.DynamoDB({ region })
 const dynamoDbTable = resources.JobStreamDynamoDBTable.PhysicalResourceId
 
-export function updateRecord ({
-  key,
-  value
-}) {
+export function updateRecord (object) {
   return new Promise((resolve, reject) => {
     const params = {
       TableName: dynamoDbTable,
       Key: { id: { S: 'jobs' } },
-      AttributeUpdates: {
+      AttributeUpdates: Object.keys(object).reduce((prev, key) => ({
         [key]: {
           Action: 'PUT',
           Value: {
-            S: value
+            S: object[key]
           }
-        }
-      }
-      // ReturnConsumedCapacity: 'TOTAL'
+        },
+        ...prev
+      }), {})
     }
     awsDynamoDb.updateItem(params, (err, result) => {
       if (err) {

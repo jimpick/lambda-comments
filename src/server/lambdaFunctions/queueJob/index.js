@@ -22,11 +22,12 @@ export async function handler (...opts) {
     const jobRef = generateReference(now)
     const jobInfo = {
       jobRef,
+      url,
       submittedDate: now.toISOString()
     }
     if (!dryRun) {
       await uploadJson({ dirName: 'jobs', jobRef, jobInfo })
-      await updateRecord({ key: 'jobRef', value: jobRef })
+      await updateRecord({ jobRef, url })
     }
     return jobInfo
   })

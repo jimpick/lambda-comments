@@ -19,7 +19,7 @@ export function local () {
     it('should return a jobRef', function (done) {
       const event = {
         url: 'http://example.com/',
-        // dryRun: true
+        dryRun: true
       }
       handler(event, {
         done: (error, body) => {

@@ -1,7 +1,11 @@
-console.log('Loading event')
+import lambdaWrapper from '../../lib/lambdaWrapper'
 
-exports.handler = function (event, context) {
-  console.log('Jim', event, context)
-  context.done(null, 'Hello World 2: ' + JSON.stringify(event) + '\n' +
-    JSON.stringify(context))
+export async function handler (...opts) {
+  await lambdaWrapper(opts, async event => {
+    const { quiet, url } = event
+    if (!quiet) {
+      console.log(JSON.stringify(event, null, 2))
+    }
+    return event
+  })
 }

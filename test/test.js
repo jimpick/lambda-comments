@@ -3,8 +3,8 @@ import 'babel-polyfill'
 const lambdaFunctions = [
   'getJobStatus',
   // 'listActiveJobs',
-  'queueJob'
-  // 'worker'
+  'queueJob',
+  'worker'
 ]
 const localTests = lambdaFunctions.reduce((prev, test) => ({
   [test]: require(`../src/server/lambdaFunctions/${test}/test`).local,
@@ -18,7 +18,7 @@ const remoteTests = lambdaFunctions.reduce((prev, test) => ({
 function local () {
   describe('local', function () {
     Object.values(localTests).forEach(test => {
-      test()
+      test && test()
     })
   })
 }
@@ -26,7 +26,7 @@ function local () {
 function remote () {
   describe('remote', function () {
     Object.values(remoteTests).forEach(test => {
-      test()
+      test && test()
     })
   })
 }
