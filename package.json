@@ -36,6 +36,8 @@
   "dependencies": {
     "aws-sdk": "^2.2.38",
     "moment": "^2.11.2",
-    "slugid": "^1.1.0"
+    "slugid": "^1.1.0",
+    "superagent": "^1.8.0-beta.2",
+    "superagent-promise-plugin": "^2.1.0"
   }
 }
