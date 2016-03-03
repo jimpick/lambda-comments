@@ -28,12 +28,14 @@ export function local () {
         ]
       }
       event.quiet = true
+      event.dryRun = true // FIXME: We should mock the HTTP and AWS calls
       handler(event, {
         done: (error, body) => {
-          // console.log('Jim', body)
           done()
         },
-        fail: error => { console.log(error) }
+        fail: error => {
+          console.log(error)
+        }
       })
     })
 
