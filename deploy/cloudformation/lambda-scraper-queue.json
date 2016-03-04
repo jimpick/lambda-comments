@@ -98,6 +98,16 @@
                   ]
                 ]
               }
+            },
+            {
+              "Effect": "Allow",
+              "Action": [
+                "dynamodb:GetRecords",
+                "dynamodb:GetShardIterator",
+                "dynamodb:DescribeStream",
+                "dynamodb:ListStreams"
+              ],
+              "Resource": { "Fn::GetAtt": [ "JobStreamDynamoDBTable", "StreamArn" ] }
             }
           ]
         },
@@ -228,6 +238,16 @@
         "Role": { "Fn::GetAtt": [ "LambdaRole", "Arn" ] },
         "Runtime": "nodejs",
         "Timeout": 30
+      }
+    },
+    "WorkerLambdaEventSourceMapping": {
+      "Type": "AWS::Lambda::EventSourceMapping",
+      "Properties": {
+        "BatchSize": 1,
+        "Enabled": true,
+        "EventSourceArn": { "Fn::GetAtt": [ "JobStreamDynamoDBTable", "StreamArn" ] },
+        "FunctionName": { "Ref": "WorkerLambdaFunction" },
+        "StartingPosition": "LATEST"
       }
     },
     "RestApi": {
