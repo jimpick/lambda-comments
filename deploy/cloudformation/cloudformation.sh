@@ -6,6 +6,8 @@ if [ "$1" = "create" ]; then
   ACTION=create-stack
 elif [ "$1" = "update" ]; then
   ACTION=update-stack
+elif [ "$1" = "delete" ]; then
+  ACTION=delete-stack
 else
   echo "Usage: $0 [create|update]"
   exit 1
@@ -18,6 +20,13 @@ BIN_DIR=$DIR/../../bin
 SERVICE_TOKEN=$(cat $DIR/../../deploy/state/SERVICE_TOKEN)
 STACK_NAME=$($BABEL_NODE $BIN_DIR/dump-config.js cloudFormation)
 
+if [ "$ACTION" = "delete-stack" ]; then
+  aws cloudformation delete-stack \
+      --region us-west-2 \
+      --stack-name $STACK_NAME
+  exit 0
+fi
+
 aws cloudformation $ACTION \
     --region us-west-2 \
     --stack-name $STACK_NAME \
@@ -29,4 +38,3 @@ aws cloudformation $ACTION \
 || true
 
 # $BABEL_NODE $BIN_DIR/save-cloudformation-config.js
-
