@@ -248,7 +248,8 @@
         "EventSourceArn": { "Fn::GetAtt": [ "JobStreamDynamoDBTable", "StreamArn" ] },
         "FunctionName": { "Ref": "WorkerLambdaFunction" },
         "StartingPosition": "LATEST"
-      }
+      },
+      "DependsOn": "JobStreamDynamoDBTable"
     },
     "RestApi": {
       "Type": "Custom::RestApi",

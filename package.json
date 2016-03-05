@@ -15,7 +15,8 @@
     "test-local": "node_modules/mocha/bin/mocha --compilers js:babel-core/register -g local",
     "test-remote": "node_modules/mocha/bin/mocha --compilers js:babel-core/register -g remote",
     "test": "node_modules/mocha/bin/mocha --compilers js:babel-core/register",
-    "post-url": "node_modules/babel-cli/bin/babel-node.js bin/post-url.js http://jimpick.com/"
+    "post-url": "node_modules/babel-cli/bin/babel-node.js bin/post-url.js http://jimpick.com/",
+    "logs": "cd build/apex && apex logs -f"
   },
   "author": "Jim Pick <jim@jimpick.com>",
   "license": "ISC",
