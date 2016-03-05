@@ -1,5 +1,5 @@
 export default {
-  cloudFormation: 'lambdaScraperQueue3',
+  cloudFormation: 'lambdaScraperQueue',
   region: 'us-west-2',
   stage: 'prod'
 }
