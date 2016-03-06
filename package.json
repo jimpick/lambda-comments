@@ -2,6 +2,7 @@
   "name": "lambda-scraper-queue",
   "version": "0.0.1",
   "description": "Web Scraper Queue built with AWS Lambda",
+  "repository": "jimpick/lambda-scraper-queue",
   "main": "config.js",
   "scripts": {
     "deploy-custom-resource": "cd deploy/aws-api-gateway-for-cloudformation-v1.1.3 && ./setup.sh",

@@ -22,13 +22,27 @@ Additionally, we use Apex to simplify the uploading of the Lambda functions.
 
 * http://apex.run/
 
+# Costs
+
+It should cost very little to run.
+
+* DynamoDB - only provisioned for 1 read capacity unit, 1 write capacity unit (which limits it to 1 job per second)
+* S3 - storage for retrieved files and JSON, plus data transfer
+* CloudWatch logs
+* Lambda invocations
+
 # Demo Instance
 
-FIXME
+API: https://3m7171w3c9.execute-api.us-west-2.amazonaws.com/prod
+Web Interface: (not finished)
 
 # API
 
-FIXME
+## Submit a job
+
+```
+curl -X POST -d url=http://jimpick.com/ https://3m7171w3c9.execute-api.us-west-2.amazonaws.com/prod/jobs
+```
 
 # Deployment Instructions
 
@@ -38,9 +52,9 @@ FIXME
 * OS X, Linux, \*BSD or another Unix-based OS (scripts will need some modifications for Windows)
 * Install the [AWS CLI](https://aws.amazon.com/cli/) and ensure credentials are setup under ~/.aws/credentials ([Instructions](http://docs.aws.amazon.com/cli/latest/userguide/cli-chap-getting-started.html#cli-config-files))
 * Install [Node.js](https://nodejs.org/) (tested with v4.2.6)
-* `git checkout https://github.com/jimpick/lambda-scraper-queue.git` (https)  
+* `git clone https://github.com/jimpick/lambda-scraper-queue.git` (https)  
 or  
-`git checkout git@github.com:jimpick/lambda-scraper-queue.git` (git)
+`git clone git@github.com:jimpick/lambda-scraper-queue.git` (git)
 * `cd lambda-scraper-queue`
 * `npm install`
 
@@ -99,6 +113,10 @@ If successful, a 'service token' will be saved to `deploy/state/SERVICE_TOKEN`
 
 Copy `config.template.js` to `config.js` and customize it.
 
+```
+cp config.template.js config.js
+```
+
 The default config.template.js is:
 
 ```
@@ -123,7 +141,18 @@ export default {
 npm run create-cloudformation
 ```
 
+The command returns immediately, but it will take a while to complete.
+it's deploying a lot of resources. It's a good idea
+to watch the CloudFormation task in the AWS Web Console to
+ensure that it completes without errors.
+
+**Note:** When working with the CloudFormation recipe, you can also use
+`npm run update-cloudformation` and `npm run delete-cloudformation`
+
 ## Manually create the "prod" deployment stage in API gateway
+
+When the CloudFormation stack in the previous step has been successfully
+provisioned (check the AWS Web Console), do this step.
 
 The Custom Resource library currently doesn't support this from CloudFormation, so, for now, we need to do it manually.
 
@@ -192,6 +221,9 @@ npm run post-url
 ```
 
 Submits a job to the API that scrapes `http://jimpick.com/`
+
+You should be able to see lambda output in the logs (after a few seconds delay). Also,
+you should be able to see the files in S3 via the AWS Web Console.
 
 # Similar Work
 

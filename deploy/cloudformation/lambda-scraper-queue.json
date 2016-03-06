@@ -249,7 +249,12 @@
         "FunctionName": { "Ref": "WorkerLambdaFunction" },
         "StartingPosition": "LATEST"
       },
-      "DependsOn": "JobStreamDynamoDBTable"
+      "DependsOn": [
+        "JobStreamDynamoDBTable",
+        "LambdaScraperQueueCombinedPolicy",
+        "LambdaRoleInstanceProfile",
+        "LambdaRole"
+      ]
     },
     "RestApi": {
       "Type": "Custom::RestApi",
