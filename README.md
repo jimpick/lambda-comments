@@ -226,6 +226,16 @@ Submits a job to the API that scrapes `http://jimpick.com/`
 You should be able to see lambda output in the logs (after a few seconds delay). Also,
 you should be able to see the files in S3 via the AWS Web Console.
 
+# To Do List
+
+* Integration test
+* Better error handling
+* Handle DynamoDB ProvisionedThroughputExceededException
+* Status subsystem (API + Firebase)
+* Web interface
+* Quotas / Whitelists for public demo
+* Blog post
+
 # Similar Work
 
 I'm using Apex, but just for uploading the functions. I haven't investigated the other projects yet.
