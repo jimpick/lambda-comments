@@ -34,7 +34,8 @@ It should cost very little to run.
 # Demo Instance
 
 API: https://3m7171w3c9.execute-api.us-west-2.amazonaws.com/prod
-Web Interface: (not finished)
+
+Web Interface: Under construction
 
 # API
 
@@ -48,10 +49,10 @@ curl -X POST -d url=http://jimpick.com/ https://3m7171w3c9.execute-api.us-west-2
 
 ## Prerequisites
 
-* An [AWS Account](https://aws.amazon.com/)
-* OS X, Linux, \*BSD or another Unix-based OS (scripts will need some modifications for Windows)
+* You will need an [AWS Account](https://aws.amazon.com/)
+* You will need OS X, Linux, \*BSD or another Unix-based OS (scripts will need some modifications for Windows)
 * Install the [AWS CLI](https://aws.amazon.com/cli/) and ensure credentials are setup under ~/.aws/credentials ([Instructions](http://docs.aws.amazon.com/cli/latest/userguide/cli-chap-getting-started.html#cli-config-files))
-* Install [Node.js](https://nodejs.org/) (tested with v4.2.6)
+* Install [Node.js](https://nodejs.org/) (tested with v4.2.6 and v5.7.0)
 * `git clone https://github.com/jimpick/lambda-scraper-queue.git` (https)  
 or  
 `git clone git@github.com:jimpick/lambda-scraper-queue.git` (git)
