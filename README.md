@@ -24,13 +24,174 @@ Additionally, we use Apex to simplify the uploading of the Lambda functions.
 
 # Demo Instance
 
+FIXME
+
 # API
+
+FIXME
 
 # Deployment Instructions
 
+## Prerequisites
+
+* An [AWS Account](https://aws.amazon.com/)
+* OS X, Linux, \*BSD or another Unix-based OS (scripts will need some modifications for Windows)
+* Install the [AWS CLI](https://aws.amazon.com/cli/) and ensure credentials are setup under ~/.aws/credentials ([Instructions](http://docs.aws.amazon.com/cli/latest/userguide/cli-chap-getting-started.html#cli-config-files))
+* Install [Node.js](https://nodejs.org/) (tested with v4.2.6)
+* `git checkout https://github.com/jimpick/lambda-scraper-queue.git` (https)  
+or  
+`git checkout git@github.com:jimpick/lambda-scraper-queue.git` (git)
+* `cd lambda-scraper-queue`
+* `npm install`
+
+## Setup IAM permissions
+
+**Note:** These instructions are copied from: https://github.com/carlnordenfelt/aws-api-gateway-for-cloudformation#setup-iam-permissions
+
+
+To be able to install the Custom Resource library you require a set of permissions.
+Configure your IAM user with the following policy and make sure that you have configured your aws-cli with access and secret key.
+
+```
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateStack",
+        "cloudformation:DescribeStacks",
+        "iam:CreateRole",
+        "iam:CreatePolicy",
+        "iam:AttachRolePolicy",
+        "iam:GetRole",
+        "iam:PassRole",
+        "lambda:CreateFunction",
+        "lambda:UpdateFunctionCode",
+        "lambda:GetFunctionConfiguration",
+
+        "cloudformation:DeleteStack",
+        "lambda:DeleteFunction",
+        "iam:ListPolicyVersions",
+        "iam:DetachRolePolicy",
+        "iam:DeletePolicy",
+        "iam:DeleteRole"
+      ],
+      "Resource": [
+        "*"
+      ]
+    }
+  ]
+}
+```
+
+## Install the Custom Resource Library
+
+This installs a special AWS Lambda function so that the CloudFormation recipe can provision the API Gateway using custom resources from Carl Nordenfelt's [API Gateway for  CloudFormation](https://github.com/carlnordenfelt/aws-api-gateway-for-cloudformation) project.
+
+```
+npm run deploy-custom-resource
+```
+
+If successful, a 'service token' will be saved to `deploy/state/SERVICE_TOKEN`
+
 ## Configuration
 
-##
+Copy `config.template.js` to `config.js` and customize it.
+
+The default config.template.js is:
+
+```
+export default {
+  cloudFormation: 'lambdaScraperQueue',
+  region: 'us-west-2',
+  stage: 'prod'
+}
+```
+
+### Parameters
+
+**cloudFormation**: The name of the CloudFormation stack
+
+**region**: The AWS region
+
+**stage**: The API Gateway stage to create
+
+## Use CloudFormation to create the AWS resources
+
+```
+npm run create-cloudformation
+```
+
+## Manually create the "prod" deployment stage in API gateway
+
+The Custom Resource library currently doesn't support this from CloudFormation, so, for now, we need to do it manually.
+
+Go to "API Gateway" in the Amazon web console, and select the desired API. Click the `Deploy API` button, and under `Deployment Stage`, select `New Stage`. Enter `prod` for the `Stage Name`, and click the `Deploy` button.
+
+## Save the references to the provisioned CloudFormation resources
+
+```
+npm run save-cloudformation
+```
+
+This will create a file in  `deploy/state/cloudFormation.json`
+
+## Setup the Apex build directory
+
+```
+npm run setup-apex
+```
+
+This generates `build/apex/project.json`
+
+## Compile the Lambda scripts using babel
+
+```
+npm run compile-lambda
+```
+
+This will use webpack and babel to compile the source code in `src/server/lambdaFunctions` into `build/apex/functions`
+
+The webpack configuration is in `deploy/apex/webpack.config.es6.js`
+
+## Deploy the lambda functions
+
+```
+npm run deploy-lambda
+```
+
+This will run `apex deploy` in the `build/apex` directory to upload the compiled lambda functions.
+
+Alternatively, if you want to execute the compile and deploy steps in one command, you can run: `npm run deploy`
+
+## Run the test suite
+
+```
+npm run test
+```
+
+This will run both the local tests, and remote test which test the deployed API and lambda functions.
+
+The local tests can be run as `npm run test-local`, and the remote tests can be run as `npm run test-remote`.
+
+## View logs
+
+You can tail the CloudWatch logs:
+
+```
+npm run logs
+```
+
+This just executes `apex logs -f` in `build/apex`
+
+## Submit a job
+
+```
+npm run post-url
+```
+
+Submits a job to the API that scrapes `http://jimpick.com/`
 
 # Similar Work
 

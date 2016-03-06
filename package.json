@@ -4,6 +4,7 @@
   "description": "Web Scraper Queue built with AWS Lambda",
   "main": "config.js",
   "scripts": {
+    "deploy-custom-resource": "cd deploy/aws-api-gateway-for-cloudformation-v1.1.3 && ./setup.sh",
     "create-cloudformation": "deploy/cloudformation/cloudformation.sh create",
     "update-cloudformation": "deploy/cloudformation/cloudformation.sh update",
     "delete-cloudformation": "deploy/cloudformation/cloudformation.sh delete",
