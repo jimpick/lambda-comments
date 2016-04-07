@@ -1,8 +1,8 @@
 {
-  "name": "lambda-scraper-queue",
+  "name": "@jimpick/lambda-comments",
   "version": "0.0.1",
-  "description": "Web Scraper Queue built with AWS Lambda",
-  "repository": "jimpick/lambda-scraper-queue",
+  "description": "Blog commenting system built with AWS Lambda",
+  "repository": "jimpick/lambda-comments",
   "main": "config.js",
   "scripts": {
     "deploy-custom-resource": "cd deploy/aws-api-gateway-for-cloudformation-v1.1.3 && ./setup.sh",
