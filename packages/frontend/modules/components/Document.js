@@ -31,7 +31,7 @@ const Document = React.createClass({
           {styles}
         </head>
         <body>
-          <div id="app" dangerouslySetInnerHTML={{ __html: content }}/>
+          <div id="lambda-comments" dangerouslySetInnerHTML={{ __html: content }}/>
           <script dangerouslySetInnerHTML={{ __html: shims }}/>
           {scripts}
         </body>

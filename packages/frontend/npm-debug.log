@@ -1,0 +1,48 @@
+0 info it worked if it ends with ok
+1 verbose cli [ '/opt/node/node-v5.10.1-darwin-x64/bin/node',
+1 verbose cli   '/opt/node/node-v5.10.1-darwin-x64/bin/npm',
+1 verbose cli   'start' ]
+2 info using npm@3.8.3
+3 info using node@v5.10.1
+4 verbose run-script [ 'prestart', 'start', 'poststart' ]
+5 info lifecycle @jimpick/lambda-comments-frontend@1.0.0~prestart: @jimpick/lambda-comments-frontend@1.0.0
+6 silly lifecycle @jimpick/lambda-comments-frontend@1.0.0~prestart: no script for prestart, continuing
+7 info lifecycle @jimpick/lambda-comments-frontend@1.0.0~start: @jimpick/lambda-comments-frontend@1.0.0
+8 verbose lifecycle @jimpick/lambda-comments-frontend@1.0.0~start: unsafe-perm in lifecycle true
+9 verbose lifecycle @jimpick/lambda-comments-frontend@1.0.0~start: PATH: /opt/node/node-v5.10.1-darwin-x64/lib/node_modules/npm/bin/node-gyp-bin:/Users/jim/projects/comments/lambda-comments/packages/frontend/node_modules/.bin:/opt/node/node-v5.10.1-darwin-x64/bin:/opt/node/node-v5.10.1-darwin-x64/bin:/usr/local/opt/php56/bin:/usr/local/heroku/bin:/Users/jim/projects/camlistore/camlistore/bin:/usr/local/go/bin:/Users/jim/Library/Android/sdk//platform-tools/:/Applications/Postgres.app/Contents/Versions/9.4/bin:/Users/jim/clients/reelhouse/obloq/bin:/Developer/usr/bin:/usr/local/mysql/bin:/opt/mongo/bin:/usr/local/bin:/usr/local/sbin:/usr/local/git/bin:/Users/jim/bin:/usr/local/heroku/bin:/opt/local/bin:/opt/local/sbin:/usr/local/opt/php56/bin:/usr/local/heroku/bin:/Users/jim/projects/camlistore/camlistore/bin:/usr/local/go/bin:/Users/jim/Library/Android/sdk//platform-tools/:/Applications/Postgres.app/Contents/Versions/9.4/bin:/Users/jim/clients/reelhouse/obloq/bin:/Developer/usr/bin:/usr/local/mysql/bin:/opt/mongo/bin:/usr/local/bin:/usr/local/sbin:/usr/local/git/bin:/Users/jim/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/git/bin
+10 verbose lifecycle @jimpick/lambda-comments-frontend@1.0.0~start: CWD: /Users/jim/projects/comments/lambda-comments/packages/frontend
+11 silly lifecycle @jimpick/lambda-comments-frontend@1.0.0~start: Args: [ '-c',
+11 silly lifecycle   'if-env NODE_ENV=production && npm run react-project:start:prod || npm run react-project:start:dev' ]
+12 silly lifecycle @jimpick/lambda-comments-frontend@1.0.0~start: Returned: code: 1  signal: null
+13 info lifecycle @jimpick/lambda-comments-frontend@1.0.0~start: Failed to exec start script
+14 verbose stack Error: @jimpick/lambda-comments-frontend@1.0.0 start: `if-env NODE_ENV=production && npm run react-project:start:prod || npm run react-project:start:dev`
+14 verbose stack Exit status 1
+14 verbose stack     at EventEmitter.<anonymous> (/opt/node/node-v5.10.1-darwin-x64/lib/node_modules/npm/lib/utils/lifecycle.js:239:16)
+14 verbose stack     at emitTwo (events.js:100:13)
+14 verbose stack     at EventEmitter.emit (events.js:185:7)
+14 verbose stack     at ChildProcess.<anonymous> (/opt/node/node-v5.10.1-darwin-x64/lib/node_modules/npm/lib/utils/spawn.js:24:14)
+14 verbose stack     at emitTwo (events.js:100:13)
+14 verbose stack     at ChildProcess.emit (events.js:185:7)
+14 verbose stack     at maybeClose (internal/child_process.js:850:16)
+14 verbose stack     at Process.ChildProcess._handle.onexit (internal/child_process.js:215:5)
+15 verbose pkgid @jimpick/lambda-comments-frontend@1.0.0
+16 verbose cwd /Users/jim/projects/comments/lambda-comments/packages/frontend
+17 error Darwin 15.3.0
+18 error argv "/opt/node/node-v5.10.1-darwin-x64/bin/node" "/opt/node/node-v5.10.1-darwin-x64/bin/npm" "start"
+19 error node v5.10.1
+20 error npm  v3.8.3
+21 error code ELIFECYCLE
+22 error @jimpick/lambda-comments-frontend@1.0.0 start: `if-env NODE_ENV=production && npm run react-project:start:prod || npm run react-project:start:dev`
+22 error Exit status 1
+23 error Failed at the @jimpick/lambda-comments-frontend@1.0.0 start script 'if-env NODE_ENV=production && npm run react-project:start:prod || npm run react-project:start:dev'.
+23 error Make sure you have the latest version of node.js and npm installed.
+23 error If you do, this is most likely a problem with the @jimpick/lambda-comments-frontend package,
+23 error not with npm itself.
+23 error Tell the author that this fails on your system:
+23 error     if-env NODE_ENV=production && npm run react-project:start:prod || npm run react-project:start:dev
+23 error You can get information on how to open an issue for this project with:
+23 error     npm bugs @jimpick/lambda-comments-frontend
+23 error Or if that isn't available, you can get their info via:
+23 error     npm owner ls @jimpick/lambda-comments-frontend
+23 error There is likely additional logging output above.
+24 verbose exit [ 1, true ]

@@ -5,6 +5,5 @@ import routes from '../modules/routes'
 
 render(
   <Router history={browserHistory} routes={routes}/>,
-  document.getElementById('app')
+  document.getElementById('lambda-comments')
 )
-
