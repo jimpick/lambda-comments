@@ -13,7 +13,7 @@ else
   exit 1
 fi
 
-TAG='lambda-scraper-queue'
+TAG='lambda-comments'
 DIR=`cd $(dirname $0); pwd`
 BABEL_NODE=$DIR/../../node_modules/babel-cli/bin/babel-node.js
 BIN_DIR=$DIR/../../bin
@@ -30,7 +30,7 @@ fi
 aws cloudformation $ACTION \
     --region us-west-2 \
     --stack-name $STACK_NAME \
-    --template-body file://$DIR/lambda-scraper-queue.json \
+    --template-body file://$DIR/lambda-comments.json \
     --capabilities CAPABILITY_IAM \
     --parameters \
       ParameterKey=TagName,ParameterValue=$TAG,UsePreviousValue=false \

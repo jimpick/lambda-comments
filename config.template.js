@@ -1,5 +1,5 @@
 export default {
-  cloudFormation: 'lambdaScraperQueue',
+  cloudFormation: 'lambdaComments',
   region: 'us-west-2',
   stage: 'prod'
 }

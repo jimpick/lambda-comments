@@ -1,6 +1,6 @@
 {
   "AWSTemplateFormatVersion": "2010-09-09",
-  "Description": "API Gateway + Lambda + S3 for Scraping Websites",
+  "Description": "API Gateway + Lambda + S3 Blog Commenting System",
   "Parameters": {
     "TagName": {
       "Description": "Tag for resources",
@@ -53,10 +53,10 @@
         ]
       }
     },
-    "LambdaScraperQueueCombinedPolicy": {
+    "LambdaCommentsCombinedPolicy": {
       "Type": "AWS::IAM::Policy",
       "Properties": {
-        "PolicyName": "LambdaScraperQueueCombined",
+        "PolicyName": "LambdaCommentsCombined",
         "PolicyDocument": {
           "Statement": [
             {
@@ -251,7 +251,7 @@
       },
       "DependsOn": [
         "JobStreamDynamoDBTable",
-        "LambdaScraperQueueCombinedPolicy",
+        "LambdaCommentsCombinedPolicy",
         "LambdaRoleInstanceProfile",
         "LambdaRole"
       ]
@@ -260,8 +260,8 @@
       "Type": "Custom::RestApi",
       "Properties": {
         "ServiceToken": { "Ref": "ServiceToken" },
-        "name": "Scraper Queue",
-        "description": "API for adding jobs to scraper queue and viewing status and results"
+        "name": "Comments",
+        "description": "API for blog comments"
       }
     },
     "JobsApiResource": {

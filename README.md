@@ -1,6 +1,6 @@
-# Lambda Scraper Queue
+# Lambda Comments
 
-This is a demo project which implements a trivial REST service for queuing web scraping jobs.
+This project which implements a minimal blog commenting service.
 
 It is completely "serverless", designed to use the following Amazon services:
 
@@ -31,20 +31,6 @@ It should cost very little to run.
 * CloudWatch logs
 * Lambda invocations
 
-# Demo Instance
-
-API: https://3m7171w3c9.execute-api.us-west-2.amazonaws.com/prod
-
-Web Interface: Under construction
-
-# API
-
-## Submit a job
-
-```
-curl -X POST -d url=http://jimpick.com/ https://3m7171w3c9.execute-api.us-west-2.amazonaws.com/prod/jobs
-```
-
 # Deployment Instructions
 
 ## Prerequisites
@@ -53,16 +39,15 @@ curl -X POST -d url=http://jimpick.com/ https://3m7171w3c9.execute-api.us-west-2
 * You will need OS X, Linux, \*BSD or another Unix-based OS (scripts will need some modifications for Windows)
 * Install the [AWS CLI](https://aws.amazon.com/cli/) and ensure credentials are setup under ~/.aws/credentials ([Instructions](http://docs.aws.amazon.com/cli/latest/userguide/cli-chap-getting-started.html#cli-config-files))
 * Install [Node.js](https://nodejs.org/) (tested with v4.2.6 and v5.7.0)
-* `git clone https://github.com/jimpick/lambda-scraper-queue.git` (https)  
+* `git clone https://github.com/jimpick/lambda-comments.git` (https)  
 or  
-`git clone git@github.com:jimpick/lambda-scraper-queue.git` (git)
-* `cd lambda-scraper-queue`
+`git clone git@github.com:jimpick/lambda-comments.git` (git)
+* `cd lambda-comments`
 * `npm install`
 
 ## Setup IAM permissions
 
-**Note:** These instructions are copied from: https://github.com/carlnordenfelt/aws-api-gateway-for-cloudformation#setup-iam-permissions
-
+**Note:** These instructions are copied from: https://apigatewaycloudformation.bynordenfelt.com/
 
 To be able to install the Custom Resource library you require a set of permissions.
 Configure your IAM user with the following policy and make sure that you have configured your aws-cli with access and secret key.
@@ -122,7 +107,7 @@ The default config.template.js is:
 
 ```
 export default {
-  cloudFormation: 'lambdaScraperQueue',
+  cloudFormation: 'lambdaComments',
   region: 'us-west-2',
   stage: 'prod'
 }
