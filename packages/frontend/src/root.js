@@ -9,20 +9,13 @@ export default class Root extends React.Component {
     store: PropTypes.object.isRequired,
   };
 
-  content () {
-    return (
-      <Router history={this.props.history}>
-        {this.props.routes}
-      </Router>
-    )
-  }
-
   render () {
+    const { history, routes, store } = this.props
     return (
-      <Provider store={this.props.store}>
-        <div style={{ height: '100%' }}>
-          {this.content()}
-        </div>
+      <Provider store={store}>
+        <Router history={history}>
+          {routes}
+        </Router>
       </Provider>
     )
   }
