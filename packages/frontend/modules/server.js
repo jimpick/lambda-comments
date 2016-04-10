@@ -1,7 +1,7 @@
 import React from 'react'
 import { createServer } from 'react-project/server'
 import { RouterContext } from 'react-router'
-import Document from '../modules/components/Document'
+import document from './document'
 import routes from '../modules/routes'
 
 function getApp(req, res, requestCallback) {
@@ -21,4 +21,3 @@ function getApp(req, res, requestCallback) {
 }
 
 createServer(getApp).start()
-

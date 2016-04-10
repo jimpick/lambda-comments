@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react'
-import { header } from './styles.css'
+import { header } from './comments.css'
 
 export default class Comments extends Component {
 
