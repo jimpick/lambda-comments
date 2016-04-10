@@ -5,11 +5,11 @@ export default class Comments extends Component {
 
   static propTypes = {
     location: PropTypes.object.isRequired,
-    params: PropTypes.object.isRequired
+    params: PropTypes.object.isRequired,
   }
 
-  render() {
-    const { params, location } = this.props;
+  render () {
+    const { params, location } = this.props
     return (
       <div>
         <h2 className={header}>RAR!</h2>

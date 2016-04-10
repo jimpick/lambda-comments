@@ -4,14 +4,14 @@
   "private": true,
   "description": "",
   "react-project": {
-    "server": "modules/server.js",
-    "client": "modules/client.js",
+    "server": "src/server.js",
+    "client": "src/client.js",
     "webpack": "webpack.config.js"
   },
   "scripts": {
     "start": "if-env NODE_ENV=production && npm run react-project:start:prod || npm run react-project:start:dev",
     "test": "karma start",
-    "react-project:start:dev": "eslint modules && react-project start",
+    "react-project:start:dev": "eslint src && react-project start",
     "react-project:start:prod": "rm -rf .build && react-project build && node .build/server.js"
   },
   "author": "",
@@ -19,7 +19,7 @@
   "dependencies": {
     "babel-cli": "6.5.1",
     "babel-core": "6.5.1",
-    "babel-eslint": "4.1.8",
+    "babel-eslint": "6.0.2",
     "babel-loader": "6.2.2",
     "babel-preset-es2015": "6.5.0",
     "babel-preset-react": "6.5.0",
@@ -30,9 +30,10 @@
     "compression": "1.6.1",
     "css-loader": "0.23.1",
     "dotenv": "2.0.0",
-    "eslint": "1.10.3",
+    "eslint": "2.7.0",
+    "eslint-config-airbnb": "6.2.0",
     "eslint-config-rackt": "1.1.1",
-    "eslint-plugin-react": "3.16.1",
+    "eslint-plugin-react": "4.3.0",
     "expect": "1.14.0",
     "express": "4.13.4",
     "extract-text-webpack-plugin": "1.0.1",

@@ -1,12 +1,17 @@
 {
-  "extends": "rackt",
+  "extends": "airbnb",
   "globals": {
     "__DEV__": true
   },
+  "parser": "babel-eslint",
   "rules": {
+    "semi": [ 2, "never" ],
+    "max-len": [ 2, 80, 2 ],
+    "space-before-function-paren": [ 2, "always" ],
     "react/jsx-uses-react": 1,
     "react/jsx-no-undef": 2,
-    "react/wrap-multilines": 2
+    "react/wrap-multilines": 2,
+    "react/prefer-stateless-function": 0
   },
   "plugins": [
     "react"
