@@ -18,11 +18,7 @@ class Document extends Component {
           <meta charSet="utf-8" />
           <title>Server</title>
         </head>
-        <body>
-          <div
-            dangerouslySetInnerHTML={{ __html: content }}
-          />
-        </body>
+        <body dangerouslySetInnerHTML={{ __html: content }} />
       </html>
     )
   }
