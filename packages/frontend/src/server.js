@@ -1,8 +1,47 @@
-import React from 'react'
+/* eslint react/no-multi-comp: 0 */
+import React, { Component, PropTypes } from 'react'
 import { createServer } from 'react-project/server'
-import { RouterContext } from 'react-router'
-import Document from './document'
-import routes from './routes'
+import { Route, RouterContext } from 'react-router'
+
+class Document extends Component {
+
+  static propTypes = {
+    content: PropTypes.string,
+  }
+
+  render () {
+    const { content } = this.props
+
+    return (
+      <html>
+        <head>
+          <meta charSet="utf-8" />
+          <title>Server</title>
+        </head>
+        <body>
+          <div
+            dangerouslySetInnerHTML={{ __html: content }}
+          />
+        </body>
+      </html>
+    )
+  }
+
+}
+
+class App extends Component {
+  render () {
+    return (
+      <div>
+        No server app here.
+      </div>
+    )
+  }
+}
+
+const routes = (
+  <Route path="*" component={App} />
+)
 
 function getApp (req, res, requestCallback) {
   // here is your chance to do things like get an auth token and generate
