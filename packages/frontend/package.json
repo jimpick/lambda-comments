@@ -59,6 +59,7 @@
     "react-project": "0.0.30",
     "react-router": "2.0.0",
     "react-router-redux": "4.0.2",
+    "react-textarea-autosize": "4.0.0",
     "react-title-component": "1.0.1",
     "redux": "3.4.0",
     "redux-devtools": "3.2.0",
@@ -70,5 +71,8 @@
     "url-loader": "0.5.7",
     "webpack": "1.12.14",
     "webpack-dev-server": "1.14.1"
+  },
+  "devDependencies": {
+    "postcss-nested": "1.0.0"
   }
 }
