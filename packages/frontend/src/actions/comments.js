@@ -8,10 +8,11 @@ const commentsBaseUrl =
   'https://s3-us-west-2.amazonaws.com/lambdacomments-websites3-1pyr3oyww687y'
 
 export function getComments ({ url }) {
+  const noTrailingSlashUrl = url.replace(/[\/*]$/, '')
   return dispatch => {
-    dispatch({ type: GET_COMMENTS, url })
+    dispatch({ type: GET_COMMENTS, url: noTrailingSlashUrl })
 
-    const promise = fetch(`${commentsBaseUrl}${url}/posts.json`)
+    const promise = fetch(`${commentsBaseUrl}${noTrailingSlashUrl}/posts.json`)
     .then(response => response.json())
     .then(comments => dispatch({ type: GET_COMMENTS_COMPLETE, comments }))
     .catch(error => dispatch({ type: GET_COMMENTS_ERROR, error }))
