@@ -5,6 +5,12 @@ function modify (config) {
   config.postcss = () => {
     return [ postcssNested ]
   }
+  if (config.entry.app) {
+    config.entry.app = [
+      'babel-polyfill',
+      config.entry.app
+    ]
+  }
 }
 
 modify(ClientConfig)
