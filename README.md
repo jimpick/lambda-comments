@@ -44,6 +44,7 @@ or
 `git clone git@github.com:jimpick/lambda-comments.git` (git)
 * `cd lambda-comments`
 * `npm install`
+* Install [Apex](http://apex.run/)
 
 ## Setup IAM permissions
 
