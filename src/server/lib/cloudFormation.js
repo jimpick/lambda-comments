@@ -36,4 +36,8 @@ export const apiUrl = 'https://' +
   region +
   '.amazonaws.com/prod'
 
+export const websiteUrl =
+  `https://s3-${region}.amazonaws.com/` +
+  resources.WebsiteS3.PhysicalResourceId
+
 export default cloudFormation

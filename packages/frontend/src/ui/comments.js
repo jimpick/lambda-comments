@@ -9,11 +9,21 @@ export default class Comments extends Component {
     location: PropTypes.object.isRequired,
     params: PropTypes.object.isRequired,
     comments: PropTypes.object.isRequired,
+    postComment: PropTypes.func.isRequired,
   }
 
   @autobind
   submit (data) {
-    console.log('Jim submit', data)
+    const {
+      location: {
+        pathname,
+      },
+      postComment,
+    } = this.props
+    postComment({
+      url: `${window.document.location.origin}${pathname}`,
+      ...data,
+    })
   }
 
   render () {

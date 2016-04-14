@@ -2,7 +2,7 @@ import { ClientConfig, ServerConfig } from 'react-project/webpack'
 import postcssNested from 'postcss-nested'
 import { DefinePlugin } from 'webpack'
 import 'babel-register'
-import { apiUrl } from '../../../src/server/lib/cloudFormation'
+import { apiUrl, websiteUrl } from '../../../src/server/lib/cloudFormation'
 import config from '../../../config.js'
 
 function modify (webpackConfig) {
@@ -38,7 +38,8 @@ function modifyClient (webpackConfig) {
 
   plugins.push(new DefinePlugin({
     '__CONFIG__': JSON.stringify({
-      apiUrl
+      apiUrl,
+      websiteUrl
     })
   }))
   webpackConfig.plugins = plugins

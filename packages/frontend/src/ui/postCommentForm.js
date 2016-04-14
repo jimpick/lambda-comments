@@ -6,10 +6,10 @@ import styles from './postCommentForm.css'
 @reduxForm({
   form: 'postCommment',
   fields: [
-    'commentText',
-    'author',
-    'email',
-    'website',
+    'commentContent',
+    'authorName',
+    'authorEmail',
+    'authorUrl',
   ],
 })
 export default class PostCommentForm extends Component {
@@ -22,10 +22,10 @@ export default class PostCommentForm extends Component {
   render () {
     const {
       fields: {
-        commentText,
-        author,
-        email,
-        website,
+        commentContent,
+        authorName,
+        authorEmail,
+        authorUrl,
       },
       handleSubmit,
     } = this.props
@@ -35,26 +35,26 @@ export default class PostCommentForm extends Component {
         onSubmit={handleSubmit}
       >
         <Textarea
-          {...commentText}
+          {...commentContent}
           placeholder="Type Comment Here"
           // required for reset form to work (only on textarea's)
           // see: https://github.com/facebook/react/issues/2533
-          value={commentText.value || ''}
+          value={commentContent.value || ''}
         />
         <input
           type="text"
           placeholder="Name (optional)"
-          {...author}
+          {...authorName}
         />
         <input
           type="text"
           placeholder="Email (optional)"
-          {...email}
+          {...authorEmail}
         />
         <input
           type="text"
           placeholder="Website (optional)"
-          {...website}
+          {...authorUrl}
         />
         <button type="submit">Submit</button>
       </form>

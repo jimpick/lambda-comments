@@ -1,11 +1,14 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
-import { getComments as getCommentsAction } from '../actions/comments'
+import * as commentsActions from '../actions/comments'
 import Comments from './comments'
 
 @connect(
   state => ({ comments: state.comments }),
-  { getComments: getCommentsAction }
+  {
+    getComments: commentsActions.getComments,
+    postComment: commentsActions.postComment,
+  }
 )
 export default class CommentsContainer extends Component {
 
@@ -13,6 +16,7 @@ export default class CommentsContainer extends Component {
     location: PropTypes.object.isRequired,
     params: PropTypes.object.isRequired,
     getComments: PropTypes.func.isRequired,
+    postComment: PropTypes.func.isRequired,
     comments: PropTypes.object,
   }
 
@@ -30,6 +34,7 @@ export default class CommentsContainer extends Component {
         loading,
         error,
       },
+      postComment,
     } = this.props
     if (loading) {
       return (
@@ -49,7 +54,12 @@ export default class CommentsContainer extends Component {
       return null
     }
     return (
-      <Comments params={params} location={location} comments={comments} />
+      <Comments
+        params={params}
+        location={location}
+        comments={comments}
+        postComment={postComment}
+      />
     )
   }
 
