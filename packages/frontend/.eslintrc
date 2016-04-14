@@ -1,7 +1,8 @@
 {
   "extends": "airbnb",
   "globals": {
-    "__DEV__": true
+    "__DEV__": true,
+    "__CONFIG__": true
   },
   "parser": "babel-eslint",
   "rules": {

@@ -27,6 +27,7 @@
     "babel-preset-react": "6.5.0",
     "babel-preset-react-hmre": "1.1.0",
     "babel-preset-stage-1": "6.5.0",
+    "babel-register": "6.5.1",
     "body-parser": "1.15.0",
     "bundle-loader": "0.5.4",
     "compression": "1.6.1",

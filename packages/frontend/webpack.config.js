@@ -1,24 +1,28 @@
 import { ClientConfig, ServerConfig } from 'react-project/webpack'
 import postcssNested from 'postcss-nested'
+import { DefinePlugin } from 'webpack'
+import 'babel-register'
+import { apiUrl } from '../../../src/server/lib/cloudFormation'
+import config from '../../../config.js'
 
-function modify (config) {
-  config.postcss = () => {
+function modify (webpackConfig) {
+  webpackConfig.postcss = () => {
     return [ postcssNested ]
   }
-  if (config.entry.app) {
-    config.entry.app = [
+  if (webpackConfig.entry.app) {
+    webpackConfig.entry.app = [
       'babel-polyfill',
-      config.entry.app
+      webpackConfig.entry.app
     ]
  }
 }
 
-function modifyClient (config) {
-  let { output: { filename }, plugins, module: { loaders } } = config
-  modify(config)
+function modifyClient (webpackConfig) {
+  let { output: { filename }, plugins, module: { loaders } } = webpackConfig
+  modify(webpackConfig)
   console.log('Output filename before', filename)
   filename = filename.replace('[chunkHash].js', '[name].js')
-  config.output.filename = filename
+  webpackConfig.output.filename = filename
   console.log('Output filename after', filename)
   console.log('Plugins before', plugins)
   plugins = plugins.filter(plugin => {
@@ -31,7 +35,13 @@ function modifyClient (config) {
       plugin.filenameTemplate = 'vendor.js'
     }
   })
-  config.plugins = plugins
+
+  plugins.push(new DefinePlugin({
+    '__CONFIG__': JSON.stringify({
+      apiUrl
+    })
+  }))
+  webpackConfig.plugins = plugins
   console.log('Plugins after', plugins)
   console.log('Loaders before', loaders)
   loaders.forEach(loader => {
@@ -39,7 +49,7 @@ function modifyClient (config) {
       loader.loader = 'style-loader!css-loader?modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]!postcss-loader'
     }
   })
-  config.module.loaders = loaders
+  webpackConfig.module.loaders = loaders
   console.log('Loaders after', loaders)
 }
 
