@@ -1,9 +1,7 @@
 import 'babel-polyfill'
 
 const lambdaFunctions = [
-  // 'getJobStatus',
-  // 'listActiveJobs',
-  'queueJob',
+  'queueComment',
   'worker'
 ]
 const localTests = lambdaFunctions.reduce((prev, test) => ({

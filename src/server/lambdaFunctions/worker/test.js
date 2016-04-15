@@ -16,11 +16,8 @@ export function local () {
           {
             dynamodb: {
               NewImage: {
-                jobRef: {
+                actionRef: {
                   S: '2016/03/02/23:21-KqXArbOZTuiL2vFyixAl_g'
-                },
-                url: {
-                  S: 'http://jimpick.com/'
                 }
               }
             }

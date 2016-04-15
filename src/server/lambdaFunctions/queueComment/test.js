@@ -6,19 +6,23 @@ import { handler } from './index'
 
 function checkBody (body) {
   expect(body).to.be.a('object')
-  const { jobRef } = body
-  expect(jobRef).to.be.a('string')
+  const { actionRef } = body
+  expect(actionRef).to.be.a('string')
 }
 
 export function local () {
 
-  describe('Post new job to the queue', function () {
+  describe('Post new comment to the queue', function () {
 
     this.timeout(5000)
 
-    it('should return a jobRef', function (done) {
+    it('should return a actionRef', function (done) {
       const event = {
-        url: 'http://example.com/',
+        url: 'http://example.com/blog/1',
+        commentContent: 'My comment',
+        authorName: 'Bob Bob',
+        authorEmail: 'bob@example.com',
+        authorUrl: 'http://bob.example.com/',
         dryRun: true,
         quiet: true
       }
@@ -55,7 +59,7 @@ export function local () {
 
 export function remote () {
 
-  describe('Post new job to the queue', function () {
+  describe('Post new comment to the queue', function () {
 
     this.timeout(5000)
 
@@ -69,11 +73,15 @@ export function remote () {
         .end(done)
     }
 
-    it('should return a jobRef', function (done) {
+    it('should return an actionRef', function (done) {
       const request = supertest(apiUrl)
-        .post('/jobs')
+        .post('/comments')
         .send({
-          url: 'http://example.com/',
+          url: 'http://example.com/blog/1',
+          commentContent: 'My comment',
+          authorName: 'Bob Bob',
+          authorEmail: 'bob@example.com',
+          authorUrl: 'http://bob.example.com/',
           dryRun: true
         })
       testResponse(request, done)
@@ -81,10 +89,14 @@ export function remote () {
 
     it('should work with application/x-www-form-urlencoded', function (done) {
       const request = supertest(apiUrl)
-        .post('/jobs')
+        .post('/comments')
         .type('form') // Makes supertest send x-www-form-urlencoded
         .send({
-          url: 'http://example.com/',
+          url: 'http://example.com/blog/1',
+          commentContent: 'My comment',
+          authorName: 'Bob Bob',
+          authorEmail: 'bob@example.com',
+          authorUrl: 'http://bob.example.com/',
           dryRun: true
         })
       testResponse(request, done)
@@ -92,7 +104,7 @@ export function remote () {
 
     it('should fail if there is no url', function (done) {
       const request = supertest(apiUrl)
-        .post('/jobs')
+        .post('/comments')
         .expect(400)
         .expect({ errorMessage: '[Error: Missing url]' })
         .end(done)

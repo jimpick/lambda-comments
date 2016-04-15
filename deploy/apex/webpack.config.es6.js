@@ -6,9 +6,7 @@ import { NormalModuleReplacementPlugin } from 'webpack'
 const nodeModulesDir = path.normalize(`${__dirname}/../../node_modules`)
 
 const lambdas = [
-  'ListActiveJobs',
-  'GetJobStatus',
-  'QueueJob',
+  'QueueComment',
   'Worker'
 ]
 
@@ -23,17 +21,9 @@ const lambdaDirNames = lambdas.reduce((lookupTable, logicalResourceId) => {
 
 export default {
   entry: {
-    [lambdaDirNames['ListActiveJobs']]: [
+    [lambdaDirNames['QueueComment']]: [
       'babel-polyfill',
-      './src/server/lambdaFunctions/listActiveJobs/index.js'
-    ],
-    [lambdaDirNames['GetJobStatus']]: [
-      'babel-polyfill',
-      './src/server/lambdaFunctions/getJobStatus/index.js'
-    ],
-    [lambdaDirNames['QueueJob']]: [
-      'babel-polyfill',
-      './src/server/lambdaFunctions/queueJob/index.js'
+      './src/server/lambdaFunctions/queueComment/index.js'
     ],
     [lambdaDirNames['Worker']]: [
       'babel-polyfill',

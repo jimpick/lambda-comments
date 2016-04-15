@@ -44,7 +44,7 @@ export function postComment ({
     }
     dispatch({ type: POST_COMMENT, payload })
     try {
-      const apiPostUrl = `${apiUrl}/jobs`
+      const apiPostUrl = `${apiUrl}/comments`
       const response = await fetch(
         apiPostUrl,
         {
