@@ -8,7 +8,7 @@ export default class Comments extends Component {
   static propTypes = {
     location: PropTypes.object.isRequired,
     params: PropTypes.object.isRequired,
-    comments: PropTypes.object.isRequired,
+    comments: PropTypes.array.isRequired,
     postComment: PropTypes.func.isRequired,
   }
 
@@ -30,11 +30,9 @@ export default class Comments extends Component {
     const { params, location, comments } = this.props
     return (
       <div>
-        <h2 className={header}>RAR!</h2>
-        <PostCommentForm onSubmit={this.submit} />
-        <pre>Params: {JSON.stringify(params, null, 2)}</pre>
-        <pre>Location: {JSON.stringify(location, null, 2)}</pre>
+        <h2 className={header}>{comments.length} comments</h2>
         <pre>Comments: {JSON.stringify(comments, null, 2)}</pre>
+        <PostCommentForm onSubmit={this.submit} />
       </div>
     )
   }

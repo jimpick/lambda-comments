@@ -16,7 +16,8 @@ export function getComments ({ url }) {
     const noTrailingSlashUrl = url.replace(/[\/*]$/, '')
     dispatch({ type: GET_COMMENTS, url: noTrailingSlashUrl })
     try {
-      const fetchUrl = `${websiteUrl}${noTrailingSlashUrl}/posts.json`
+      const fetchUrl =
+        `${websiteUrl}/comments${noTrailingSlashUrl}/comments.json`
       const response = await fetch(fetchUrl)
       const comments = await response.json()
       dispatch({ type: GET_COMMENTS_COMPLETE, comments })

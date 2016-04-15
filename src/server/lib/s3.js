@@ -26,3 +26,18 @@ export function upload ({
     })
   })
 }
+
+export function download ({ key }) {
+  return new Promise((resolve, reject) => {
+    const params = {
+      Bucket: s3Bucket
+    , Key: key
+    }
+    awsS3.getObject(params, (err, result) => {
+      if (err) {
+        return reject(err)
+      }
+      resolve(result)
+    })
+  })
+}

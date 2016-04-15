@@ -17,10 +17,10 @@ export function local () {
             dynamodb: {
               NewImage: {
                 actionRef: {
-                  S: '2016/03/02/23:21-KqXArbOZTuiL2vFyixAl_g'
+                  S: '2016/04/15/04:00--y2eLpExTWeAk4SjBzRN-Q'
                 },
                 dirName: {
-                  S: '/blog/1'
+                  S: 'comments/post/good-to-great'
                 }
               }
             }
