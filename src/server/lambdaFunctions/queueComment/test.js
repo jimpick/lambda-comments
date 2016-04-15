@@ -6,8 +6,9 @@ import { handler } from './index'
 
 function checkBody (body) {
   expect(body).to.be.a('object')
-  const { actionRef } = body
+  const { actionRef, dirName } = body
   expect(actionRef).to.be.a('string')
+  expect(dirName).to.be.a('string')
 }
 
 export function local () {
@@ -18,7 +19,7 @@ export function local () {
 
     it('should return a actionRef', function (done) {
       const event = {
-        url: 'http://example.com/blog/1',
+        url: 'http://example.com/blog/1/',
         commentContent: 'My comment',
         authorName: 'Bob Bob',
         authorEmail: 'bob@example.com',
@@ -29,6 +30,8 @@ export function local () {
       handler(event, {
         done: (error, body) => {
           checkBody(body)
+          const { dirName } = body
+          expect(dirName).to.equal('comments/blog/1')
           done()
         },
         fail: error => { console.log(error) }

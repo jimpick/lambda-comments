@@ -1,3 +1,5 @@
+import { parse as urlParse } from 'url'
+import { normalize as pathNormalize, join as pathJoin } from 'path'
 import moment from 'moment'
 import lambdaWrapper from '../../lib/lambdaWrapper'
 import { generateReference } from '../../lib/references'
@@ -26,6 +28,9 @@ export async function handler (...opts) {
     if (!url) {
       throw new Error('Missing url')
     }
+    const { pathname } = urlParse(url)
+    const normalizedPath = pathNormalize(pathname).replace(/\/+$/, '')
+    const dirName = pathJoin('comments', normalizedPath)
     if (!commentContent) {
       throw new Error('Missing commentContent')
     }
@@ -48,9 +53,9 @@ export async function handler (...opts) {
       console.log('url:', url)
     }
     if (!dryRun) {
-      await uploadJson({ dirName: 'jobs', actionRef, action })
-      await updateRecord({ actionRef })
+      await uploadJson({ dirName, actionRef, action })
+      await updateRecord({ dirName, actionRef })
     }
-    return action
+    return { dirName, actionRef }
   })
 }

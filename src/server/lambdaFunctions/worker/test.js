@@ -10,7 +10,7 @@ export function local () {
 
     this.timeout(5000)
 
-    it('should process the job', function (done) {
+    it('should process the action', function (done) {
       const event = {
         Records: [
           {
@@ -18,6 +18,9 @@ export function local () {
               NewImage: {
                 actionRef: {
                   S: '2016/03/02/23:21-KqXArbOZTuiL2vFyixAl_g'
+                },
+                dirName: {
+                  S: '/blog/1'
                 }
               }
             }
