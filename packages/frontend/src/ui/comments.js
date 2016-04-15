@@ -1,7 +1,8 @@
 import React, { Component, PropTypes } from 'react'
 import { autobind } from 'core-decorators'
+import Comment from './comment'
 import PostCommentForm from './postCommentForm'
-import { header } from './comments.css'
+import { header, commentsContainer } from './comments.css'
 
 export default class Comments extends Component {
 
@@ -31,7 +32,14 @@ export default class Comments extends Component {
     return (
       <div>
         <h2 className={header}>{comments.length} comments</h2>
-        <pre>Comments: {JSON.stringify(comments, null, 2)}</pre>
+        <div className={commentsContainer}>
+          {comments.map(comment => {
+            const { id } = comment
+            return (
+              <Comment key={id} comment={comment} />
+            )
+          })}
+        </div>
         <PostCommentForm onSubmit={this.submit} />
       </div>
     )

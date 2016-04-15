@@ -19,6 +19,11 @@ export function getComments ({ url }) {
       const fetchUrl =
         `${websiteUrl}/comments${noTrailingSlashUrl}/comments.json`
       const response = await fetch(fetchUrl)
+      const { status } = response
+      if (status === 403 || status === 404) {
+        dispatch({ type: GET_COMMENTS_COMPLETE, comments: [] })
+        return
+      }
       const comments = await response.json()
       dispatch({ type: GET_COMMENTS_COMPLETE, comments })
     } catch (error) {
