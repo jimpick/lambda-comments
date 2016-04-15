@@ -8,7 +8,7 @@ import { updateRecord } from '../../lib/dynamoDb'
 
 function uploadJson({ dirName, actionRef, action }) {
   return upload({
-    key: `${dirName}/${actionRef}/action.json`,
+    key: `${dirName}/.actions/${actionRef}/action.json`,
     data: JSON.stringify(action),
     contentType: 'application/json'
   })
