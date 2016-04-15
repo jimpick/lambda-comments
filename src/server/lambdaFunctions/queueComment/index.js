@@ -1,5 +1,6 @@
 import { parse as urlParse } from 'url'
 import { normalize as pathNormalize, join as pathJoin } from 'path'
+import slugid from 'slugid'
 import moment from 'moment'
 import lambdaWrapper from '../../lib/lambdaWrapper'
 import { generateReference } from '../../lib/references'
@@ -36,10 +37,12 @@ export async function handler (...opts) {
     }
     const now = moment.utc()
     const actionRef = generateReference(now)
+    const id = slugid.v4()
     const action = {
       type: 'NEW_COMMENT',
       actionRef,
       payload: {
+        id,
         url,
         commentContent,
         authorName,

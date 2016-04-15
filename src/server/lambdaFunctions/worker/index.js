@@ -35,6 +35,7 @@ function reducer (state = initialState, action) {
           dirName,
           submittedDate: date,
           payload: {
+            id,
             commentContent,
             authorName,
             authorUrl
@@ -42,6 +43,7 @@ function reducer (state = initialState, action) {
         } = action
         const comments = state[dirName] ? [...state[dirName]] : []
         comments.push({
+          id,
           date,
           authorName,
           authorUrl,
