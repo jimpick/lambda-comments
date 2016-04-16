@@ -3,9 +3,12 @@ import { normalize as pathNormalize, join as pathJoin } from 'path'
 import fetch from 'node-fetch'
 import { createStore, applyMiddleware } from 'redux'
 import createLogger from 'redux-logger'
+import moment from 'moment'
 
 import lambdaWrapper from '../../lib/lambdaWrapper'
 import { download, upload } from '../../lib/s3'
+
+let invocationCounter = 0
 
 const initialState = {}
 
@@ -23,10 +26,13 @@ function reducer (state = initialState, action) {
   switch (action.type) {
     case 'FETCH_OLD_COMMENTS':
       {
-        const { dirName, comments } = action
+        const { dirName, comments, timestamp } = action
         return {
           ...state,
-          [dirName]: comments
+          [dirName]: {
+            timestamp,
+            comments,
+          }
         }
       }
     case 'NEW_COMMENT':
@@ -41,7 +47,8 @@ function reducer (state = initialState, action) {
             authorUrl
           }
         } = action
-        const comments = state[dirName] ? [...state[dirName]] : []
+        const comments = state[dirName] ? [...state[dirName].comments] : []
+        const timestamp = moment.utc()
         comments.push({
           id,
           date,
@@ -51,7 +58,10 @@ function reducer (state = initialState, action) {
         })
         return {
           ...state,
-          [dirName]: comments
+          [dirName]: {
+            timestamp,
+            comments,
+          }
         }
       }
     default:
@@ -62,32 +72,57 @@ function reducer (state = initialState, action) {
 // const store = createStore(reducer, applyMiddleware(logger))
 const store = createStore(reducer)
 
-async function fetchOldComments({ dirName }) {
+async function fetchOldComments({ dirName, quiet }) {
   const state = store.getState()
-  if (state[dirName]) {
+  if (state[dirName] &&
+      moment().subtract(1, 'minutes').isBefore(state[dirName].timestamp)) {
+    // Use cache if it's under 1 minute old
+    if (!quiet) {
+      console.log('Using cached old comments')
+    }
     return
   }
   const key = `${dirName}/comments.json`
   try {
+    if (!quiet) {
+      console.log('Loading old comments from S3')
+    }
     const fileData = await download({ key })
+    const { LastModified: lastModified } = fileData
+    const timestamp = moment.utc(new Date(lastModified))
     const comments = JSON.parse(fileData.Body.toString())
     await store.dispatch({
       type: 'FETCH_OLD_COMMENTS',
       dirName,
-      comments
+      comments,
+      timestamp
     })
   } catch (error) {
-    if (error.code === 'NoSuchKey') {
+    // For some reason, when there is no file in S3, we get an 'NoSuchKey'
+    // error when running from the developer account, but an 'AccessDenied'
+    // when running on Lambda
+    if (error.code === 'NoSuchKey' || error.code === 'AccessDenied') {
       // It's okay if the file doesn't exist. That is normal
       // for the first post
+      if (!quiet) {
+        console.log('No old comments found')
+      }
+      const timestamp = moment.utc()
+      const comments = []
+      await store.dispatch({
+        type: 'FETCH_OLD_COMMENTS',
+        dirName,
+        comments,
+        timestamp
+      })
       return
     }
     throw error
   }
 }
 
-async function downloadActionAndDispatch({ dirName, actionRef }) {
-  await fetchOldComments({ dirName })
+async function downloadActionAndDispatch({ dirName, actionRef, quiet }) {
+  await fetchOldComments({ dirName, quiet })
   const key = `${dirName}/.actions/${actionRef}/action.json`
   const fileData = await download({ key })
   const action = JSON.parse(fileData.Body.toString())
@@ -102,7 +137,7 @@ async function saveAllComments ({ quiet }) {
     }
     await upload({
       key: `${key}/comments.json`,
-      data: JSON.stringify(allComments[key], null, 2),
+      data: JSON.stringify(allComments[key].comments, null, 2),
       contentType: 'application/json'
     })
   }
@@ -110,6 +145,7 @@ async function saveAllComments ({ quiet }) {
 
 export async function handler (...opts) {
   await lambdaWrapper(opts, async event => {
+    console.log('Invocation count:', ++invocationCounter)
     const {
       Records: [
         {
@@ -134,7 +170,7 @@ export async function handler (...opts) {
       console.log('actionRef:', actionRef)
     }
     if (!dryRun) {
-      await downloadActionAndDispatch({ dirName, actionRef })
+      await downloadActionAndDispatch({ dirName, actionRef, quiet })
     }
     await saveAllComments({ quiet })
   })

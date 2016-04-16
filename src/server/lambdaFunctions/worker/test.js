@@ -17,7 +17,7 @@ export function local () {
             dynamodb: {
               NewImage: {
                 actionRef: {
-                  S: '2016/04/15/04:00--y2eLpExTWeAk4SjBzRN-Q'
+                  S: '2016/04/15/19:44-eBnt3nJpQ6mGzbs2HZz9xw',
                 },
                 dirName: {
                   S: 'comments/post/good-to-great'
@@ -27,8 +27,8 @@ export function local () {
           }
         ]
       }
-      event.quiet = true
-      event.dryRun = true // FIXME: We should mock the HTTP and AWS calls
+      // event.quiet = true
+      // event.dryRun = true // FIXME: We should mock the HTTP and AWS calls
       handler(event, {
         done: (error, body) => {
           done()
