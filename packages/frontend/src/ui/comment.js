@@ -39,7 +39,7 @@ export default class Comment extends Component {
   render () {
     const { comment } = this.props
     const { authorName, authorUrl, date, commentContent } = comment
-    const html = md.render(commentContent)
+    const html = md.render(commentContent || 'No content.')
     let authorElement = authorName || 'Anonymous'
     if (authorUrl) {
       authorElement = <a href={authorUrl}>{authorElement}</a>

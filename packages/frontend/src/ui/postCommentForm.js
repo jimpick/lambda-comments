@@ -1,7 +1,13 @@
 import React, { Component, PropTypes } from 'react'
 import { reduxForm } from 'redux-form'
 import Textarea from 'react-textarea-autosize'
-import styles from './postCommentForm.css'
+import Comment from './comment'
+import {
+  postCommentForm,
+  postCommentFormHeader,
+  markdownNote,
+  preview,
+} from './comments.css'
 
 @reduxForm({
   form: 'postCommment',
@@ -29,15 +35,31 @@ export default class PostCommentForm extends Component {
       },
       handleSubmit,
     } = this.props
+    const gitHubUrl =
+      'https://help.github.com/articles/basic-writing-and-formatting-syntax/'
+    const previewComment = {
+      authorName: authorName.value,
+      authorUrl: authorUrl.value,
+      date: new Date(),
+      commentContent: commentContent.value,
+    }
     return (
       <form
-        className={styles.form}
+        className={postCommentForm}
         onSubmit={handleSubmit}
       >
+        <div className={postCommentFormHeader}>
+          <strong>Add your comment</strong>
+          <span className={markdownNote}>
+            <a href={gitHubUrl} target="_blank">
+              GitHub-style markdown is supported
+             </a>
+          </span>
+        </div>
         <Textarea
           {...commentContent}
           placeholder="Type Comment Here"
-          // required for reset form to work (only on textarea's)
+          // required for reset form to work (only on textarea)
           // see: https://github.com/facebook/react/issues/2533
           value={commentContent.value || ''}
         />
@@ -48,7 +70,7 @@ export default class PostCommentForm extends Component {
         />
         <input
           type="text"
-          placeholder="Email (optional)"
+          placeholder="Email (optional, not shown)"
           {...authorEmail}
         />
         <input
@@ -56,6 +78,12 @@ export default class PostCommentForm extends Component {
           placeholder="Website (optional)"
           {...authorUrl}
         />
+        <div className={postCommentFormHeader}>
+          <strong>Preview your comment</strong>
+        </div>
+        <div className={preview}>
+          <Comment comment={previewComment} />
+        </div>
         <button type="submit">Submit</button>
       </form>
     )

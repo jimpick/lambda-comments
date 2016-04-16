@@ -30,7 +30,7 @@ export default class Comments extends Component {
     const { comments } = this.props
     return (
       <div>
-        <h2 className={header}>{comments.length} comments</h2>
+        <div className={header}>{comments.length} comments</div>
         <div className={commentsContainer}>
           {comments.map(comment => {
             const { id } = comment

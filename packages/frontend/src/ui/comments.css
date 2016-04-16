@@ -1,12 +1,13 @@
 .header {
-  color: hsl(10, 50%, 50%);
+  border-bottom: 1px solid lightgray;
+  padding-bottom: 0.5em;
 }
 
 .commentsContainer {
 }
 
 .commentContainer {
-  margin-top: 0.5em;
+  margin-top: 1.5em;
   margin-bottom: 1.5em;
 }
 
@@ -36,7 +37,51 @@
 }
 
 .commentContentStyle {
-  border: 1px solid lightgray;
+  border-bottom: 1px solid lightgray;
   padding: 0.5em;
   margin: 0.3em 0;
+}
+
+.postCommentForm {
+  textarea, input {
+    display: block;
+    width: 100%;
+    border: 1px solid lightgray;
+    margin: 0.4em 0;
+    outline: 0;
+
+    &:focus {
+      border-color: black;
+    }
+  }
+  textarea {
+    resize: none;
+    min-height: 5em;
+  }
+}
+
+.postCommentFormHeader {
+  margin: 1em 0;
+  font-size: 13px;
+}
+
+.markdownNote {
+  a {
+    font-size: 10px;
+    color: gray;
+    text-decoration: none;
+    float: right;
+  }
+}
+
+.preview {
+  border: 1px solid lightgray;
+  padding: 0 1em;
+  background: #f8f8f8;
+  margin-bottom: 1em;
+
+  .commentContentStyle {
+    border-bottom: none;
+    padding-bottom: 0;
+  }
 }
