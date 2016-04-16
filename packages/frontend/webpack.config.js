@@ -52,6 +52,8 @@ function modifyClient (webpackConfig) {
   })
   webpackConfig.module.loaders = loaders
   console.log('Loaders after', loaders)
+  // Fix for: https://github.com/isagalaev/highlight.js/issues/895
+  webpackConfig.module.noParse = [/autoit.js/]
 }
 
 modifyClient(ClientConfig)

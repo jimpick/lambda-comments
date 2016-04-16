@@ -4,3 +4,39 @@
 
 .commentsContainer {
 }
+
+.commentContainer {
+  margin-top: 0.5em;
+  margin-bottom: 1.5em;
+}
+
+.commentHeader {
+  font-size: 13px;
+}
+
+.authorNameStyle {
+  font-weight: 700;
+
+  a, a:focus, a:hover {
+    text-decoration: none;
+  }
+}
+
+.spacer {
+  color: gray !important;
+  font-weight: normal;
+  text-shadow: none !important;
+  padding: 0 0.3em;
+}
+
+.timeFrom {
+  color: gray !important;
+  font-weight: normal;
+  text-shadow: none !important;
+}
+
+.commentContentStyle {
+  border: 1px solid lightgray;
+  padding: 0.5em;
+  margin: 0.3em 0;
+}

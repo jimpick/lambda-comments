@@ -8,7 +8,6 @@ export default class Comments extends Component {
 
   static propTypes = {
     location: PropTypes.object.isRequired,
-    params: PropTypes.object.isRequired,
     comments: PropTypes.array.isRequired,
     postComment: PropTypes.func.isRequired,
   }
@@ -28,7 +27,7 @@ export default class Comments extends Component {
   }
 
   render () {
-    const { params, location, comments } = this.props
+    const { comments } = this.props
     return (
       <div>
         <h2 className={header}>{comments.length} comments</h2>
