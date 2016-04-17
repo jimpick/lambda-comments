@@ -8,8 +8,8 @@ import {
 
 const initialState = {
   loading: false,
-  comments: null,
-  pendingComments: [],
+  comments: [],
+  pendingComments: {},
   error: null,
 }
 
@@ -47,13 +47,10 @@ export default function commentsReducer (state = initialState, action) {
         } = action
         return {
           ...state,
-          pendingComments: [
+          pendingComments: {
             ...pendingComments,
-            {
-              id,
-              ...fields,
-            },
-          ],
+            [id]: fields,
+          },
         }
       }
     default:

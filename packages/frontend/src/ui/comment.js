@@ -38,7 +38,7 @@ export default class Comment extends Component {
 
   render () {
     const { comment } = this.props
-    const { authorName, authorUrl, date, commentContent } = comment
+    const { authorName, authorUrl, date, commentContent, pending } = comment
     const html = md.render(commentContent || 'No content.')
     let authorElement = authorName || 'Anonymous'
     if (authorUrl) {
@@ -53,6 +53,7 @@ export default class Comment extends Component {
           <span className={spacer}> • </span>
           <span className={timeFrom}>
             {moment(date).fromNow()}
+            {pending && ' (Submitted)'}
           </span>
         </div>
         <div
