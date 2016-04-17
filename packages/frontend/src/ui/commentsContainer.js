@@ -1,41 +1,35 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { createSelector } from 'reselect'
-import { sortBy } from 'lodash'
+import { sortBy, keyBy } from 'lodash'
 import * as commentsActions from '../actions/comments'
 import Comments from './comments'
 
-const getComments = state => state.comments.comments
-const getPendingComments = state => state.comments.pendingComments
-const getMergedComments = createSelector(
-  [ getComments, getPendingComments ],
+const getCommentsSelector = state => state.comments.comments
+const getPendingCommentsSelector = state => state.comments.pendingComments
+const getMergedCommentsSelector = createSelector(
+  [getCommentsSelector, getPendingCommentsSelector],
   (comments, pendingComments) => {
-    const commentIds = comments.reduce(
-      (prev, comment) => ({
-        ...prev,
-        [comment.id]: true,
-      }),
-      {}
-    )
-    const mergedComments = [ ...comments ]
+    const commentIds = keyBy(comments, 'id')
+    const mergedComments = [...comments]
     Object.keys(pendingComments).forEach(id => {
       if (!commentIds[id]) {
         mergedComments.push({
           id,
           ...pendingComments[id],
-          pending: true
+          pending: true,
         })
       }
     })
     const sortedComments = sortBy(mergedComments, 'date')
-    return mergedComments
+    return sortedComments
   }
 )
 
 @connect(
   state => {
     const { loading, error } = state.comments
-    const comments = getMergedComments(state)
+    const comments = getMergedCommentsSelector(state)
     return {
       loading,
       error,
@@ -56,7 +50,7 @@ export default class CommentsContainer extends Component {
     postComment: PropTypes.func.isRequired,
     comments: PropTypes.array.isRequired,
     loading: PropTypes.bool.isRequired,
-    error: PropTypes.string
+    error: PropTypes.string,
   }
 
   componentDidMount () {
