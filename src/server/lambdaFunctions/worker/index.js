@@ -75,8 +75,8 @@ const store = createStore(reducer)
 async function fetchOldComments({ dirName, quiet }) {
   const state = store.getState()
   if (state[dirName] &&
-      moment().subtract(1, 'minutes').isBefore(state[dirName].timestamp)) {
-    // Use cache if it's under 1 minute old
+      moment().subtract(20, 'seconds').isBefore(state[dirName].timestamp)) {
+    // Use cache if it's under 20 seconds old
     if (!quiet) {
       console.log('Using cached old comments')
     }
@@ -145,7 +145,6 @@ async function saveAllComments ({ quiet }) {
 
 export async function handler (...opts) {
   await lambdaWrapper(opts, async event => {
-    console.log('Invocation count:', ++invocationCounter)
     const {
       Records: [
         {
@@ -165,6 +164,7 @@ export async function handler (...opts) {
       dryRun
     } = event
     if (!quiet) {
+      console.log('Invocation count:', ++invocationCounter)
       // console.log(JSON.stringify(event, null, 2))
       console.log('dirName:', dirName)
       console.log('actionRef:', actionRef)

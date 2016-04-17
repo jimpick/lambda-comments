@@ -59,6 +59,6 @@ export async function handler (...opts) {
       await uploadJson({ dirName, actionRef, action })
       await updateRecord({ dirName, actionRef })
     }
-    return { dirName, actionRef }
+    return { id }
   })
 }

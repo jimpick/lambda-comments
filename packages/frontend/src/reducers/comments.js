@@ -1,12 +1,15 @@
+/* eslint no-unused-vars: ["error", { "varsIgnorePattern": "unused" }] */
 import {
   GET_COMMENTS,
   GET_COMMENTS_COMPLETE,
   GET_COMMENTS_ERROR,
+  POST_COMMENT_COMPLETE,
 } from '../actions/comments'
 
 const initialState = {
   loading: false,
   comments: null,
+  pendingComments: [],
   error: null,
 }
 
@@ -29,6 +32,29 @@ export default function commentsReducer (state = initialState, action) {
         ...state,
         loading: false,
         error: error.message,
+      }
+    case POST_COMMENT_COMPLETE:
+      {
+        const { pendingComments } = state
+        const {
+          responseStatus: {
+            id,
+          },
+          payload: {
+            url: unused,
+            ...fields,
+          },
+        } = action
+        return {
+          ...state,
+          pendingComments: [
+            ...pendingComments,
+            {
+              id,
+              ...fields,
+            },
+          ],
+        }
       }
     default:
       return state

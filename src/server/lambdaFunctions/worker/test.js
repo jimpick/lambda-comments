@@ -27,8 +27,8 @@ export function local () {
           }
         ]
       }
-      // event.quiet = true
-      // event.dryRun = true // FIXME: We should mock the HTTP and AWS calls
+      event.quiet = true
+      event.dryRun = true // FIXME: We should mock the HTTP and AWS calls
       handler(event, {
         done: (error, body) => {
           done()

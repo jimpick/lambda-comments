@@ -6,9 +6,8 @@ import { handler } from './index'
 
 function checkBody (body) {
   expect(body).to.be.a('object')
-  const { actionRef, dirName } = body
-  expect(actionRef).to.be.a('string')
-  expect(dirName).to.be.a('string')
+  const { id } = body
+  expect(id).to.be.a('string')
 }
 
 export function local () {
@@ -17,7 +16,7 @@ export function local () {
 
     this.timeout(5000)
 
-    it('should return a actionRef', function (done) {
+    it('should return an id', function (done) {
       const event = {
         url: 'http://example.com/blog/1/',
         commentContent: 'My comment',
@@ -30,8 +29,6 @@ export function local () {
       handler(event, {
         done: (error, body) => {
           checkBody(body)
-          const { dirName } = body
-          expect(dirName).to.equal('comments/blog/1')
           done()
         },
         fail: error => { console.log(error) }

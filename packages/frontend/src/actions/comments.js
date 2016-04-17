@@ -59,7 +59,7 @@ export function postComment ({
         }
       )
       const responseStatus = await response.json()
-      dispatch({ type: POST_COMMENT_COMPLETE, responseStatus })
+      dispatch({ type: POST_COMMENT_COMPLETE, responseStatus, payload })
     } catch (error) {
       dispatch({ type: POST_COMMENT_ERROR, error })
     }
