@@ -20,7 +20,7 @@ export default class Comments extends Component {
       },
       postComment,
     } = this.props
-    postComment({
+    return postComment({
       url: `${window.document.location.origin}${pathname}`,
       pathname,
       ...data,

@@ -11,6 +11,7 @@ import {
   markdownNote,
   previewWrapper,
   preview,
+  btn,
 } from './comments.css'
 
 @reduxForm({
@@ -27,6 +28,7 @@ export default class PostCommentForm extends Component {
   static propTypes = {
     fields: PropTypes.object.isRequired,
     handleSubmit: PropTypes.func.isRequired,
+    submitting: PropTypes.bool.isRequired,
   }
 
   constructor (props) {
@@ -53,6 +55,7 @@ export default class PostCommentForm extends Component {
         authorUrl,
       },
       handleSubmit,
+      submitting,
     } = this.props
     const gitHubUrl =
       'https://help.github.com/articles/basic-writing-and-formatting-syntax/'
@@ -117,7 +120,13 @@ export default class PostCommentForm extends Component {
             </div>
           }
         </Motion>
-        <button type="submit">Submit</button>
+        <button
+          type="submit"
+          className={btn}
+          disabled={submitting}
+        >
+          {submitting ? 'Submitting' : 'Submit'}
+        </button>
       </form>
     )
   }

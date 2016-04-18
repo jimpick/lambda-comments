@@ -103,3 +103,37 @@
     padding-bottom: 0;
   }
 }
+
+.btn {
+  // Styling "borrowed" from bootstrap
+  margin: 0;
+  font: inherit;
+  overflow: visible;
+  text-transform: none;
+  -webkit-appearance: button;
+  font-family: inherit;
+  background-image: none;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  touch-action: manipulation;
+  display: inline-block;
+  padding: 6px 12px;
+  margin-bottom: 0;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.42857143;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: middle;
+
+  // btn-default
+  color: #333;
+  background-color: #fff;
+  border-color: #ccc;
+
+  &:disabled {
+    box-shadow: none;
+    opacity: .65;
+    cursor: not-allowed;
+  }
+}
