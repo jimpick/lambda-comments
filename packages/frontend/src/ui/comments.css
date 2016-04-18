@@ -74,6 +74,10 @@
   }
 }
 
+.previewWrapper {
+  overflow-x: hidden;
+}
+
 .preview {
   border: 1px solid lightgray;
   padding: 0 1em;

@@ -62,6 +62,7 @@
     "postcss-loader": "0.8.1",
     "react": "0.14.7",
     "react-dom": "0.14.7",
+    "react-motion": "0.4.2",
     "react-project": "0.0.30",
     "react-router": "2.0.0",
     "react-router-redux": "4.0.2",

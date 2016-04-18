@@ -37,7 +37,7 @@ function refetchCommentsWhilePending ({ url }) {
     let retryCounter = 0
     const interval = setInterval(async () => {
       const { comments: { pendingComments } } = getState()
-      if (retryCounter > 10 || Object.keys(pendingComments).length === 0) {
+      if (retryCounter++ > 10 || Object.keys(pendingComments).length === 0) {
         clearInterval(interval)
       } else {
         dispatch(getComments({ url, updateOnly: true }))
