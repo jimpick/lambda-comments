@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react'
 import { reduxForm } from 'redux-form'
 import Textarea from 'react-textarea-autosize'
-import { TransitionMotion, spring, presets } from 'react-motion'
+import { Motion, spring, presets } from 'react-motion'
 import { autobind } from 'core-decorators'
 import Comment from './comment'
 import {
@@ -37,41 +37,10 @@ export default class PostCommentForm extends Component {
   getStyles () {
     const { fields: { commentContent } } = this.props
     const { height } = this.state
-    if (!commentContent.value) {
-      return []
+    if (!commentContent.value || !height) {
+      return { height: spring(0, presets.gentle) }
     }
-    if (!height) {
-      return [
-        {
-          key: '1',
-          style: {
-            height: spring(
-              50,
-              presets.gentle,
-            ),
-          },
-        },
-      ]
-    }
-    return [
-      {
-        key: '1',
-        style: {
-          height: spring(
-            height + 20,
-            presets.gentle,
-          ),
-        },
-      },
-    ]
-  }
-
-  willEnter () {
-    return { height: 0 }
-  }
-
-  willLeave () {
-    return { height: spring(0) }
+    return { height: spring(height + 20, presets.gentle) }
   }
 
   render () {
@@ -125,37 +94,34 @@ export default class PostCommentForm extends Component {
           placeholder="Website (optional)"
           {...authorUrl}
         />
-        <TransitionMotion
-          willEnter={this.willEnter}
-          willLeave={this.willLeave}
-          styles={this.getStyles()}
+        <Motion
+          defaultStyle={{ height: 0 }}
+          style={this.getStyles()}
         >
-          {styles =>
-            <div className={previewWrapper}>
-              {styles.map(({ key, style }) =>
-                <div key={key} style={style}>
-                  <div ref={
-                    ele => {
-                      const height = ele && ele.clientHeight
-                      if (ele && height && this.state.height !== height) {
-                        setTimeout(() => {
-                          this.setState({ height })
-                        }, 0)
-                      }
+          {interpolatingStyle =>
+            <div className={previewWrapper} style={interpolatingStyle}>
+              <div
+                ref={
+                  ele => {
+                    const height = ele && ele.clientHeight
+                    if (ele && height && this.state.height !== height) {
+                      setTimeout(() => {
+                        this.setState({ height })
+                      }, 0)
                     }
-                  }>
-                    <div className={postCommentFormHeader}>
-                      <strong>Preview your comment</strong>
-                    </div>
-                    <div className={preview}>
-                      <Comment comment={previewComment} />
-                    </div>
-                  </div>
+                  }
+                }
+              >
+                <div className={postCommentFormHeader}>
+                  <strong>Preview your comment</strong>
                 </div>
-              )}
+                <div className={preview}>
+                  <Comment comment={previewComment} />
+                </div>
+              </div>
             </div>
           }
-        </TransitionMotion>
+        </Motion>
         <button type="submit">Submit</button>
       </form>
     )
