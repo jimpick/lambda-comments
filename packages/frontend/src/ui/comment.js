@@ -7,6 +7,7 @@ import {
   commentContainer,
   commentHeader,
   authorNameStyle,
+  authorLinkStyle,
   spacer,
   timeFrom,
   commentContentStyle,
@@ -44,6 +45,10 @@ export default class Comment extends Component {
     if (authorUrl) {
       authorElement = <a href={authorUrl}>{authorElement}</a>
     }
+    let authorLink = null
+    if (authorUrl) {
+      authorLink = <a href={authorUrl}>{authorUrl}</a>
+    }
     return (
       <div className={commentContainer}>
         <div className={commentHeader}>
@@ -51,6 +56,12 @@ export default class Comment extends Component {
             {authorElement}
           </span>
           <span className={spacer}> • </span>
+          {authorLink &&
+            <span className={authorLinkStyle}>
+              {authorLink}
+            </span>
+          }
+          {authorLink && <span className={spacer}> • </span>}
           <span className={timeFrom}>
             {moment(date).fromNow()}
             {pending && ' (Submitted)'}

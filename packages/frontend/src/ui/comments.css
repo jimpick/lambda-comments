@@ -17,6 +17,14 @@
 
 .authorNameStyle {
   font-weight: 700;
+}
+
+.authorNameStyle, .authorLinkStyle {
+  display: inline-block;
+  max-width: 33%;
+  overflow-x: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 
   a, a:focus, a:hover {
     text-decoration: none;
@@ -28,12 +36,18 @@
   font-weight: normal;
   text-shadow: none !important;
   padding: 0 0.3em;
+  vertical-align: top;
 }
 
 .timeFrom {
   color: gray !important;
   font-weight: normal;
   text-shadow: none !important;
+  vertical-align: top;
+
+  span {
+    vertical-align: top;
+  }
 }
 
 .commentContentStyle {
