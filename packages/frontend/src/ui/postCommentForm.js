@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from 'react'
 import { reduxForm } from 'redux-form'
 import Textarea from 'react-textarea-autosize'
 import { Motion, spring, presets } from 'react-motion'
+import Measure from 'react-measure'
 import { autobind } from 'core-decorators'
 import Comment from './comment'
 import {
@@ -95,30 +96,24 @@ export default class PostCommentForm extends Component {
           {...authorUrl}
         />
         <Motion
-          defaultStyle={{ height: 0 }}
           style={this.getStyles()}
         >
           {interpolatingStyle =>
             <div className={previewWrapper} style={interpolatingStyle}>
-              <div
-                ref={
-                  ele => {
-                    const height = ele && ele.clientHeight
-                    if (ele && height && this.state.height !== height) {
-                      setTimeout(() => {
-                        this.setState({ height })
-                      }, 0)
-                    }
-                  }
-                }
+              <Measure
+                whitelist={['height']}
+                config={{ subtree: true, childList: true, attributes: true }}
+                onMeasure={({ height }) => this.setState({ height })}
               >
-                <div className={postCommentFormHeader}>
-                  <strong>Preview your comment</strong>
+                <div>
+                  <div className={postCommentFormHeader}>
+                    <strong>Preview your comment</strong>
+                  </div>
+                  <div className={preview}>
+                    <Comment comment={previewComment} />
+                  </div>
                 </div>
-                <div className={preview}>
-                  <Comment comment={previewComment} />
-                </div>
-              </div>
+              </Measure>
             </div>
           }
         </Motion>
