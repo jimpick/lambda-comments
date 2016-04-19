@@ -190,7 +190,7 @@ export default class PostCommentForm extends Component {
         >
           <div className={buttonContent}>
             <div className={buttonText}>
-              {submitting ? 'Submitting' : 'Submit'}
+              {submitting ? 'Submitting Comment' : 'Submit Comment'}
             </div>
             {submitting &&
               <div className={spinnerWrapper}>

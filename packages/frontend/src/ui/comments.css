@@ -149,6 +149,8 @@
 
 .spinnerButton {
   composes: btn;
+  margin-top: 1em;
+
   .buttonContent {
     display: flex;
     align-items: center;
