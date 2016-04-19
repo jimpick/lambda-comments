@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react'
+import ReactCSSTransitionGroup from 'react-addons-css-transition-group'
 import { autobind } from 'core-decorators'
 import Comment from './comment'
 import PostCommentForm from './postCommentForm'
@@ -14,7 +15,7 @@ export default class Comments extends Component {
   }
 
   @autobind
-  submit (data) {
+  async submit (data) {
     const {
       location: {
         pathname,
@@ -22,13 +23,13 @@ export default class Comments extends Component {
       postComment,
       resetCommentForm,
     } = this.props
-    return postComment({
+    const result = await postComment({
       url: `${window.document.location.origin}${pathname}`,
       pathname,
       ...data,
-    }).then(() => {
-      resetCommentForm({ pathname, clearContent: true })
     })
+    resetCommentForm({ pathname, clearContent: true })
+    return result
   }
 
   render () {
@@ -43,12 +44,18 @@ export default class Comments extends Component {
       <div>
         <div className={header}>{comments.length} comments</div>
         <div className={commentsContainer}>
-          {comments.map(comment => {
-            const { id } = comment
-            return (
-              <Comment key={id} comment={comment} />
-            )
-          })}
+          <ReactCSSTransitionGroup
+            transitionName="comments"
+            transitionEnterTimeout={500}
+            transitionLeaveTimeout={300}
+          >
+            {comments.map(comment => {
+              const { id } = comment
+              return (
+                <Comment key={id} comment={comment} />
+              )
+            })}
+          </ReactCSSTransitionGroup>
         </div>
         <PostCommentForm
           onSubmit={this.submit}
