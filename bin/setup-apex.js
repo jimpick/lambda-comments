@@ -7,9 +7,11 @@ import { outputs } from '../src/server/lib/cloudFormation'
 
 const apexProjectTemplate = {
   name: config.cloudFormation,
-  description: 'Scraper Queue Lambda Functions',
+  description: 'lambda-comments Lambda Functions',
   memory: 128,
-  timeout: 120,
+  timeout: 30,
+  runtime: 'nodejs4.3',
+  shim: false,
   role: outputs.LambdaRoleArn,
   nameTemplate: '{{.Project.Name}}-{{.Function.Name}}',
   handler: 'index.handler'
