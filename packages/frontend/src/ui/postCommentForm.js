@@ -22,6 +22,7 @@ import {
   buttonText,
   spinnerWrapper,
 } from './comments.css'
+import { FORM_NAME, FORM_FIELDS } from '../actions/comments'
 
 function validate (values) {
   const errors = {}
@@ -42,26 +43,53 @@ function validate (values) {
 }
 
 @reduxForm({
-  form: 'postCommment',
-  fields: [
-    'commentContent',
-    'authorName',
-    'authorEmail',
-    'authorUrl',
-  ],
+  form: FORM_NAME,
+  fields: FORM_FIELDS,
   validate,
 })
 export default class PostCommentForm extends Component {
 
   static propTypes = {
+    pathname: PropTypes.string.isRequired,
     fields: PropTypes.object.isRequired,
     handleSubmit: PropTypes.func.isRequired,
+    resetCommentForm: PropTypes.func.isRequired,
     submitting: PropTypes.bool.isRequired,
   }
 
   constructor (props) {
     super(props)
     this.state = { height: 0 }
+  }
+
+  componentWillMount () {
+    const { resetCommentForm, pathname } = this.props
+    resetCommentForm({ pathname })
+  }
+
+  componentWillReceiveProps (nextProps) {
+    const {
+      fields: {
+        commentContent: {
+          value: commentContent,
+        },
+        authorName: {
+          value: authorName,
+        },
+        authorEmail: {
+          value: authorEmail,
+        },
+        authorUrl: {
+          value: authorUrl,
+        },
+      },
+      pathname,
+    } = nextProps
+    localStorage.setItem('pathname', pathname)
+    localStorage.setItem('commentContent', commentContent)
+    localStorage.setItem('authorName', authorName)
+    localStorage.setItem('authorEmail', authorEmail)
+    localStorage.setItem('authorUrl', authorUrl)
   }
 
   @autobind

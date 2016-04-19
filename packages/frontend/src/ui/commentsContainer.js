@@ -39,6 +39,7 @@ const getMergedCommentsSelector = createSelector(
   {
     getComments: commentsActions.getComments,
     postComment: commentsActions.postComment,
+    resetCommentForm: commentsActions.resetCommentForm,
   }
 )
 export default class CommentsContainer extends Component {
@@ -48,6 +49,7 @@ export default class CommentsContainer extends Component {
     params: PropTypes.object.isRequired,
     getComments: PropTypes.func.isRequired,
     postComment: PropTypes.func.isRequired,
+    resetCommentForm: PropTypes.func.isRequired,
     comments: PropTypes.array.isRequired,
     loading: PropTypes.bool.isRequired,
     error: PropTypes.string,
@@ -66,6 +68,7 @@ export default class CommentsContainer extends Component {
       loading,
       error,
       postComment,
+      resetCommentForm,
     } = this.props
     if (loading) {
       return (
@@ -90,6 +93,7 @@ export default class CommentsContainer extends Component {
         location={location}
         comments={comments}
         postComment={postComment}
+        resetCommentForm={resetCommentForm}
       />
     )
   }

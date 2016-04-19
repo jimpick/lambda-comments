@@ -10,6 +10,7 @@ export default class Comments extends Component {
     location: PropTypes.object.isRequired,
     comments: PropTypes.array.isRequired,
     postComment: PropTypes.func.isRequired,
+    resetCommentForm: PropTypes.func.isRequired,
   }
 
   @autobind
@@ -19,16 +20,25 @@ export default class Comments extends Component {
         pathname,
       },
       postComment,
+      resetCommentForm,
     } = this.props
     return postComment({
       url: `${window.document.location.origin}${pathname}`,
       pathname,
       ...data,
+    }).then(() => {
+      resetCommentForm({ pathname, clearContent: true })
     })
   }
 
   render () {
-    const { comments } = this.props
+    const {
+      location: {
+        pathname,
+      },
+      comments,
+      resetCommentForm,
+    } = this.props
     return (
       <div>
         <div className={header}>{comments.length} comments</div>
@@ -40,7 +50,11 @@ export default class Comments extends Component {
             )
           })}
         </div>
-        <PostCommentForm onSubmit={this.submit} />
+        <PostCommentForm
+          onSubmit={this.submit}
+          pathname={pathname}
+          resetCommentForm={resetCommentForm}
+        />
       </div>
     )
   }
