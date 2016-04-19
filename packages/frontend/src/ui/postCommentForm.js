@@ -51,6 +51,7 @@ export default class PostCommentForm extends Component {
   static propTypes = {
     pathname: PropTypes.string.isRequired,
     fields: PropTypes.object.isRequired,
+    error: PropTypes.string,
     handleSubmit: PropTypes.func.isRequired,
     resetCommentForm: PropTypes.func.isRequired,
     submitting: PropTypes.bool.isRequired,
@@ -109,6 +110,7 @@ export default class PostCommentForm extends Component {
         authorEmail,
         authorUrl,
       },
+      error,
       handleSubmit,
       submitting,
     } = this.props
@@ -133,6 +135,11 @@ export default class PostCommentForm extends Component {
             </a>
           </span>
         </div>
+        {error &&
+          <div className={errorMessage}>
+            {error}
+          </div>
+        }
         <Textarea
           placeholder="Type Comment Here"
           className={

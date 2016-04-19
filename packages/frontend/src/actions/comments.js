@@ -87,6 +87,7 @@ export function postComment ({
       dispatch(refetchCommentsWhilePending({ url: pathname }))
     } catch (error) {
       dispatch({ type: POST_COMMENT_ERROR, error })
+      throw error
     }
   }
 }

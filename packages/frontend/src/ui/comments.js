@@ -23,12 +23,16 @@ export default class Comments extends Component {
       postComment,
       resetCommentForm,
     } = this.props
-    const result = await postComment({
-      url: `${window.document.location.origin}${pathname}`,
-      pathname,
-      ...data,
-    })
-    resetCommentForm({ pathname, clearContent: true })
+    try {
+      const result = await postComment({
+        url: `${window.document.location.origin}${pathname}`,
+        pathname,
+        ...data,
+      })
+      resetCommentForm({ pathname, clearContent: true })
+    } catch (error) {
+      throw ({ _error: 'An error occurred while posting the comment.' })
+    }
     return result
   }
 
