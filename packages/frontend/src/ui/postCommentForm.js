@@ -93,11 +93,11 @@ export default class PostCommentForm extends Component {
   }
 
   @autobind
-  getStyles () {
+  getStyle () {
     const { fields: { commentContent } } = this.props
     const { height } = this.state
     if (!commentContent.value || !height) {
-      return { height: spring(0, presets.gentle) }
+      return { height: spring(5, presets.gentle) }
     }
     return { height: spring(height + 20, presets.gentle) }
   }
@@ -196,7 +196,7 @@ export default class PostCommentForm extends Component {
           </div>
         }
         <Motion
-          style={this.getStyles()}
+          style={this.getStyle()}
         >
           {interpolatingStyle =>
             <div className={previewWrapper} style={interpolatingStyle}>
