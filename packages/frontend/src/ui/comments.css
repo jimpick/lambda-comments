@@ -61,8 +61,9 @@
     display: block;
     width: 100%;
     border: 1px solid lightgray;
-    margin: 0.4em 0;
+    margin-top: 0.4em;
     outline: 0;
+    padding: 3px;
 
     &:focus {
       border-color: black;
@@ -72,6 +73,14 @@
     resize: none;
     min-height: 5em;
   }
+}
+
+.errorMessage {
+  color: red;
+}
+
+.hasError {
+  border-color: red !important;
 }
 
 .postCommentFormHeader {
@@ -135,5 +144,27 @@
     box-shadow: none;
     opacity: .65;
     cursor: not-allowed;
+  }
+}
+
+.spinnerButton {
+  composes: btn;
+  .buttonContent {
+    display: flex;
+    align-items: center;
+
+    .buttonText {
+      height: 32px;
+      padding: 0 10px;
+      display: flex;
+      align-items: center;
+    }
+
+    .spinnerWrapper {
+      width: 32px;
+      height: 32px;
+      overflow: hidden;
+      display: flex;
+    }
   }
 }

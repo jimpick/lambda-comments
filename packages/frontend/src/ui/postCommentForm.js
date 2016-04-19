@@ -3,16 +3,43 @@ import { reduxForm } from 'redux-form'
 import Textarea from 'react-textarea-autosize'
 import { Motion, spring, presets } from 'react-motion'
 import Measure from 'react-measure'
+import Spinner from 'react-spinner'
+import '!style!css!react-spinner/react-spinner.css'
+import '!style!css!./spinner.css'
 import { autobind } from 'core-decorators'
+import { isEmail, isURL } from 'validator'
 import Comment from './comment'
 import {
   postCommentForm,
+  hasError,
+  errorMessage,
   postCommentFormHeader,
   markdownNote,
   previewWrapper,
   preview,
-  btn,
+  spinnerButton,
+  buttonContent,
+  buttonText,
+  spinnerWrapper,
 } from './comments.css'
+
+function validate (values) {
+  const errors = {}
+  const { commentContent, authorEmail, authorUrl } = values
+  if (!commentContent) {
+    errors.commentContent = 'Required'
+  }
+  if (commentContent && commentContent.length < 3) {
+    errors.commentContent = 'Must be at least 3 characters'
+  }
+  if (authorEmail && !isEmail(authorEmail)) {
+    errors.authorEmail = 'Email format not valid'
+  }
+  if (authorUrl && !isURL(authorUrl)) {
+    errors.authorUrl = 'URL format not valid'
+  }
+  return errors
+}
 
 @reduxForm({
   form: 'postCommment',
@@ -22,6 +49,7 @@ import {
     'authorEmail',
     'authorUrl',
   ],
+  validate,
 })
 export default class PostCommentForm extends Component {
 
@@ -79,25 +107,60 @@ export default class PostCommentForm extends Component {
           </span>
         </div>
         <Textarea
-          {...commentContent}
           placeholder="Type Comment Here"
+          className={
+            commentContent.touched && commentContent.error && hasError
+          }
           value={commentContent.value || ''}
+          {...commentContent}
         />
+        {commentContent.touched && commentContent.error &&
+          <div className={errorMessage}>
+            {commentContent.error}
+          </div>
+        }
         <input
           type="text"
           placeholder="Name (optional)"
+          className={
+            authorName.touched && authorName.error && hasError
+          }
+          spellCheck="false"
           {...authorName}
         />
+        {authorName.touched && authorName.error &&
+          <div className={errorMessage}>
+            {authorName.error}
+          </div>
+        }
         <input
-          type="text"
+          type="email"
           placeholder="Email (optional, not shown)"
+          className={
+            authorEmail.touched && authorEmail.error && hasError
+          }
+          spellCheck="false"
           {...authorEmail}
         />
+        {authorEmail.touched && authorEmail.error &&
+          <div className={errorMessage}>
+            {authorEmail.error}
+          </div>
+        }
         <input
           type="text"
           placeholder="Website (optional)"
+          className={
+            authorUrl.touched && authorUrl.error && hasError
+          }
+          spellCheck="false"
           {...authorUrl}
         />
+        {authorUrl.touched && authorUrl.error &&
+          <div className={errorMessage}>
+            {authorUrl.error}
+          </div>
+        }
         <Motion
           style={this.getStyles()}
         >
@@ -122,10 +185,19 @@ export default class PostCommentForm extends Component {
         </Motion>
         <button
           type="submit"
-          className={btn}
+          className={spinnerButton}
           disabled={submitting}
         >
-          {submitting ? 'Submitting' : 'Submit'}
+          <div className={buttonContent}>
+            <div className={buttonText}>
+              {submitting ? 'Submitting' : 'Submit'}
+            </div>
+            {submitting &&
+              <div className={spinnerWrapper}>
+                <Spinner />
+              </div>
+            }
+          </div>
         </button>
       </form>
     )
