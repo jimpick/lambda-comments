@@ -4,8 +4,6 @@ import fetch from 'node-fetch'
 import { createStore, applyMiddleware } from 'redux'
 import createLogger from 'redux-logger'
 import moment from 'moment'
-
-import lambdaWrapper from '../../lib/lambdaWrapper'
 import { download, upload } from '../../lib/s3'
 
 let invocationCounter = 0
@@ -143,8 +141,15 @@ async function saveAllComments ({ quiet }) {
   }
 }
 
-export async function handler (...opts) {
-  await lambdaWrapper(opts, async event => {
+export async function handler (event, context, callback) {
+  if (!callback) {
+    const errorMessage = 'Requires Node 4.3 or greater on Lambda'
+    console.log(errorMessage)
+    context.error(context.fail(errorMessage))
+    return
+  }
+  try {
+    // console.log('Event', JSON.stringify(event, null, 2))
     const {
       Records: [
         {
@@ -173,5 +178,10 @@ export async function handler (...opts) {
       await downloadActionAndDispatch({ dirName, actionRef, quiet })
     }
     await saveAllComments({ quiet })
-  })
+    callback( null, { success: true } )
+  } catch (error) {
+    // console.log('Worker error', error)
+    // console.log(error.stack)
+    callback(error)
+  }
 }

@@ -2,7 +2,6 @@ import { parse as urlParse } from 'url'
 import { normalize as pathNormalize, join as pathJoin } from 'path'
 import slugid from 'slugid'
 import moment from 'moment'
-import lambdaWrapper from '../../lib/lambdaWrapper'
 import { generateReference } from '../../lib/references'
 import { upload } from '../../lib/s3'
 import { updateRecord } from '../../lib/dynamoDb'
@@ -15,8 +14,14 @@ function uploadJson({ dirName, actionRef, action }) {
   })
 }
 
-export async function handler (...opts) {
-  await lambdaWrapper(opts, async event => {
+export async function handler (event, context, callback) {
+  if (!callback) {
+    const errorMessage = 'Requires Node 4.3 or greater on Lambda'
+    console.log(errorMessage)
+    context.error(context.fail(errorMessage))
+    return
+  }
+  try {
     const {
       url,
       commentContent,
@@ -59,6 +64,10 @@ export async function handler (...opts) {
       await uploadJson({ dirName, actionRef, action })
       await updateRecord({ dirName, actionRef })
     }
-    return { id }
-  })
+    callback( null, { id } )
+  } catch (error) {
+    // console.log('Queue Comment error', error)
+    // console.log(error.stack)
+    callback(error)
+  }
 }
