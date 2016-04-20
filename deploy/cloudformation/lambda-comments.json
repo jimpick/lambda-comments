@@ -6,10 +6,6 @@
       "Description": "Tag for resources",
       "Type": "String"
     },
-    "ServiceToken": {
-      "Description": "ARN for ApiGatewayCloudFormation-LambdaFunction",
-      "Type": "String"
-    },
     "NewResources": {
       "Description": "Include new resources (still being developed)",
       "Default": "false",
@@ -184,93 +180,39 @@
         "LambdaRole"
       ]
     },
-    "Deployment": {
+    "ApiDeployment": {
       "Type": "AWS::ApiGateway::Deployment",
       "Properties": {
-        "RestApiId": { "Ref": "RestApi2" },
+        "RestApiId": { "Ref": "RestApi" },
         "Description": "Production deployment",
         "StageName": "prod"
-      }
+      },
+      "DependsOn": [
+        "RestApi",
+        "CommentsApiResource",
+        "PostCommentApiMethod"
+      ]
     },
     "RestApi": {
-      "Type": "Custom::RestApi",
-      "Properties": {
-        "ServiceToken": { "Ref": "ServiceToken" },
-        "name": "Comments",
-        "description": "API for blog comments"
-      }
-    },
-    "RestApi2": {
       "Type": "AWS::ApiGateway::RestApi",
       "Properties": {
         "Description": "API for blog comments",
-        "Name": "Comments2"
+        "Name": "Comments"
       }
     },
     "CommentsApiResource": {
-      "Type": "Custom::ApiResource",
-      "Properties": {
-        "ServiceToken": { "Ref": "ServiceToken" },
-        "restApiId": { "Ref": "RestApi" },
-        "parentId": { "Fn::GetAtt": [ "RestApi", "parentResourceId" ] },
-        "pathPart": "comments",
-        "corsConfiguration": {
-          "allowMethods": [ "GET", "POST" ],
-          "allowDefaultHeaders": true
-        }
-      }
-    },
-    "CommentsApiResource2": {
       "Type" : "AWS::ApiGateway::Resource",
       "Properties": {
-        "RestApiId": { "Ref": "RestApi2" },
-        "ParentId": { "Fn::GetAtt": ["RestApi2", "RootResourceId"] },
+        "RestApiId": { "Ref": "RestApi" },
+        "ParentId": { "Fn::GetAtt": ["RestApi", "RootResourceId"] },
         "PathPart": "comments"
       }
     },
     "PostCommentApiMethod": {
-      "Type": "Custom::ApiMethod",
-      "Properties": {
-        "ServiceToken": { "Ref": "ServiceToken" },
-        "restApiId": { "Ref": "RestApi" },
-        "resourceId": { "Ref": "CommentsApiResource" },
-        "method": {
-          "httpMethod": "POST"
-        },
-        "integration": {
-          "type": "AWS",
-          "httpMethod": "POST",
-          "uri": {
-            "Fn::Join": [
-              "",
-              [
-                "arn:aws:apigateway:",
-                { "Ref" : "AWS::Region" },
-                ":lambda:path/2015-03-31/functions/",
-                { "Fn::GetAtt" : [ "QueueCommentLambdaFunction", "Arn" ] },
-                "/invocations"
-              ]
-            ]
-          },
-          "requestTemplates": {
-            "application/x-www-form-urlencoded": "## convert HTML POST data or HTTP GET query string to JSON\n \n## get the raw post data from the AWS built-in variable and give it a nicer name\n#if ($context.httpMethod == \"POST\")\n #set($rawAPIData = $input.path('$'))\n#elseif ($context.httpMethod == \"GET\")\n #set($rawAPIData = $input.params().querystring)\n #set($rawAPIData = $rawAPIData.toString())\n #set($rawAPIDataLength = $rawAPIData.length() - 1)\n #set($rawAPIData = $rawAPIData.substring(1, $rawAPIDataLength))\n #set($rawAPIData = $rawAPIData.replace(\", \", \"&\"))\n#else\n #set($rawAPIData = \"\")\n#end\n \n## first we get the number of \"&\" in the string, this tells us if there is more than one key value pair\n#set($countAmpersands = $rawAPIData.length() - $rawAPIData.replace(\"&\", \"\").length())\n \n## if there are no \"&\" at all then we have only one key value pair.\n## we append an ampersand to the string so that we can tokenise it the same way as multiple kv pairs.\n## the \"empty\" kv pair to the right of the ampersand will be ignored anyway.\n#if ($countAmpersands == 0)\n #set($rawPostData = $rawAPIData + \"&\")\n#end\n \n## now we tokenise using the ampersand(s)\n#set($tokenisedAmpersand = $rawAPIData.split(\"&\"))\n \n## we set up a variable to hold the valid key value pairs\n#set($tokenisedEquals = [])\n \n## now we set up a loop to find the valid key value pairs, which must contain only one \"=\"\n#foreach( $kvPair in $tokenisedAmpersand )\n #set($countEquals = $kvPair.length() - $kvPair.replace(\"=\", \"\").length())\n #if ($countEquals == 1)\n  #set($kvTokenised = $kvPair.split(\"=\"))\n  #if ($kvTokenised[0].length() > 0)\n   ## we found a valid key value pair. add it to the list.\n   #set($devNull = $tokenisedEquals.add($kvPair))\n  #end\n #end\n#end\n \n## next we set up our loop inside the output structure \"{\" and \"}\"\n{\n#foreach( $kvPair in $tokenisedEquals )\n  ## finally we output the JSON for this pair and append a comma if this isn't the last pair\n  #set($kvTokenised = $kvPair.split(\"=\"))\n \"$util.urlDecode($kvTokenised[0])\" : #if($kvTokenised[1].length() > 0)\"$util.urlDecode($kvTokenised[1])\"#{else}\"\"#end#if( $foreach.hasNext ),#end\n#end\n}"
-          }
-        },
-        "responses": {
-          "default": {
-            "statusCode": "201"
-          },
-          ".*Error.*": {
-            "statusCode": "400"
-          }
-        }
-      }
-    },
-    "PostCommentApiMethod2": {
       "Type": "AWS::ApiGateway::Method",
       "Properties": {
-        "RestApiId": { "Ref": "RestApi2" },
-        "ResourceId": { "Ref": "CommentsApiResource2" },
+        "RestApiId": { "Ref": "RestApi" },
+        "ResourceId": { "Ref": "CommentsApiResource" },
         "HttpMethod": "POST",
         "AuthorizationType": "NONE",
         "Integration": {
@@ -293,23 +235,49 @@
           },
           "IntegrationResponses": [
             {
-              "StatusCode": "201"
+              "StatusCode": "201",
+              "ResponseParameters" : {
+                "method.response.header.Access-Control-Allow-Origin": "'*'"
+              }
             },
             {
               "StatusCode": "400",
+              "ResponseParameters" : {
+                "method.response.header.Access-Control-Allow-Origin": "'*'"
+              },
               "SelectionPattern": ".*Error.*"
             }
           ]
         },
         "MethodResponses": [
-          { "StatusCode": "201" },
-          { "StatusCode": "400" }
+          {
+            "StatusCode": "201",
+            "ResponseParameters" : {
+              "method.response.header.Access-Control-Allow-Origin": true
+            }
+          },
+          {
+            "StatusCode": "400",
+            "ResponseParameters" : {
+              "method.response.header.Access-Control-Allow-Origin": true
+            }
+          }
         ]
       }
     },
     "WebsiteS3": {
       "Type": "AWS::S3::Bucket",
       "Properties": {
+        "CorsConfiguration": {
+          "CorsRules": [
+            {
+              "AllowedOrigins": [ "*" ],
+              "AllowedMethods": [ "GET" ],
+              "MaxAge": 3000,
+              "AllowedHeaders": [ "Authorization" ]
+            }
+          ]
+        },
         "WebsiteConfiguration": {
           "IndexDocument": "index.html"
         }

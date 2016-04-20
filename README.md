@@ -13,18 +13,16 @@ It is completely "serverless", designed to use the following Amazon services:
 
 The Lambda functions are written in [ES6](http://exploringjs.com/es6/), with [async/await](http://pouchdb.com/2015/03/05/taming-the-async-beast-with-es7.html), transpiled using [Babel](https://babeljs.io/), and bundled using [Webpack](https://webpack.github.io/).
 
-The AWS resources are provisioned using the [CloudFormation](http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/Welcome.html) service, using an add-on custom resource handler to allocate API Gateway resources (which Amazon doesn't support yet for CloudFormation).
+The AWS resources are provisioned using the [CloudFormation](http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/Welcome.html) service.
 
-* http://www.jayway.com/2016/01/05/automate-aws-api-gateway-using-cloudformation/
-* https://github.com/carlnordenfelt/aws-api-gateway-for-cloudformation
-
-Additionally, we use Apex to simplify the uploading of the Lambda functions.
+Additionally, we use Apex to simplify the uploading of the Lambda functions
+(without the shim).
 
 * http://apex.run/
 
 # Costs
 
-It should cost very little to run.
+It should cost very little to run. The following resources are provisioned:
 
 * DynamoDB - only provisioned for 1 read capacity unit, 1 write capacity unit (which limits it to 1 job per second)
 * S3 - storage for retrieved files and JSON, plus data transfer
@@ -45,56 +43,6 @@ or
 * `cd lambda-comments`
 * `npm install`
 * Install [Apex](http://apex.run/)
-
-## Setup IAM permissions
-
-**Note:** These instructions are copied from: https://apigatewaycloudformation.bynordenfelt.com/
-
-To be able to install the Custom Resource library you require a set of permissions.
-Configure your IAM user with the following policy and make sure that you have configured your aws-cli with access and secret key.
-
-```
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Effect": "Allow",
-      "Action": [
-        "cloudformation:CreateStack",
-        "cloudformation:DescribeStacks",
-        "iam:CreateRole",
-        "iam:CreatePolicy",
-        "iam:AttachRolePolicy",
-        "iam:GetRole",
-        "iam:PassRole",
-        "lambda:CreateFunction",
-        "lambda:UpdateFunctionCode",
-        "lambda:GetFunctionConfiguration",
-
-        "cloudformation:DeleteStack",
-        "lambda:DeleteFunction",
-        "iam:ListPolicyVersions",
-        "iam:DetachRolePolicy",
-        "iam:DeletePolicy",
-        "iam:DeleteRole"
-      ],
-      "Resource": [
-        "*"
-      ]
-    }
-  ]
-}
-```
-
-## Install the Custom Resource Library
-
-This installs a special AWS Lambda function so that the CloudFormation recipe can provision the API Gateway using custom resources from Carl Nordenfelt's [API Gateway for  CloudFormation](https://github.com/carlnordenfelt/aws-api-gateway-for-cloudformation) project.
-
-```
-npm run deploy-custom-resource
-```
-
-If successful, a 'service token' will be saved to `deploy/state/SERVICE_TOKEN`
 
 ## Configuration
 
@@ -135,15 +83,6 @@ ensure that it completes without errors.
 
 **Note:** When working with the CloudFormation recipe, you can also use
 `npm run update-cloudformation` and `npm run delete-cloudformation`
-
-## Manually create the "prod" deployment stage in API gateway
-
-When the CloudFormation stack in the previous step has been successfully
-provisioned (check the AWS Web Console), do this step.
-
-The Custom Resource library currently doesn't support this from CloudFormation, so, for now, we need to do it manually.
-
-Go to "API Gateway" in the Amazon web console, and select the desired API. Click the `Deploy API` button, and under `Deployment Stage`, select `New Stage`. Enter `prod` for the `Stage Name`, and click the `Deploy` button.
 
 ## Save the references to the provisioned CloudFormation resources
 
@@ -201,25 +140,12 @@ npm run logs
 
 This just executes `apex logs -f` in `build/apex`
 
-## Submit a job
-
-```
-npm run post-url
-```
-
-Submits a job to the API that scrapes `http://jimpick.com/`
-
-You should be able to see lambda output in the logs (after a few seconds delay). Also,
-you should be able to see the files in S3 via the AWS Web Console.
-
 # To Do List
 
 * Integration test
-* Better error handling
 * Handle DynamoDB ProvisionedThroughputExceededException
-* Status subsystem (API + Firebase)
-* Web interface
-* Quotas / Whitelists for public demo
+* Investigate Swagger
+* Generate API docs
 * Blog post
 
 # Similar Work
