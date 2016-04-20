@@ -1,3 +1,4 @@
+/* eslint no-throw-literal: 0 */
 import React, { Component, PropTypes } from 'react'
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group'
 import { autobind } from 'core-decorators'
@@ -30,10 +31,13 @@ export default class Comments extends Component {
         ...data,
       })
       resetCommentForm({ pathname, clearContent: true })
+      return result
     } catch (error) {
-      throw ({ _error: 'An error occurred while posting the comment.' })
+      if (error.name === 'ValidationError') {
+        throw error.data
+      }
+      throw { _error: 'An error occurred while posting the comment.' }
     }
-    return result
   }
 
   render () {

@@ -20,6 +20,15 @@ export const FORM_FIELDS = [
 const websiteUrl = __CONFIG__.websiteUrl
 const apiUrl = __CONFIG__.apiUrl
 
+class ValidationError extends Error {
+  constructor (data) {
+    super()
+    this.name = 'ValidationError'
+    this.data = data
+    this.stack = (new Error()).stack
+  }
+}
+
 export function getComments ({ url, updateOnly = false }) {
   return async dispatch => {
     const noTrailingSlashUrl = url.replace(/[\/*]$/, '')
@@ -82,9 +91,26 @@ export function postComment ({
           body: JSON.stringify(payload),
         }
       )
-      const responseStatus = await response.json()
-      dispatch({ type: POST_COMMENT_COMPLETE, responseStatus, payload })
-      dispatch(refetchCommentsWhilePending({ url: pathname }))
+      const { status } = response
+      const responseData = await response.json()
+      if (status === 201) {
+        dispatch({ type: POST_COMMENT_COMPLETE, responseData, payload })
+        dispatch(refetchCommentsWhilePending({ url: pathname }))
+      } else if (status === 400) {
+        const { errorMessage } = responseData
+        if (!errorMessage) {
+          throw new Error('Error occured while posting comment')
+        }
+        const parsedError = JSON.parse(errorMessage)
+        const { error, data } = parsedError
+        if (error === 'ValidationError') {
+          throw new ValidationError(data)
+        } else {
+          throw new Error('Error occured while posting comment')
+        }
+      } else {
+        throw new Error('Unexpected status on response')
+      }
     } catch (error) {
       dispatch({ type: POST_COMMENT_ERROR, error })
       throw error

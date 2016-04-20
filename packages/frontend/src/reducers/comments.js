@@ -68,7 +68,7 @@ export default function commentsReducer (state = initialState, action) {
       {
         const { pendingComments } = state
         const {
-          responseStatus: {
+          responseData: {
             id,
           },
           payload: {

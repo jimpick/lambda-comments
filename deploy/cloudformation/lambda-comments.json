@@ -235,13 +235,10 @@
         },
         "responses": {
           "default": {
-            "statusCode": "200"
+            "statusCode": "201"
           },
           ".*Error.*": {
             "statusCode": "400"
-          },
-          ".*NotFound.*": {
-            "statusCode": "404"
           }
         }
       }

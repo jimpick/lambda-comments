@@ -9,15 +9,15 @@
     "create-cloudformation": "deploy/cloudformation/cloudformation.sh create",
     "update-cloudformation": "deploy/cloudformation/cloudformation.sh update",
     "delete-cloudformation": "deploy/cloudformation/cloudformation.sh delete",
-    "save-cloudformation": "node_modules/babel-cli/bin/babel-node.js bin/save-cloudformation-config.js",
-    "setup-apex": "node_modules/babel-cli/bin/babel-node.js bin/setup-apex.js",
-    "compile-lambda": "rm -rf build/apex/functions && node_modules/.bin/webpack --config deploy/apex/webpack.config.js --display-exclude --display-modules --display-chunks --display-error-details --display-origins --display-cached --display-cached-assets",
+    "save-cloudformation": "babel-node bin/save-cloudformation-config.js",
+    "setup-apex": "babel-node bin/setup-apex.js",
+    "compile-lambda": "rm -rf build/apex/functions && webpack --config deploy/apex/webpack.config.js --display-exclude --display-modules --display-chunks --display-error-details --display-origins --display-cached --display-cached-assets --bail",
     "deploy-lambda": "cd build/apex && apex deploy",
     "deploy": "npm run compile-lambda && npm run deploy-lambda",
-    "test-local": "node_modules/mocha/bin/mocha --compilers js:babel-core/register -g local",
-    "test-remote": "node_modules/mocha/bin/mocha --compilers js:babel-core/register -g remote",
-    "test": "node_modules/mocha/bin/mocha --compilers js:babel-core/register",
-    "post-url": "node_modules/babel-cli/bin/babel-node.js bin/post-url.js http://jimpick.com/",
+    "test-local": "mocha --compilers js:babel-core/register -g local",
+    "test-remote": "mocha --compilers js:babel-core/register -g remote",
+    "test": "mocha --compilers js:babel-core/register",
+    "post-url": "babel-node bin/post-url.js http://jimpick.com/",
     "logs": "cd build/apex && apex logs -f"
   },
   "author": "Jim Pick <jim@jimpick.com>",
@@ -48,6 +48,7 @@
     "redux-logger": "^2.6.1",
     "slugid": "^1.1.0",
     "superagent": "^1.8.0-beta.2",
-    "superagent-promise-plugin": "^2.1.0"
+    "superagent-promise-plugin": "^2.1.0",
+    "validator": "^5.2.0"
   }
 }
