@@ -142,11 +142,24 @@ This just executes `apex logs -f` in `build/apex`
 
 # To Do List
 
+* Webpack tweaks for production build, upload to S3
+* Client-side checksum/signing
+* Akismet support
+* Slack notifications
+* Private directory on S3
+* Convert config to dot-env
+* Top-level package.json scripts for client side dev
+* README for client site dev
+* Blog post
+* Code re-arranging
+* Admin web interface / auth for hiding posts / moderation
+* Mocks for AWS calls
 * Integration test
+* Coverage
 * Handle DynamoDB ProvisionedThroughputExceededException
 * Investigate Swagger
 * Generate API docs
-* Blog post
+* Webpack 2 tree-shaking support
 
 # Similar Work
 
