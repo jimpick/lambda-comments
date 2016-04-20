@@ -150,11 +150,13 @@ This just executes `apex logs -f` in `build/apex`
 * Convert config to dot-env
 * Top-level package.json scripts for client side dev
 * README for client site dev
+* Test on various browsers, polyfills
 * Blog post
 * Code re-arranging
 * Admin web interface / auth for hiding posts / moderation
 * Mocks for AWS calls
 * Integration test
+* Selenium tests
 * Coverage
 * Handle DynamoDB ProvisionedThroughputExceededException
 * Investigate Swagger
