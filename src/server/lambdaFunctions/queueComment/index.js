@@ -62,6 +62,7 @@ export async function handler (event, context, callback) {
     context.error(context.fail(errorMessage))
     return
   }
+  const quiet = event ? !!event.quiet : false
   try {
     const {
       url,
@@ -69,8 +70,7 @@ export async function handler (event, context, callback) {
       authorName,
       authorEmail,
       authorUrl,
-      dryRun,
-      quiet
+      dryRun
     } = event
     validate(event)
     const { pathname } = urlParse(url)
@@ -106,15 +106,19 @@ export async function handler (event, context, callback) {
     callback( null, { id } )
   } catch (error) {
     if (error.name === 'ValidationError') {
-      console.log('ValidationError', error.data)
+      if (!quiet) {
+        console.log('ValidationError', error.data)
+      }
       callback(JSON.stringify({
         error: 'ValidationError',
         data: error.data
       }))
       return
     }
-    console.log('Queue Comment error', error)
-    console.log(error.stack)
+    if (!quiet) {
+      console.log('Queue Comment error', error)
+      console.log(error.stack)
+    }
     callback(JSON.stringify({
       error: 'Expection occurred'
     }))

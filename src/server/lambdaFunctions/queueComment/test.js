@@ -26,26 +26,27 @@ export function local () {
         dryRun: true,
         quiet: true
       }
-      handler(event, {
-        done: (error, body) => {
-          checkBody(body)
-          done()
-        },
-        fail: error => { console.log(error) }
+      handler(event, null, (error, result) => {
+        expect(error).to.be.null
+        checkBody(result)
+        done()
       })
     })
 
     it('should fail if there is no url', function (done) {
-      const event = {}
-      handler(event, {
-        done: (error, body) => {
-          console.log('Done', error, body)
-        },
-        fail: error => {
-          expect(error).to.be.a('string')
-          expect(error).to.equal('[Error: Missing url]')
-          done()
-        }
+      const event = {
+        quiet: true
+      }
+      handler(event, null, error => {
+        expect(error).to.be.a('string')
+        expect(error).to.equal(JSON.stringify({
+          error: 'ValidationError',
+          data: {
+            _error: 'Missing url',
+            commentContent: 'Required'
+          }
+        }))
+        done()
       })
     })
 
@@ -65,7 +66,7 @@ export function remote () {
 
     function testResponse(request, done) {
       request
-        .expect(200)
+        .expect(201)
         .expect('Content-Type', /json/)
         .expect(({ body }) => {
           checkBody(body)
@@ -106,7 +107,15 @@ export function remote () {
       const request = supertest(apiUrl)
         .post('/comments')
         .expect(400)
-        .expect({ errorMessage: '[Error: Missing url]' })
+        .expect({
+          errorMessage: JSON.stringify({
+            error: 'ValidationError',
+            data: {
+              _error: 'Missing url',
+              commentContent: 'Required'
+            }
+          })
+        })
         .end(done)
     })
 
