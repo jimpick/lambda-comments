@@ -190,7 +190,8 @@
       "DependsOn": [
         "RestApi",
         "CommentsApiResource",
-        "PostCommentApiMethod"
+        "PostCommentApiMethod",
+        "OptionsCommentApiMethod"
       ]
     },
     "RestApi": {
@@ -259,6 +260,41 @@
           {
             "StatusCode": "400",
             "ResponseParameters" : {
+              "method.response.header.Access-Control-Allow-Origin": true
+            }
+          }
+        ]
+      }
+    },
+    "OptionsCommentApiMethod": {
+      "Type": "AWS::ApiGateway::Method",
+      "Properties": {
+        "RestApiId": { "Ref": "RestApi" },
+        "ResourceId": { "Ref": "CommentsApiResource" },
+        "HttpMethod": "OPTIONS",
+        "AuthorizationType": "NONE",
+        "Integration": {
+          "Type": "MOCK",
+          "RequestTemplates": {
+            "application/json": "{ \"statusCode\": 200 }"
+          },
+          "IntegrationResponses": [
+            {
+              "StatusCode": "200",
+              "ResponseParameters" : {
+                "method.response.header.Access-Control-Allow-Headers": "'Content-Type,X-Amz-Date,Authorization,X-Api-Key'",
+                "method.response.header.Access-Control-Allow-Methods": "'POST,OPTIONS'",
+                "method.response.header.Access-Control-Allow-Origin": "'*'"
+              }
+            }
+          ]
+        },
+        "MethodResponses": [
+          {
+            "StatusCode": "200",
+            "ResponseParameters" : {
+              "method.response.header.Access-Control-Allow-Headers": true,
+              "method.response.header.Access-Control-Allow-Methods": true,
               "method.response.header.Access-Control-Allow-Origin": true
             }
           }
