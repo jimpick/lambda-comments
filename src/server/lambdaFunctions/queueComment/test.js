@@ -27,8 +27,11 @@ export function local () {
           authorEmail: 'bob@example.com',
           authorUrl: 'http://bob.example.com/',
         },
+        sourceIp: '64.46.22.7',
         dryRun: true,
         quiet: true,
+        skipSpamCheck: true,
+        isTest: true,
       }
       handler(event, null, (error, result) => {
         expect(error).to.be.null
@@ -40,7 +43,9 @@ export function local () {
     it('should fail if there is no data', function (done) {
       const event = {
         fields: {},
-        quiet: true
+        quiet: true,
+        skipSpamCheck: true,
+        isTest: true,
       }
       handler(event, null, error => {
         expect(error).to.be.a('string')

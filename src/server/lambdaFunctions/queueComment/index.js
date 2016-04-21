@@ -60,7 +60,7 @@ function validate (fields) {
   }
 }
 
-async function checkSpam ({ payload, quiet }) {
+async function checkSpam ({ payload, quiet, isTest }) {
   if (!akismet) {
     akismet = new Akismet()
     if (akismet.configured()) {
@@ -75,7 +75,31 @@ async function checkSpam ({ payload, quiet }) {
     }
   }
   if (akismet.configured()) {
-    // Check for spam here
+    const {
+      permalink,
+      referrer,
+      userAgent,
+      commentContent,
+      authorName,
+      authorEmail,
+      authorUrl,
+      sourceIp
+    } = payload
+    const options = {
+      user_ip: sourceIp,
+      user_agent: userAgent,
+      referrer,
+      comment_type: 'comment',
+      comment_author: authorName,
+      comment_author_email: authorEmail,
+      comment_author_url: authorUrl,
+      comment_content: commentContent,
+      is_test: isTest
+    }
+    const spam = await akismet.checkSpam(options)
+    if (spam) {
+      throw new Error('spam')
+    }
   }
 }
 
@@ -92,7 +116,9 @@ export async function handler (event, context, callback) {
       sourceIp,
       fields,
       dryRun,
-      quiet
+      quiet,
+      skipSpamCheck,
+      isTest
     } = event
     const {
       permalink,
@@ -135,8 +161,10 @@ export async function handler (event, context, callback) {
       console.log('permalink:', permalink)
     }
     if (!dryRun) {
-      await checkSpam({ payload, quiet })
       await uploadJson({ dirName, actionRef, action })
+      if (!skipSpamCheck) {
+        await checkSpam({ payload, quiet, isTest })
+      }
       await updateRecord({ dirName, actionRef })
     }
     callback( null, { id } )
@@ -148,6 +176,20 @@ export async function handler (event, context, callback) {
       callback(JSON.stringify({
         error: 'ValidationError',
         data: error.data
+      }))
+      return
+    }
+    if (error.name === 'spam') {
+      if (!quiet) {
+        console.log('Spam detected')
+      }
+      callback(JSON.stringify({
+        error: 'SpamError',
+        data: {
+          errors: {
+            _error: 'Our automated filter thinks this comment is spam.'
+          }
+        }
       }))
       return
     }

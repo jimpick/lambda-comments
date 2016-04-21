@@ -10,7 +10,7 @@ export default class Akismet {
     const methods = [ 'verifyKey', 'checkSpam', 'submitSpam', 'submitHam' ]
     methods.forEach(method => {
       const wrappedMethod = promisify(this.client[method])
-      this[method] = () => {
+      this['_' + method] = () => {
         if (!apiKey) {
           throw new Error('Missing Akismet API Key')
         }
@@ -21,6 +21,22 @@ export default class Akismet {
 
   configured () {
     return !!apiKey
+  }
+
+  verifyKey () {
+    return this._verifyKey()
+  }
+
+  checkSpam (options) {
+    return this._checkSpam({ blog, ...options })
+  }
+
+  submitSpam (options) {
+    return this._submitSpam({ blog, ...options })
+  }
+
+  submitHam (options) {
+    return this._submitHam({ blog, ...options })
   }
 
 }
