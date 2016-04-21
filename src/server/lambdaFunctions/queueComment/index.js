@@ -97,8 +97,11 @@ async function checkSpam ({ payload, quiet, isTest }) {
       is_test: isTest
     }
     const spam = await akismet.checkSpam(options)
+    if (!quiet) {
+      console.log(spam ? 'Akismet detected spam' : 'Akismet check passed')
+    }
     if (spam) {
-      throw new Error('spam')
+      throw new Error('Spam')
     }
   }
 }
@@ -179,16 +182,14 @@ export async function handler (event, context, callback) {
       }))
       return
     }
-    if (error.name === 'spam') {
+    if (error.message === 'Spam') {
       if (!quiet) {
         console.log('Spam detected')
       }
       callback(JSON.stringify({
         error: 'SpamError',
         data: {
-          errors: {
-            _error: 'Our automated filter thinks this comment is spam.'
-          }
+          _error: 'Our automated filter thinks this comment is spam.'
         }
       }))
       return

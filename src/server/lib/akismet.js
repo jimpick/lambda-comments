@@ -1,22 +1,11 @@
-import akismet from 'akismet'
-import promisify from 'es6-promisify'
+import akismet from 'akismet-api'
 import config from '../../../config'
 
 const { akismet: apiKey, blog } = config
 
 export default class Akismet {
   constructor () {
-    this.client = akismet.client({ blog, apiKey })
-    const methods = [ 'verifyKey', 'checkSpam', 'submitSpam', 'submitHam' ]
-    methods.forEach(method => {
-      const wrappedMethod = promisify(this.client[method])
-      this['_' + method] = () => {
-        if (!apiKey) {
-          throw new Error('Missing Akismet API Key')
-        }
-        return wrappedMethod
-      }
-    })
+    this.client = akismet.client({ blog, key: apiKey })
   }
 
   configured () {
@@ -24,19 +13,31 @@ export default class Akismet {
   }
 
   verifyKey () {
-    return this._verifyKey()
+    if (!apiKey) {
+      throw new Error('Missing Akismet API Key')
+    }
+    return this.client.verifyKey()
   }
 
   checkSpam (options) {
-    return this._checkSpam({ blog, ...options })
+    if (!apiKey) {
+      throw new Error('Missing Akismet API Key')
+    }
+    return this.client.checkSpam({ blog, ...options })
   }
 
   submitSpam (options) {
-    return this._submitSpam({ blog, ...options })
+    if (!apiKey) {
+      throw new Error('Missing Akismet API Key')
+    }
+    return this.client.submitSpam({ blog, ...options })
   }
 
   submitHam (options) {
-    return this._submitHam({ blog, ...options })
+    if (!apiKey) {
+      throw new Error('Missing Akismet API Key')
+    }
+    return this.client.submitHam({ blog, ...options })
   }
 
 }

@@ -60,6 +60,35 @@ export function local () {
       })
     })
 
+    it('should catch spam', function (done) {
+      const event = {
+        fields: {
+          permalink: 'http://example.com/blog/1/',
+          userAgent: 'Test Suite',
+          referrer: 'http://jimpick.com/',
+          commentContent: 'My comment',
+          authorName: 'viagra-test-123',
+          authorEmail: 'bob@example.com',
+          authorUrl: 'http://bob.example.com/',
+        },
+        sourceIp: '64.46.22.7',
+        // dryRun: true,
+        quiet: true,
+        isTest: true,
+      }
+      handler(event, null, (error, result) => {
+        expect(error).to.be.a('string')
+        expect(error).to.equal(JSON.stringify({
+          error: 'SpamError',
+          data: {
+            _error: 'Our automated filter thinks this comment is spam.'
+          }
+        }))
+        done()
+      })
+    })
+
+
     // it('should write a json file to S3')
 
     // it('should write to DynamoDB')
