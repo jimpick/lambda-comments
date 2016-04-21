@@ -29,15 +29,19 @@ function uploadJson ({ dirName, actionRef, action }) {
 
 function validate (fields) {
   const {
-    url,
+    permalink,
+    userAgent,
     commentContent,
     authorName,
     authorEmail,
     authorUrl
   } = fields
   const errors = {}
-  if (!url) {
-    errors._error = 'Missing url'
+  if (!permalink) {
+    errors._error = 'Missing permalink'
+  }
+  if (!userAgent) {
+    errors._error = 'Missing user agent'
   }
   if (!commentContent) {
     errors.commentContent = 'Required'
@@ -63,10 +67,10 @@ async function checkSpam ({ payload, quiet }) {
       const verified = await akismet.verifyKey()
       if (verified) {
         if (!quiet) {
-          console.log('Akismet verified')
+          console.log('Akismet key/blog verified')
         }
       } else {
-        throw new Error('Akismet not verified')
+        throw new Error('Akismet key/blog failed verification')
       }
     }
   }
@@ -91,14 +95,16 @@ export async function handler (event, context, callback) {
       quiet
     } = event
     const {
-      url,
+      permalink,
+      referrer,
+      userAgent,
       commentContent,
       authorName,
       authorEmail,
       authorUrl
     } = fields
     validate(fields)
-    const { pathname } = urlParse(url)
+    const { pathname } = urlParse(permalink)
     const normalizedPath = pathNormalize(pathname).replace(/\/+$/, '')
     const dirName = pathJoin('comments', normalizedPath)
     if (!commentContent) {
@@ -109,11 +115,14 @@ export async function handler (event, context, callback) {
     const id = slugid.v4()
     const payload = {
       id,
-      url,
+      permalink,
+      referrer,
+      userAgent,
       commentContent,
       authorName,
       authorEmail,
-      authorUrl
+      authorUrl,
+      sourceIp
     }
     const action = {
       type: 'NEW_COMMENT',
@@ -123,7 +132,7 @@ export async function handler (event, context, callback) {
     }
     if (!quiet) {
       console.log('actionRef:', actionRef)
-      console.log('url:', url)
+      console.log('permalink:', permalink)
     }
     if (!dryRun) {
       await checkSpam({ payload, quiet })

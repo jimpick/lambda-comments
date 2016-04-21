@@ -73,9 +73,10 @@ export function postComment ({
   authorUrl,
 }) {
   return async dispatch => {
-    const noTrailingSlashUrl = url.replace(/[\/*]$/, '')
     const payload = {
-      url: noTrailingSlashUrl,
+      permalink: url,
+      referrer: window.document.referrer,
+      userAgent: window.navigator.userAgent,
       commentContent,
       authorName,
       authorEmail,

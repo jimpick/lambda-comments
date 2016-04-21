@@ -19,7 +19,9 @@ export function local () {
     it('should return an id', function (done) {
       const event = {
         fields: {
-          url: 'http://example.com/blog/1/',
+          permalink: 'http://example.com/blog/1/',
+          userAgent: 'Test Suite',
+          referrer: 'http://jimpick.com/',
           commentContent: 'My comment',
           authorName: 'Bob Bob',
           authorEmail: 'bob@example.com',
@@ -35,7 +37,7 @@ export function local () {
       })
     })
 
-    it('should fail if there is no url', function (done) {
+    it('should fail if there is no data', function (done) {
       const event = {
         fields: {},
         quiet: true
@@ -45,7 +47,7 @@ export function local () {
         expect(error).to.equal(JSON.stringify({
           error: 'ValidationError',
           data: {
-            _error: 'Missing url',
+            _error: 'Missing user agent',
             commentContent: 'Required'
           }
         }))
@@ -81,7 +83,9 @@ export function remote () {
       const request = supertest(apiUrl)
         .post('/comments')
         .send({
-          url: 'http://example.com/blog/1',
+          permalink: 'http://example.com/blog/1',
+          userAgent: 'Test Suite',
+          referrer: 'http://jimpick.com/',
           commentContent: 'My comment',
           authorName: 'Bob Bob',
           authorEmail: 'bob@example.com',
@@ -90,7 +94,7 @@ export function remote () {
       testResponse(request, done)
     })
 
-    it('should fail if there is no url', function (done) {
+    it('should fail if there is no data', function (done) {
       const request = supertest(apiUrl)
         .post('/comments')
         .expect(400)
@@ -98,7 +102,7 @@ export function remote () {
           errorMessage: JSON.stringify({
             error: 'ValidationError',
             data: {
-              _error: 'Missing url',
+              _error: 'Missing user agent',
               commentContent: 'Required'
             }
           })
