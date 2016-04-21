@@ -18,13 +18,15 @@ export function local () {
 
     it('should return an id', function (done) {
       const event = {
-        url: 'http://example.com/blog/1/',
-        commentContent: 'My comment',
-        authorName: 'Bob Bob',
-        authorEmail: 'bob@example.com',
-        authorUrl: 'http://bob.example.com/',
+        fields: {
+          url: 'http://example.com/blog/1/',
+          commentContent: 'My comment',
+          authorName: 'Bob Bob',
+          authorEmail: 'bob@example.com',
+          authorUrl: 'http://bob.example.com/',
+        },
         dryRun: true,
-        quiet: true
+        quiet: true,
       }
       handler(event, null, (error, result) => {
         expect(error).to.be.null
@@ -35,6 +37,7 @@ export function local () {
 
     it('should fail if there is no url', function (done) {
       const event = {
+        fields: {},
         quiet: true
       }
       handler(event, null, error => {
@@ -82,23 +85,7 @@ export function remote () {
           commentContent: 'My comment',
           authorName: 'Bob Bob',
           authorEmail: 'bob@example.com',
-          authorUrl: 'http://bob.example.com/',
-          dryRun: true
-        })
-      testResponse(request, done)
-    })
-
-    it('should work with application/x-www-form-urlencoded', function (done) {
-      const request = supertest(apiUrl)
-        .post('/comments')
-        .type('form') // Makes supertest send x-www-form-urlencoded
-        .send({
-          url: 'http://example.com/blog/1',
-          commentContent: 'My comment',
-          authorName: 'Bob Bob',
-          authorEmail: 'bob@example.com',
-          authorUrl: 'http://bob.example.com/',
-          dryRun: true
+          authorUrl: 'http://bob.example.com/'
         })
       testResponse(request, done)
     })

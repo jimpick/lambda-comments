@@ -56,9 +56,11 @@ The default config.template.js is:
 
 ```
 export default {
+  blog: 'http://example.com/',
   cloudFormation: 'lambdaComments',
   region: 'us-west-2',
-  stage: 'prod'
+  stage: 'prod',
+  // akismet: '<api key from akismet.com>' // optional
 }
 ```
 
@@ -151,6 +153,7 @@ This just executes `apex logs -f` in `build/apex`
 * Top-level package.json scripts for client side dev
 * README for client site dev
 * Test on various browsers, polyfills
+* Support batches of records in worker
 * Blog post
 * Code re-arranging
 * Admin web interface / auth for hiding posts / moderation

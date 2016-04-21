@@ -39,8 +39,10 @@
     "webpack": "^1.12.14"
   },
   "dependencies": {
+    "akismet": "^1.0.0",
     "aws-sdk": "^2.2.38",
     "encoding": "^0.1.12",
+    "es6-promisify": "^4.0.0",
     "moment": "^2.11.2",
     "node-fetch": "^1.3.3",
     "node-noop": "^1.0.0",

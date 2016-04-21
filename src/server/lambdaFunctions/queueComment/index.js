@@ -5,7 +5,10 @@ import moment from 'moment'
 import { isEmail, isURL } from 'validator'
 import { generateReference } from '../../lib/references'
 import { upload } from '../../lib/s3'
+import Akismet from '../../lib/akismet'
 import { updateRecord } from '../../lib/dynamoDb'
+
+let akismet = null
 
 class ValidationError extends Error {
   constructor (data) {
@@ -24,16 +27,14 @@ function uploadJson ({ dirName, actionRef, action }) {
   })
 }
 
-function validate (event) {
+function validate (fields) {
   const {
     url,
     commentContent,
     authorName,
     authorEmail,
-    authorUrl,
-    dryRun,
-    quiet
-  } = event
+    authorUrl
+  } = fields
   const errors = {}
   if (!url) {
     errors._error = 'Missing url'
@@ -55,6 +56,25 @@ function validate (event) {
   }
 }
 
+async function checkSpam ({ payload, quiet }) {
+  if (!akismet) {
+    akismet = new Akismet()
+    if (akismet.configured()) {
+      const verified = await akismet.verifyKey()
+      if (verified) {
+        if (!quiet) {
+          console.log('Akismet verified')
+        }
+      } else {
+        throw new Error('Akismet not verified')
+      }
+    }
+  }
+  if (akismet.configured()) {
+    // Check for spam here
+  }
+}
+
 export async function handler (event, context, callback) {
   if (!callback) {
     const errorMessage = 'Requires Node 4.3 or greater on Lambda'
@@ -65,14 +85,19 @@ export async function handler (event, context, callback) {
   const quiet = event ? !!event.quiet : false
   try {
     const {
+      sourceIp,
+      fields,
+      dryRun,
+      quiet
+    } = event
+    const {
       url,
       commentContent,
       authorName,
       authorEmail,
-      authorUrl,
-      dryRun
-    } = event
-    validate(event)
+      authorUrl
+    } = fields
+    validate(fields)
     const { pathname } = urlParse(url)
     const normalizedPath = pathNormalize(pathname).replace(/\/+$/, '')
     const dirName = pathJoin('comments', normalizedPath)
@@ -82,17 +107,18 @@ export async function handler (event, context, callback) {
     const now = moment.utc()
     const actionRef = generateReference(now)
     const id = slugid.v4()
+    const payload = {
+      id,
+      url,
+      commentContent,
+      authorName,
+      authorEmail,
+      authorUrl
+    }
     const action = {
       type: 'NEW_COMMENT',
       actionRef,
-      payload: {
-        id,
-        url,
-        commentContent,
-        authorName,
-        authorEmail,
-        authorUrl
-      },
+      payload,
       submittedDate: now.toISOString()
     }
     if (!quiet) {
@@ -100,6 +126,7 @@ export async function handler (event, context, callback) {
       console.log('url:', url)
     }
     if (!dryRun) {
+      await checkSpam({ payload, quiet })
       await uploadJson({ dirName, actionRef, action })
       await updateRecord({ dirName, actionRef })
     }
@@ -120,7 +147,7 @@ export async function handler (event, context, callback) {
       console.log(error.stack)
     }
     callback(JSON.stringify({
-      error: 'Expection occurred'
+      error: 'Exception occurred'
     }))
   }
 }
