@@ -66,11 +66,15 @@ export default {
 
 ### Parameters
 
+**blog**: The full base url of the blog/website
+
 **cloudFormation**: The name of the CloudFormation stack
 
 **region**: The AWS region
 
 **stage**: The API Gateway stage to create
+
+**akismet**: (Optional, but recommended) API key from [akismet.com](https://akismet.com/) for spam filtering
 
 ## Use CloudFormation to create the AWS resources
 
@@ -136,6 +140,14 @@ This will run `apex deploy` in the `build/apex` directory to upload the compiled
 
 Alternatively, if you want to execute the compile and deploy steps in one command, you can run: `npm run deploy`
 
+## Upload the frontend javascript script to S3
+
+```
+npm run upload-script
+```
+
+This will copy `lambda-comments.js` to the S3 bucket.
+
 ## Run the test suite
 
 ```
@@ -158,17 +170,23 @@ This just executes `apex logs -f` in `build/apex`
 
 # To Do List
 
-* Webpack tweaks for production build, upload to S3
+* "Marketing" link to project page
 * Slack notifications
 * Private directory on S3
 * Convert config to dot-env
 * Top-level package.json scripts for client side dev
 * README for client site dev
+* Check that permalink and blog match
+* Override for path location
+* Fetch source page to confirm script is installed on first post
 * Test on various browsers, polyfills
 * Support batches of records in worker
 * Blog post
-* Code re-arranging
+* Rearrange code: put lambda scripts under packages directory
+* Admin auth
 * Admin web interface / auth for hiding posts / moderation
+* Turn comments on/off via admin
+* Support for editing blog posts for a limited time
 * Mocks for AWS calls
 * Integration test
 * Selenium tests
