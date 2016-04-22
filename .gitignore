@@ -3,3 +3,4 @@ node_modules
 deploy/state
 build
 deploy.log
+npm-debug.log

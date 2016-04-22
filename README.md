@@ -98,6 +98,19 @@ npm run save-cloudformation
 
 This will create a file in `deploy/state/cloudFormation.json`
 
+## Temporary fix - update Lambda functions to use Node.js 4.3
+
+CloudFormation has issues setting the runtime to 'nodejs4.3', see:
+
+https://forums.aws.amazon.com/thread.jspa?threadID=229072
+
+Until CloudFormation is updated, here's an extra step to update
+the Lambda functions to use Node.js 4.3 using a custom script.
+
+```
+npm run flip-lambdas-to-4.3
+```
+
 ## Generate an API key
 
 ```
@@ -170,8 +183,8 @@ This just executes `apex logs -f` in `build/apex`
 
 # To Do List
 
-* Script to flip lambda functions to node4.3
 * Parameterize names of lambda functions and API Gateway
+* Use blog location for CORS
 * "Marketing" link to project page
 * Slack notifications
 * Private directory on S3
