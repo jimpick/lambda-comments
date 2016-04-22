@@ -12,7 +12,8 @@
     "start": "if-env NODE_ENV=production && npm run react-project:start:prod || npm run react-project:start:dev",
     "test": "karma start",
     "react-project:start:dev": "eslint src && react-project start",
-    "react-project:start:prod": "rm -rf .build && react-project build && node .build/server.js"
+    "react-project:start:prod": "rm -rf .build && react-project build && cd .build && serve -p 9876",
+    "build-prod": "rm -rf .build && NODE_ENV=production react-project build"
   },
   "author": "",
   "license": "ISC",
@@ -86,6 +87,7 @@
     "webpack-dev-server": "1.14.1"
   },
   "devDependencies": {
-    "postcss-nested": "1.0.0"
+    "postcss-nested": "1.0.0",
+    "serve": "1.4.0"
   }
 }

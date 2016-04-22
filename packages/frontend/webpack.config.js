@@ -5,6 +5,9 @@ import 'babel-register'
 import { apiUrl, websiteUrl } from '../../../src/server/lib/cloudFormation'
 import config from '../../../config.js'
 import { apiKey } from '../../../deploy/state/apiKey.json'
+import dotenv from 'dotenv'
+
+dotenv.config({ silent: true })
 
 function modify (webpackConfig) {
   webpackConfig.postcss = () => {
@@ -19,8 +22,24 @@ function modify (webpackConfig) {
 }
 
 function modifyClient (webpackConfig) {
-  let { output: { filename }, plugins, module: { loaders } } = webpackConfig
+  let {
+    entry,
+    output: {
+      filename
+    },
+    plugins,
+    module: {
+      loaders
+    }
+  } = webpackConfig
   modify(webpackConfig)
+  console.log('Entry before', entry)
+  entry['lambda-comments'] = entry.app
+  delete entry.app
+  if (process.env.NODE_ENV === 'production') {
+    delete entry._vendor
+  }
+  console.log('Entry after', entry)
   console.log('Output filename before', filename)
   filename = filename.replace('[chunkHash].js', '[name].js')
   webpackConfig.output.filename = filename
@@ -28,6 +47,12 @@ function modifyClient (webpackConfig) {
   console.log('Plugins before', plugins)
   plugins = plugins.filter(plugin => {
     const name = plugin.constructor.name
+    if (
+      process.env.NODE_ENV === 'production' &&
+      name === 'CommonsChunkPlugin'
+    ) {
+      return false
+    }
     return name !== 'ExtractTextPlugin'
   })
   plugins.forEach(plugin => {
@@ -60,5 +85,12 @@ function modifyClient (webpackConfig) {
 
 modifyClient(ClientConfig)
 modify(ServerConfig)
+
+/*
+// Uncomment when adapting webpack config
+console.log('\n\n\n')
+console.log(JSON.stringify(ClientConfig, null, 2))
+process.exit(1)
+*/
 
 export { ClientConfig, ServerConfig }
