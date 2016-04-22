@@ -29,6 +29,15 @@ class ValidationError extends Error {
   }
 }
 
+class SpamError extends Error {
+  constructor (data) {
+    super()
+    this.name = 'SpamError'
+    this.data = data
+    this.stack = (new Error()).stack
+  }
+}
+
 export function getComments ({ url, updateOnly = false }) {
   return async dispatch => {
     const noTrailingSlashUrl = url.replace(/[\/*]$/, '')
@@ -110,9 +119,11 @@ export function postComment ({
         const { error, data } = parsedError
         if (error === 'ValidationError') {
           throw new ValidationError(data)
-        } else {
-          throw new Error('Error occured while posting comment')
         }
+        if (error === 'SpamError') {
+          throw new SpamError(data)
+        }
+        throw new Error('Error occured while posting comment')
       } else {
         throw new Error('Unexpected status on response')
       }

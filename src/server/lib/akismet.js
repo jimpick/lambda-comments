@@ -1,4 +1,4 @@
-import akismet from 'akismet-api'
+import akismet from '@jimpick/akismet-api'
 import config from '../../../config'
 
 const { akismet: apiKey, blog } = config

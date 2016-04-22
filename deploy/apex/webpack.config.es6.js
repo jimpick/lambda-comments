@@ -1,7 +1,7 @@
 import path from 'path'
 import StringReplacePlugin from 'string-replace-webpack-plugin'
 import { resources } from '../../src/server/lib/cloudFormation'
-import { NormalModuleReplacementPlugin } from 'webpack'
+import { DefinePlugin, NormalModuleReplacementPlugin } from 'webpack'
 
 const nodeModulesDir = path.normalize(`${__dirname}/../../node_modules`)
 
@@ -69,7 +69,9 @@ export default {
   plugins: [
     // https://github.com/andris9/encoding/issues/16
     new NormalModuleReplacementPlugin(/\/iconv-loader$/, 'node-noop'),
-    new StringReplacePlugin()
+    new StringReplacePlugin(),
+    // https://github.com/visionmedia/superagent/wiki/Superagent-for-Webpack
+    new DefinePlugin({ "global.GENTLY": false }),
   ],
   // From: https://github.com/webpack/webpack/issues/784
   // for modules
@@ -79,5 +81,9 @@ export default {
   // same issue, for loaders like babel
   resolveLoader: {
     fallback: [ nodeModulesDir ]
-  }
+  },
+  /* node: {
+    // https://github.com/visionmedia/superagent/wiki/Superagent-for-Webpack
+    __dirname: true,
+  } */
 }

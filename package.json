@@ -39,7 +39,7 @@
     "webpack": "^1.12.14"
   },
   "dependencies": {
-    "akismet-api": "^2.0.0",
+    "@jimpick/akismet-api": "^2.0.0",
     "aws-sdk": "^2.2.38",
     "encoding": "^0.1.12",
     "moment": "^2.11.2",

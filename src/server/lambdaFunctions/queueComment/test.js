@@ -20,7 +20,7 @@ export function local () {
       const event = {
         fields: {
           permalink: 'http://example.com/blog/1/',
-          userAgent: 'Test Suite',
+          userAgent: 'testhost/1.0 | node-akismet/0.0.1',
           referrer: 'http://jimpick.com/',
           commentContent: 'My comment',
           authorName: 'Bob Bob',
@@ -64,7 +64,7 @@ export function local () {
       const event = {
         fields: {
           permalink: 'http://example.com/blog/1/',
-          userAgent: 'Test Suite',
+          userAgent: 'testhost/1.0 | node-akismet/0.0.1',
           referrer: 'http://jimpick.com/',
           commentContent: 'My comment',
           authorName: 'viagra-test-123',
