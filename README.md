@@ -159,8 +159,6 @@ This just executes `apex logs -f` in `build/apex`
 # To Do List
 
 * Webpack tweaks for production build, upload to S3
-* Client-side checksum/signing
-* Akismet support
 * Slack notifications
 * Private directory on S3
 * Convert config to dot-env
