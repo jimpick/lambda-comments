@@ -1,5 +1,8 @@
 import fetch from 'isomorphic-fetch'
 import { initialize as initializeReduxForm } from 'redux-form'
+import jwa from 'jwa'
+
+const hmac = jwa('HS256')
 
 export const GET_COMMENTS = 'GET_COMMENTS'
 export const GET_COMMENTS_COMPLETE = 'GET_COMMENTS_COMPLETE'
@@ -19,6 +22,7 @@ export const FORM_FIELDS = [
 
 const websiteUrl = __CONFIG__.websiteUrl
 const apiUrl = __CONFIG__.apiUrl
+const apiKey = __CONFIG__.apiKey
 
 class ValidationError extends Error {
   constructor (data) {
@@ -33,6 +37,15 @@ class SpamError extends Error {
   constructor (data) {
     super()
     this.name = 'SpamError'
+    this.data = data
+    this.stack = (new Error()).stack
+  }
+}
+
+class VerificationError extends Error {
+  constructor (data) {
+    super()
+    this.name = 'VerificationError'
     this.data = data
     this.stack = (new Error()).stack
   }
@@ -92,6 +105,11 @@ export function postComment ({
       authorUrl,
     }
     dispatch({ type: POST_COMMENT, payload })
+    const signature = hmac.sign(JSON.stringify(payload), apiKey)
+    const body = JSON.stringify({
+      signature,
+      payload,
+    })
     try {
       const apiPostUrl = `${apiUrl}/comments`
       const response = await fetch(
@@ -99,10 +117,10 @@ export function postComment ({
         {
           method: 'POST',
           headers: {
-            'Accept': 'application/json',
+            Accept: 'application/json',
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify(payload),
+          body,
         }
       )
       const { status } = response
@@ -122,6 +140,9 @@ export function postComment ({
         }
         if (error === 'SpamError') {
           throw new SpamError(data)
+        }
+        if (error === 'VerificationError') {
+          throw new VerificationError(data)
         }
         throw new Error('Error occured while posting comment')
       } else {

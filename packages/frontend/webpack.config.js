@@ -4,6 +4,7 @@ import { DefinePlugin } from 'webpack'
 import 'babel-register'
 import { apiUrl, websiteUrl } from '../../../src/server/lib/cloudFormation'
 import config from '../../../config.js'
+import { apiKey } from '../../../deploy/state/apiKey.json'
 
 function modify (webpackConfig) {
   webpackConfig.postcss = () => {
@@ -39,7 +40,8 @@ function modifyClient (webpackConfig) {
   plugins.push(new DefinePlugin({
     '__CONFIG__': JSON.stringify({
       apiUrl,
-      websiteUrl
+      websiteUrl,
+      apiKey
     })
   }))
   webpackConfig.plugins = plugins

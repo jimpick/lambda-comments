@@ -3,10 +3,14 @@ import { normalize as pathNormalize, join as pathJoin } from 'path'
 import slugid from 'slugid'
 import moment from 'moment'
 import { isEmail, isURL } from 'validator'
+import jwa from 'jwa'
 import { generateReference } from '../../lib/references'
 import { upload } from '../../lib/s3'
 import Akismet from '../../lib/akismet'
 import { updateRecord } from '../../lib/dynamoDb'
+import { apiKey } from '../../../../deploy/state/apiKey.json'
+
+const hmac = jwa('HS256')
 
 let akismet = null
 
@@ -27,7 +31,7 @@ function uploadJson ({ dirName, actionRef, action }) {
   })
 }
 
-function validate (fields) {
+function validate (payload) {
   const {
     permalink,
     userAgent,
@@ -35,7 +39,7 @@ function validate (fields) {
     authorName,
     authorEmail,
     authorUrl
-  } = fields
+  } = payload
   const errors = {}
   if (!permalink) {
     errors._error = 'Missing permalink'
@@ -124,6 +128,19 @@ export async function handler (event, context, callback) {
       isTest
     } = event
     const {
+      signature,
+      payload: incomingPayload
+    } = fields
+    const verification = hmac.verify(
+      JSON.stringify(incomingPayload),
+      signature,
+      apiKey
+    )
+    if (!verification) {
+      throw new Error('VerificationError')
+    }
+    validate(incomingPayload)
+    const {
       permalink,
       referrer,
       userAgent,
@@ -131,8 +148,7 @@ export async function handler (event, context, callback) {
       authorName,
       authorEmail,
       authorUrl
-    } = fields
-    validate(fields)
+    } = incomingPayload
     const { pathname } = urlParse(permalink)
     const normalizedPath = pathNormalize(pathname).replace(/\/+$/, '')
     const dirName = pathJoin('comments', normalizedPath)
@@ -190,6 +206,18 @@ export async function handler (event, context, callback) {
         error: 'SpamError',
         data: {
           _error: 'Our automated filter thinks this comment is spam.'
+        }
+      }))
+      return
+    }
+    if (error.message === 'VerificationError') {
+      if (!quiet) {
+        console.log('Checksum verification failed')
+      }
+      callback(JSON.stringify({
+        error: 'VerificationError',
+        data: {
+          _error: 'Checksum verification failed.'
         }
       }))
       return

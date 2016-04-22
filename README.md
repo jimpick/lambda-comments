@@ -92,7 +92,21 @@ ensure that it completes without errors.
 npm run save-cloudformation
 ```
 
-This will create a file in  `deploy/state/cloudFormation.json`
+This will create a file in `deploy/state/cloudFormation.json`
+
+## Generate an API key
+
+```
+npm run gen-api-key
+```
+
+This will create a file in `deploy/state/apiKey.json` containing an
+apiKey variable that will be baked into the client to sign requests.
+
+The purpose of the API key is to try to minimize spam to the API, but
+as the API key is distributed publicly as part of the javascript, it's
+only there to stop non-sophisticated spammers who don't care enough to
+extract the API key and sign their requests.
 
 ## Setup the Apex build directory
 

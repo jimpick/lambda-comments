@@ -33,7 +33,11 @@ export default class Comments extends Component {
       resetCommentForm({ pathname, clearContent: true })
       return result
     } catch (error) {
-      if (error.name === 'ValidationError' || error.name === 'SpamError') {
+      if (
+        error.name === 'ValidationError' ||
+        error.name === 'SpamError' ||
+        error.name === 'VerificationError'
+      ) {
         throw error.data
       }
       throw { _error: 'An error occurred while posting the comment.' }
