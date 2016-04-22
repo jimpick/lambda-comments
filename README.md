@@ -170,6 +170,8 @@ This just executes `apex logs -f` in `build/apex`
 
 # To Do List
 
+* Script to flip lambda functions to node4.3
+* Parameterize names of lambda functions and API Gateway
 * "Marketing" link to project page
 * Slack notifications
 * Private directory on S3
