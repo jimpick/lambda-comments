@@ -133,7 +133,11 @@ export default class PostCommentForm extends Component {
         <div className={postCommentFormHeader}>
           <strong>Add your comment</strong>
           <span className={markdownNote}>
-            <a href={gitHubUrl} target="_blank">
+            <a
+              target="_blank"
+              rel="noopener"
+              href={gitHubUrl}
+            >
               GitHub-style markdown is supported
             </a>
           </span>
@@ -241,6 +245,7 @@ export default class PostCommentForm extends Component {
             Powered by {' '}
             <a
               target="_blank"
+              rel="noopener"
               href="https://github.com/jimpick/lambda-comments"
             >
               lambda-comments

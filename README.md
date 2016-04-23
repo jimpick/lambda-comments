@@ -222,6 +222,7 @@ This just executes `apex logs -f` in `build/apex`
 * Investigate Swagger
 * Generate API docs
 * Webpack 2 tree-shaking support
+* Optimize download size
 
 # Similar Work
 
