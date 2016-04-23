@@ -100,7 +100,11 @@ async function fetchOldComments({ dirName, quiet }) {
     // For some reason, when there is no file in S3, we get an 'NoSuchKey'
     // error when running from the developer account, but an 'AccessDenied'
     // when running on Lambda
-    if (error.code === 'NoSuchKey' || error.code === 'AccessDenied') {
+    if (
+      error.cause &&
+      (error.cause().code === 'NoSuchKey' ||
+       error.cause().code === 'AccessDenied')
+    ) {
       // It's okay if the file doesn't exist. That is normal
       // for the first post
       if (!quiet) {
