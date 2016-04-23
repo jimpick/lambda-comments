@@ -198,7 +198,15 @@
       "Type": "AWS::ApiGateway::RestApi",
       "Properties": {
         "Description": "API for blog comments",
-        "Name": "Comments"
+        "Name": {
+          "Fn::Join": [
+            "",
+            [
+              "Comments-",
+              { "Ref": "AWS::StackName" }
+            ]
+          ]
+        }
       }
     },
     "CommentsApiResource": {
