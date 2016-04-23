@@ -60,7 +60,10 @@ export default {
   cloudFormation: 'lambdaComments',
   region: 'us-west-2',
   stage: 'prod',
-  // akismet: '<api key from akismet.com>' // optional
+  // akismet: '<api key from akismet.com>', // optional
+  // slackWebhook: 'https://hooks.slack.com/services/...', // optional
+  // slackChannel: '#channel', // optional
+  // slackUsername: 'lambda-comments', // optional
 }
 ```
 
@@ -75,6 +78,8 @@ export default {
 **stage**: The API Gateway stage to create
 
 **akismet**: (Optional, but recommended) API key from [akismet.com](https://akismet.com/) for spam filtering
+
+**slackWebhook**: (Optional) Slack webhook - configure this if you want a notification in a Slack channel each time a comment is posted
 
 ## Use CloudFormation to create the AWS resources
 
@@ -196,8 +201,6 @@ This just executes `apex logs -f` in `build/apex`
 
 # To Do List
 
-* Parameterize names of lambda functions and API Gateway
-* Slack notifications
 * Use blog location for CORS
 * Check that permalink and blog match
 * Private directory on S3

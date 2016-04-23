@@ -3,5 +3,6 @@ export default {
   cloudFormation: 'lambdaComments',
   region: 'us-west-2',
   stage: 'prod',
-  // akismet: '<api key from akismet.com>' // optional
+  // akismet: '<api key from akismet.com>', // optional
+  // slackWebhook: 'https://hooks.slack.com/services/...', // optional
 }

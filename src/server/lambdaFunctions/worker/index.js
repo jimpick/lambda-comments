@@ -4,6 +4,7 @@ import fetch from 'node-fetch'
 import { createStore, applyMiddleware } from 'redux'
 import createLogger from 'redux-logger'
 import moment from 'moment'
+import { postToSlack } from '../../lib/slack'
 import { download, upload } from '../../lib/s3'
 
 let invocationCounter = 0
@@ -119,12 +120,69 @@ async function fetchOldComments({ dirName, quiet }) {
   }
 }
 
+async function postMessageToSlack({ action, quiet }) {
+  const {
+    type,
+    payload: {
+      permalink,
+      authorName,
+      authorEmail,
+      authorUrl,
+      commentContent
+    }
+  } = action
+  if (type !== 'NEW_COMMENT') {
+    return
+  }
+  await postToSlack({
+    message: {
+      text: `Comment posted <${permalink}>`,
+      attachments: [
+        {
+          color: "good",
+          fields: [
+            {
+              title: "Author Name",
+              value: authorName,
+              short: true,
+            },
+            {
+              title: "Author Email",
+              value: authorEmail,
+              short: true,
+            },
+            {
+              title: "Author Url",
+              value: authorUrl,
+              short: true,
+            },
+            {
+              title: "Comment",
+              value: commentContent,
+              short: false,
+            },
+            /*
+            {
+              title: "JSON",
+              value: JSON.stringify(action, null, 2),
+              short: false,
+            },
+            */
+          ]
+        },
+      ]
+    },
+    quiet
+  })
+}
+
 async function downloadActionAndDispatch({ dirName, actionRef, quiet }) {
   await fetchOldComments({ dirName, quiet })
   const key = `${dirName}/.actions/${actionRef}/action.json`
   const fileData = await download({ key })
   const action = JSON.parse(fileData.Body.toString())
   await store.dispatch({ ...action, dirName })
+  await postMessageToSlack({ action, quiet })
 }
 
 async function saveAllComments ({ quiet }) {

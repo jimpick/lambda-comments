@@ -1,4 +1,5 @@
 import AWS from 'aws-sdk'
+import WError from 'verror'
 import config from '../../../config'
 import { resources } from './cloudFormation'
 
@@ -20,7 +21,7 @@ export function upload ({
     }
     awsS3.putObject(params, (err, result) => {
       if (err) {
-        return reject(err)
+        return reject(new WError(err, 'S3'))
       }
       resolve()
     })
@@ -35,7 +36,7 @@ export function download ({ key }) {
     }
     awsS3.getObject(params, (err, result) => {
       if (err) {
-        return reject(err)
+        return reject(new WError(err, 'S3'))
       }
       resolve(result)
     })

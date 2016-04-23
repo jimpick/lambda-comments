@@ -1,4 +1,5 @@
 import AWS from 'aws-sdk'
+import WError from 'verror'
 import config from '../../../config'
 import { resources } from './cloudFormation'
 
@@ -23,7 +24,7 @@ export function updateRecord (object) {
     }
     awsDynamoDb.updateItem(params, (err, result) => {
       if (err) {
-        return reject(err)
+        return reject(new WError(err, 'S3'))
       }
       resolve(result)
     })

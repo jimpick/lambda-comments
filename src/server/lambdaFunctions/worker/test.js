@@ -17,7 +17,7 @@ export function local () {
             dynamodb: {
               NewImage: {
                 actionRef: {
-                  S: '2016/04/15/19:44-eBnt3nJpQ6mGzbs2HZz9xw',
+                  S: '2016/04/23/17:34-xmZXF7R1RPCekSqC1b4FXA',
                 },
                 dirName: {
                   S: 'comments/post/good-to-great'
