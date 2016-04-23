@@ -139,7 +139,6 @@ async function postMessageToSlack({ action, quiet }) {
       text: `Comment posted <${permalink}>`,
       attachments: [
         {
-          color: "good",
           fields: [
             {
               title: "Author Name",
@@ -156,20 +155,19 @@ async function postMessageToSlack({ action, quiet }) {
               value: authorUrl,
               short: true,
             },
-            {
-              title: "Comment",
-              value: commentContent,
-              short: false,
-            },
-            /*
-            {
-              title: "JSON",
-              value: JSON.stringify(action, null, 2),
-              short: false,
-            },
-            */
           ]
         },
+        {
+          title: "Comment",
+          text: commentContent
+        }
+        /*
+        {
+          title: "JSON",
+          value: JSON.stringify(action, null, 2),
+          short: false,
+        },
+        */
       ]
     },
     quiet
