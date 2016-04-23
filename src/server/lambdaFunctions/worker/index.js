@@ -124,6 +124,7 @@ async function postMessageToSlack({ action, quiet }) {
   const {
     type,
     payload: {
+      id,
       permalink,
       authorName,
       authorEmail,
@@ -136,7 +137,7 @@ async function postMessageToSlack({ action, quiet }) {
   }
   await postToSlack({
     message: {
-      text: `Comment posted <${permalink}>`,
+      text: `Comment posted <${permalink}#comment-${id}>`,
       attachments: [
         {
           fields: [

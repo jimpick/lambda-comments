@@ -60,6 +60,24 @@ export default class CommentsContainer extends Component {
     getComments({ url: pathname })
   }
 
+  componentDidUpdate (prevProps) {
+    const { loading: oldLoading } = prevProps
+    const { location: { hash }, loading: newLoading } = this.props
+    if (!newLoading && oldLoading) {
+      // Loading is finished
+      const match = hash.match(/^#(comment-.*)$/)
+      if (match && match[1]) {
+        const id = match[1]
+        const element = document.getElementById(id)
+        if (element) {
+          const rect = element.getBoundingClientRect()
+          const top = rect.top + document.body.scrollTop
+          document.body.scrollTop = top - 30
+        }
+      }
+    }
+  }
+
   render () {
     const {
       params,
