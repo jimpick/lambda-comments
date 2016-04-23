@@ -1,4 +1,7 @@
+import { parse } from 'url'
 import config from '../config'
 
-console.log(config[process.argv[2]])
+const { protocol, host } = parse(config.blog)
+config.origin = `${protocol}//${host}`
 
+console.log(config[process.argv[2]])

@@ -6,6 +6,10 @@
       "Description": "Tag for resources",
       "Type": "String"
     },
+    "Origin": {
+      "Description": "Origin URL for CORS",
+      "Type": "String"
+    },
     "NewResources": {
       "Description": "Include new resources (still being developed)",
       "Default": "false",
@@ -246,13 +250,31 @@
             {
               "StatusCode": "201",
               "ResponseParameters" : {
-                "method.response.header.Access-Control-Allow-Origin": "'*'"
+                "method.response.header.Access-Control-Allow-Origin": {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "'",
+                      { "Ref" : "Origin" },
+                      "'"
+                    ]
+                  ]
+                }
               }
             },
             {
               "StatusCode": "400",
               "ResponseParameters" : {
-                "method.response.header.Access-Control-Allow-Origin": "'*'"
+                "method.response.header.Access-Control-Allow-Origin": {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "'",
+                      { "Ref" : "Origin" },
+                      "'"
+                    ]
+                  ]
+                }
               },
               "SelectionPattern": ".*Error.*"
             }
@@ -292,7 +314,16 @@
               "ResponseParameters" : {
                 "method.response.header.Access-Control-Allow-Headers": "'Content-Type,X-Amz-Date,Authorization,X-Api-Key'",
                 "method.response.header.Access-Control-Allow-Methods": "'POST,OPTIONS'",
-                "method.response.header.Access-Control-Allow-Origin": "'*'"
+                "method.response.header.Access-Control-Allow-Origin": {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "'",
+                      { "Ref" : "Origin" },
+                      "'"
+                    ]
+                  ]
+                }
               }
             }
           ]
@@ -315,7 +346,7 @@
         "CorsConfiguration": {
           "CorsRules": [
             {
-              "AllowedOrigins": [ "*" ],
+              "AllowedOrigins": [ { "Ref" : "Origin" } ],
               "AllowedMethods": [ "GET" ],
               "MaxAge": 3000,
               "AllowedHeaders": [ "Authorization" ]

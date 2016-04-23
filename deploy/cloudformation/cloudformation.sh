@@ -18,6 +18,7 @@ DIR=`cd $(dirname $0); pwd`
 BABEL_NODE=$DIR/../../node_modules/babel-cli/bin/babel-node.js
 BIN_DIR=$DIR/../../bin
 STACK_NAME=$($BABEL_NODE $BIN_DIR/dump-config.js cloudFormation)
+ORIGIN=$($BABEL_NODE $BIN_DIR/dump-config.js origin)
 
 if [ "$ACTION" = "delete-stack" ]; then
   aws cloudformation delete-stack \
@@ -33,6 +34,7 @@ aws cloudformation $ACTION \
     --capabilities CAPABILITY_IAM \
     --parameters \
       ParameterKey=TagName,ParameterValue=$TAG,UsePreviousValue=false \
+      ParameterKey=Origin,ParameterValue=$ORIGIN,UsePreviousValue=false \
 || true
 
 # $BABEL_NODE $BIN_DIR/save-cloudformation-config.js
