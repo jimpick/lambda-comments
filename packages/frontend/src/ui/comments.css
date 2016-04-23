@@ -89,7 +89,7 @@
 }
 
 .markdownNote {
-  a {
+  a, a:focus, a:hover {
     font-size: 10px;
     color: gray;
     text-decoration: none;
@@ -193,5 +193,32 @@
   .comments-leave.comments-leave-active {
     opacity: 0.01;
     transition: opacity 300ms ease-in;
+  }
+}
+
+.footer {
+}
+
+.marketing {
+  float: right;
+  margin-top: 1em;
+  margin-left: 2em;
+  font-size: 10px;
+
+  span, img {
+    vertical-align: middle;
+  }
+
+  a, a:focus, a:hover {
+    color: gray;
+    text-decoration: none;
+
+    img {
+      height: 1em;
+      display: inline;
+      width: 1em;
+      margin-left: 0.3em;
+      margin-top: 0.1em;
+    }
   }
 }

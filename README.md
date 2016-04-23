@@ -151,7 +151,15 @@ npm run deploy-lambda
 
 This will run `apex deploy` in the `build/apex` directory to upload the compiled lambda functions.
 
-Alternatively, if you want to execute the compile and deploy steps in one command, you can run: `npm run deploy`
+Alternatively, if you want to execute the compile and deploy steps in one command, you can run: `npm run deploy-backend`
+
+## Build the frontend javascript
+
+```
+npm run build-frontend
+```
+
+This builds the code in the `packages/frontend` directory.
 
 ## Upload the frontend javascript script to S3
 
@@ -160,6 +168,11 @@ npm run upload-script
 ```
 
 This will copy `lambda-comments.js` to the S3 bucket.
+
+Alternatively, if you want to execute the compile and deploy steps in one command, you can run: `npm run deploy-frontend`.
+
+If you want to deploy the backend and frontend all in one step, you can
+use: `npm run deploy`
 
 ## Run the test suite
 
@@ -184,14 +197,13 @@ This just executes `apex logs -f` in `build/apex`
 # To Do List
 
 * Parameterize names of lambda functions and API Gateway
-* Use blog location for CORS
-* "Marketing" link to project page
 * Slack notifications
+* Use blog location for CORS
+* Check that permalink and blog match
 * Private directory on S3
 * Convert config to dot-env
-* Top-level package.json scripts for client side dev
+* README for web page integration
 * README for client site dev
-* Check that permalink and blog match
 * Override for path location
 * Fetch source page to confirm script is installed on first post
 * Test on various browsers, polyfills

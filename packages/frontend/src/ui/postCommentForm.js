@@ -7,6 +7,7 @@ import Spinner from 'react-spinner'
 import '!style!css!react-spinner/react-spinner.css'
 import { autobind } from 'core-decorators'
 import { isEmail, isURL } from 'validator'
+import gitHubSvg from 'octicons/svg/mark-github.svg'
 import Comment from './comment'
 import {
   postCommentForm,
@@ -20,6 +21,8 @@ import {
   buttonContent,
   buttonText,
   spinnerWrapper,
+  footer,
+  marketing,
 } from './comments.css'
 import { FORM_NAME, FORM_FIELDS } from '../actions/comments'
 
@@ -217,22 +220,34 @@ export default class PostCommentForm extends Component {
             </div>
           }
         </Motion>
-        <button
-          type="submit"
-          className={spinnerButton}
-          disabled={submitting}
-        >
-          <div className={buttonContent}>
-            <div className={buttonText}>
-              {submitting ? 'Submitting Comment' : 'Submit Comment'}
-            </div>
-            {submitting &&
-              <div className={spinnerWrapper}>
-                <Spinner />
+        <div className={footer}>
+          <button
+            type="submit"
+            className={spinnerButton}
+            disabled={submitting}
+          >
+            <div className={buttonContent}>
+              <div className={buttonText}>
+                {submitting ? 'Submitting Comment' : 'Submit Comment'}
               </div>
-            }
+              {submitting &&
+                <div className={spinnerWrapper}>
+                  <Spinner />
+                </div>
+              }
+            </div>
+          </button>
+          <div className={marketing}>
+            Powered by {' '}
+            <a
+              target="_blank"
+              href="https://github.com/jimpick/lambda-comments"
+            >
+              lambda-comments
+              <img src={gitHubSvg} />
+            </a>
           </div>
-        </button>
+        </div>
       </form>
     )
   }
