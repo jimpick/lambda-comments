@@ -1,13 +1,13 @@
 import fs from 'fs'
 import path from 'path'
-import { upload } from '../src/server/lib/s3'
+import { uploadWebsite } from '../src/server/lib/s3'
 
 const filename = 'lambda-comments.js'
 const buildDir = path.normalize(`${__dirname}/../packages/frontend/.build`)
 const jsFile = fs.readFileSync(path.join(buildDir, filename), 'utf8')
 
 async function run () {
-  await upload({
+  await uploadWebsite({
     key: filename,
     data: jsFile,
     contentType: 'application/javascript'

@@ -84,6 +84,20 @@
             },
             {
               "Effect": "Allow",
+              "Action": "s3:*",
+              "Resource": {
+                "Fn::Join": [
+                  "",
+                  [
+                    "arn:aws:s3:::",
+                    { "Ref": "PrivateS3" },
+                    "/*"
+                  ]
+                ]
+              }
+            },
+            {
+              "Effect": "Allow",
               "Action": "dynamodb:*",
               "Resource": {
                 "Fn::Join": [
@@ -361,8 +375,57 @@
     "WebsiteS3BucketPolicy": {
       "Type": "AWS::S3::BucketPolicy",
       "Properties": {
+        "Bucket": { "Ref": "WebsiteS3" },
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Effect": "Allow",
+              "Action": [ "s3:*" ],
+              "Principal": {
+                "AWS": { "Fn::GetAtt" : [ "LambdaRole" , "Arn" ] }
+              },
+              "Resource": [
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:aws:s3:::",
+                      { "Ref": "WebsiteS3" },
+                      "/*"
+                    ]
+                  ]
+                }
+              ]
+            },
+            {
+              "Effect": "Allow",
+              "Action": [ "s3:GetObject" ],
+              "Principal": "*",
+              "Resource": [
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:aws:s3:::",
+                      { "Ref": "WebsiteS3" },
+                      "/*"
+                    ]
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      }
+    },
+    "PrivateS3": {
+      "Type": "AWS::S3::Bucket"
+    },
+    "PrivateS3BucketPolicy": {
+      "Type": "AWS::S3::BucketPolicy",
+      "Properties": {
         "Bucket": {
-          "Ref": "WebsiteS3"
+          "Ref": "PrivateS3"
         },
         "PolicyDocument": {
           "Statement": [
@@ -373,15 +436,16 @@
                 "AWS": { "Fn::GetAtt" : [ "LambdaRole" , "Arn" ] }
               },
               "Resource": [
-                { "Fn::Join": [ "", [ "arn:aws:s3:::", { "Ref": "WebsiteS3" }, "/*" ] ] }
-              ]
-            },
-            {
-              "Effect": "Allow",
-              "Action": [ "s3:*" ],
-              "Principal": "*",
-              "Resource": [
-                { "Fn::Join": [ "", [ "arn:aws:s3:::", { "Ref": "WebsiteS3" }, "/*" ] ] }
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:aws:s3:::",
+                      { "Ref": "PrivateS3" },
+                      "/*"
+                    ]
+                  ]
+                }
               ]
             }
           ]

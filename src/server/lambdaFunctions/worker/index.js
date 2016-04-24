@@ -5,7 +5,7 @@ import { createStore, applyMiddleware } from 'redux'
 import createLogger from 'redux-logger'
 import moment from 'moment'
 import { postToSlack } from '../../lib/slack'
-import { download, upload } from '../../lib/s3'
+import { downloadPrivate, downloadWebsite, uploadWebsite } from '../../lib/s3'
 
 let invocationCounter = 0
 
@@ -86,7 +86,7 @@ async function fetchOldComments({ dirName, quiet }) {
     if (!quiet) {
       console.log('Loading old comments from S3')
     }
-    const fileData = await download({ key })
+    const fileData = await downloadWebsite({ key })
     const { LastModified: lastModified } = fileData
     const timestamp = moment.utc(new Date(lastModified))
     const comments = JSON.parse(fileData.Body.toString())
@@ -182,7 +182,7 @@ async function postMessageToSlack({ action, quiet }) {
 async function downloadActionAndDispatch({ dirName, actionRef, quiet }) {
   await fetchOldComments({ dirName, quiet })
   const key = `${dirName}/.actions/${actionRef}/action.json`
-  const fileData = await download({ key })
+  const fileData = await downloadPrivate({ key })
   const action = JSON.parse(fileData.Body.toString())
   await store.dispatch({ ...action, dirName })
   await postMessageToSlack({ action, quiet })
@@ -194,7 +194,7 @@ async function saveAllComments ({ quiet }) {
     if (!quiet) {
       console.log('Saving', key)
     }
-    await upload({
+    await uploadWebsite({
       key: `${key}/comments.json`,
       data: JSON.stringify(allComments[key].comments, null, 2),
       contentType: 'application/json'

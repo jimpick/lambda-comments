@@ -5,7 +5,7 @@ import moment from 'moment'
 import { isEmail, isURL } from 'validator'
 import jwa from 'jwa'
 import { generateReference } from '../../lib/references'
-import { upload } from '../../lib/s3'
+import { uploadPrivate } from '../../lib/s3'
 import Akismet from '../../lib/akismet'
 import { updateRecord } from '../../lib/dynamoDb'
 import { apiKey } from '../../../../deploy/state/apiKey.json'
@@ -24,7 +24,7 @@ class ValidationError extends Error {
 }
 
 function uploadJson ({ dirName, actionRef, action }) {
-  return upload({
+  return uploadPrivate({
     key: `${dirName}/.actions/${actionRef}/action.json`,
     data: JSON.stringify(action),
     contentType: 'application/json'

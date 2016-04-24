@@ -25,9 +25,9 @@ Additionally, we use Apex to simplify the uploading of the Lambda functions
 It should cost very little to run. The following resources are provisioned:
 
 * DynamoDB - only provisioned for 1 read capacity unit, 1 write capacity unit (which limits it to 1 job per second)
-* S3 - storage for retrieved files and JSON, plus data transfer
+* S3 - storage for comments and private data, plus requests and data transfer
 * CloudWatch logs
-* Lambda invocations
+* Lambda functions - only pay for invocations
 
 # Deployment Instructions
 
@@ -62,8 +62,6 @@ export default {
   stage: 'prod',
   // akismet: '<api key from akismet.com>', // optional
   // slackWebhook: 'https://hooks.slack.com/services/...', // optional
-  // slackChannel: '#channel', // optional
-  // slackUsername: 'lambda-comments', // optional
 }
 ```
 
@@ -154,9 +152,11 @@ The webpack configuration is in `deploy/apex/webpack.config.es6.js`
 npm run deploy-lambda
 ```
 
-This will run `apex deploy` in the `build/apex` directory to upload the compiled lambda functions.
+This will run `apex deploy` in the `build/apex` directory to upload the
+compiled lambda functions.
 
-Alternatively, if you want to execute the compile and deploy steps in one command, you can run: `npm run deploy-backend`
+Alternatively, if you want to execute the compile and deploy steps in one
+command, you can run: `npm run deploy-backend`
 
 ## Build the frontend javascript
 
@@ -174,7 +174,8 @@ npm run upload-script
 
 This will copy `lambda-comments.js` to the S3 bucket.
 
-Alternatively, if you want to execute the compile and deploy steps in one command, you can run: `npm run deploy-frontend`.
+Alternatively, if you want to execute the compile and deploy steps in one
+command, you can run: `npm run deploy-frontend`.
 
 If you want to deploy the backend and frontend all in one step, you can
 use: `npm run deploy`
@@ -185,9 +186,14 @@ use: `npm run deploy`
 npm run test
 ```
 
-This will run both the local tests, and remote test which test the deployed API and lambda functions.
+This will run both the local tests, and remote test which test the
+deployed API and lambda functions.
 
-The local tests can be run as `npm run test-local`, and the remote tests can be run as `npm run test-remote`.
+The local tests can be run as `npm run test-local`, and the remote tests can
+be run as `npm run test-remote`.
+
+Currently the test suite expects some data to pre-exist in the S3 bucket. Until
+the tests are properly mocked, they will fail unless the data is created.
 
 ## View logs
 
@@ -201,9 +207,7 @@ This just executes `apex logs -f` in `build/apex`
 
 # To Do List
 
-* Use blog location for CORS
 * Check that permalink and blog match
-* Private directory on S3
 * Convert config to dot-env
 * README for web page integration
 * README for client site dev
@@ -213,11 +217,12 @@ This just executes `apex logs -f` in `build/apex`
 * Support batches of records in worker
 * Blog post
 * Rearrange code: put lambda scripts under packages directory
-* Admin auth
-* Admin web interface / auth for hiding posts / moderation
-* Turn comments on/off via admin
+* Admin: auth
+* Admin: moderation
+* Admin: submit ham/spam to akismet
+* Admin: Turn comments on/off
 * Support for editing blog posts for a limited time
-* Mocks for AWS calls
+* Mocks for AWS/API calls
 * Integration test
 * Selenium tests
 * Coverage
@@ -226,11 +231,12 @@ This just executes `apex logs -f` in `build/apex`
 * Generate API docs
 * Webpack 2 tree-shaking support
 * Optimize download size
+* Plugins for server-side rendering on common static site generators
+* Optimized bundle for ES6-capable platforms
+* Library for bundling with existing client-side javascript builds
 
-# Similar Work
+# Interesting links
 
-I'm using Apex, but just for uploading the functions. I haven't investigated the other projects yet.
-
-* http://apex.run/ (Go, Terraform)
+* http://apex.run/ (Go, Terraform - we use Apex, but just for convenience to upload the functions)
 * https://github.com/serverless/serverless (CloudFormation)
-* https://github.com/andrew-templeton/cfn-api-gateway-restapi (CloudFormation)
+* [Azure Cloud Functions vs. AWS Lambda](https://serifandsemaphore.io/azure-cloud-functions-vs-aws-lambda-caf8a90605dd#.qtdnojr54)

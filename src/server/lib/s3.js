@@ -5,9 +5,11 @@ import { resources } from './cloudFormation'
 
 const { region } = config
 const awsS3 = new AWS.S3({ region })
-const s3Bucket = resources.WebsiteS3.PhysicalResourceId
+const websiteBucket = resources.WebsiteS3.PhysicalResourceId
+const privateBucket = resources.PrivateS3.PhysicalResourceId
 
-export function upload ({
+function upload ({
+  s3Bucket,
   key,
   data,
   contentType = 'application/octet-stream'
@@ -28,7 +30,17 @@ export function upload ({
   })
 }
 
-export function download ({ key }) {
+export function uploadPrivate (params) {
+  const s3Bucket = privateBucket
+  return upload({ ...params, s3Bucket })
+}
+
+export function uploadWebsite (params) {
+  const s3Bucket = websiteBucket
+  return upload({ ...params, s3Bucket })
+}
+
+export function download ({ s3Bucket, key }) {
   return new Promise((resolve, reject) => {
     const params = {
       Bucket: s3Bucket
@@ -41,4 +53,14 @@ export function download ({ key }) {
       resolve(result)
     })
   })
+}
+
+export function downloadPrivate (params) {
+  const s3Bucket = privateBucket
+  return download({ ...params, s3Bucket })
+}
+
+export function downloadWebsite (params) {
+  const s3Bucket = websiteBucket
+  return download({ ...params, s3Bucket })
 }
