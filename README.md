@@ -234,9 +234,21 @@ This just executes `apex logs -f` in `build/apex`
 * Plugins for server-side rendering on common static site generators
 * Optimized bundle for ES6-capable platforms
 * Library for bundling with existing client-side javascript builds
+* Investigate deep integration with React.js static site generators
+ * [Gatsby](https://github.com/gatsbyjs/gatsby)
+ * [Phenomic](https://github.com/MoOx/phenomic)
+* Instructions for static-ish hosting platforms
+ * [GitHub Pages](https://pages.github.com/)
+ * [Surge](http://surge.sh/)
+ * [Netlify](https://www.netlify.com/)
+ * [Aerobatic](https://www.aerobatic.com/)
+ * [Firebase](https://www.firebase.com/)
+ * [Zeit](https://zeit.co/)
 
 # Interesting links
 
 * http://apex.run/ (Go, Terraform - we use Apex, but just for convenience to upload the functions)
 * https://github.com/serverless/serverless (CloudFormation)
+* https://github.com/motdotla/node-lambda
 * [Azure Cloud Functions vs. AWS Lambda](https://serifandsemaphore.io/azure-cloud-functions-vs-aws-lambda-caf8a90605dd#.qtdnojr54)
+* https://github.com/smallwins/lambda
