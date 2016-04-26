@@ -252,3 +252,6 @@ This just executes `apex logs -f` in `build/apex`
 * https://github.com/motdotla/node-lambda
 * [Azure Cloud Functions vs. AWS Lambda](https://serifandsemaphore.io/azure-cloud-functions-vs-aws-lambda-caf8a90605dd#.qtdnojr54)
 * https://github.com/smallwins/lambda
+* https://github.com/vandium-io/vandium-node
+* https://github.com/donnemartin/awesome-aws#lambda
+* https://github.com/donnemartin/awesome-aws#api-gateway
