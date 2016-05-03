@@ -54,7 +54,9 @@ export default class Comments extends Component {
     } = this.props
     return (
       <div>
-        <div className={header}>{comments.length} comments</div>
+        <div className={header}>
+          {comments.length} {comments.length !== 1 ? 'comments' : 'comment'} 
+        </div>
         <div className={commentsContainer}>
           <ReactCSSTransitionGroup
             transitionName="comments"

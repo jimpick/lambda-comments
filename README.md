@@ -207,15 +207,17 @@ This just executes `apex logs -f` in `build/apex`
 
 # To Do List
 
-* Check that permalink and blog match
 * Convert config to dot-env
 * README for web page integration
 * README for client site dev
+* Support batches of records in worker
+* Blog post
+* Simplified installation
+* Check that permalink and blog match
 * Override for path location
 * Fetch source page to confirm script is installed on first post
 * Test on various browsers, polyfills
-* Support batches of records in worker
-* Blog post
+* CORS override
 * Rearrange code: put lambda scripts under packages directory
 * Admin: auth
 * Admin: moderation
