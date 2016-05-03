@@ -24,10 +24,11 @@ Additionally, we use Apex to simplify the uploading of the Lambda functions
 
 It should cost very little to run. The following resources are provisioned:
 
-* DynamoDB - only provisioned for 1 read capacity unit, 1 write capacity unit (which limits it to 1 job per second)
-* S3 - storage for comments and private data, plus requests and data transfer
-* CloudWatch logs
-* Lambda functions - only pay for invocations
+* [DynamoDB](https://aws.amazon.com/dynamodb/pricing/) - only provisioned for 1 read capacity unit, 1 write capacity unit (which limits it to 1 job per second). This is the most expensive resource, approximately $0.65 a month.
+* [S3](https://aws.amazon.com/s3/pricing/) - storage for comments and private data, plus requests and data transfer
+* [CloudWatch Logs](https://aws.amazon.com/cloudwatch/pricing/)
+* [Lambda functions](https://aws.amazon.com/lambda/pricing/) - only pay for invocations, first million requests per month are free (hopefully your blog isn't that popular)
+* [API gateway](https://aws.amazon.com/api-gateway/pricing/) - only pay for API calls
 
 # Deployment Instructions
 
@@ -42,6 +43,7 @@ or
 `git clone git@github.com:jimpick/lambda-comments.git` (git)
 * `cd lambda-comments`
 * `npm install`
+* Also install npm packages in the frontend code directory `(cd packages/frontend && npm install)`
 * Install [Apex](http://apex.run/)
 
 ## Configuration
@@ -249,6 +251,8 @@ This just executes `apex logs -f` in `build/apex`
 
 # Interesting links
 
+Lots of related projects, many of which I haven't investigated yet.
+
 * http://apex.run/ (Go, Terraform - we use Apex, but just for convenience to upload the functions)
 * https://github.com/serverless/serverless (CloudFormation)
 * https://github.com/motdotla/node-lambda
@@ -257,3 +261,6 @@ This just executes `apex logs -f` in `build/apex`
 * https://github.com/vandium-io/vandium-node
 * https://github.com/donnemartin/awesome-aws#lambda
 * https://github.com/donnemartin/awesome-aws#api-gateway
+* http://kevinold.com/2016/02/01/serverless-graphql.html
+* https://github.com/serverless/serverless-graphql-blog
+* https://github.com/ummels/jekyll-aws-comments
