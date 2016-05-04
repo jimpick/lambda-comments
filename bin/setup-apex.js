@@ -2,11 +2,13 @@ import path from 'path'
 import fs from 'fs'
 import rimraf from 'rimraf'
 import mkdirp from 'mkdirp'
-import config from '../config'
+import dotenv from 'dotenv'
 import { outputs } from '../src/server/lib/cloudFormation'
 
+dotenv.config()
+
 const apexProjectTemplate = {
-  name: config.cloudFormation,
+  name: process.env.CLOUDFORMATION,
   description: 'lambda-comments Lambda Functions',
   memory: 128,
   timeout: 30,

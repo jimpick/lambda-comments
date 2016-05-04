@@ -1,13 +1,16 @@
+import dotenv from 'dotenv'
 import { ClientConfig, ServerConfig } from 'react-project/webpack'
 import postcssNested from 'postcss-nested'
 import { DefinePlugin } from 'webpack'
 import 'babel-register'
-import { apiUrl, websiteUrl } from '../../../src/server/lib/cloudFormation'
-import config from '../../../config.js'
 import { apiKey } from '../../../deploy/state/apiKey.json'
-import dotenv from 'dotenv'
+import { getApiUrl, getWebsiteUrl } from '../../../src/server/lib/cloudFormation'
 
-dotenv.config({ silent: true })
+dotenv.config()
+dotenv.config({ path: '../../.env' })
+
+const apiUrl = getApiUrl()
+const websiteUrl = getWebsiteUrl()
 
 function modify (webpackConfig) {
   webpackConfig.postcss = () => {

@@ -13,7 +13,8 @@
     "test": "karma start",
     "react-project:start:dev": "eslint src && react-project start",
     "react-project:start:prod": "rm -rf .build && react-project build && cd .build && serve -p 9876",
-    "build-prod": "rm -rf .build && NODE_ENV=production react-project build"
+    "build-prod": "npm run clean && NODE_ENV=production react-project build",
+    "clean": "rimraf .build"
   },
   "author": "",
   "license": "ISC",
@@ -89,6 +90,7 @@
   },
   "devDependencies": {
     "postcss-nested": "1.0.0",
+    "rimraf": "2.5.2",
     "serve": "1.4.0"
   }
 }

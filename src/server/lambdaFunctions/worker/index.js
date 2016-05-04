@@ -4,8 +4,11 @@ import fetch from 'node-fetch'
 import { createStore, applyMiddleware } from 'redux'
 import createLogger from 'redux-logger'
 import moment from 'moment'
+import dotenv from 'dotenv'
 import { postToSlack } from '../../lib/slack'
 import { downloadPrivate, downloadWebsite, uploadWebsite } from '../../lib/s3'
+
+dotenv.config({ silent: true })
 
 let invocationCounter = 0
 
@@ -166,13 +169,6 @@ async function postMessageToSlack({ action, quiet }) {
           title: "Comment",
           text: commentContent
         }
-        /*
-        {
-          title: "JSON",
-          value: JSON.stringify(action, null, 2),
-          short: false,
-        },
-        */
       ]
     },
     quiet

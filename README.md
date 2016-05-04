@@ -48,38 +48,59 @@ or
 
 ## Configuration
 
-Copy `config.template.js` to `config.js` and customize it.
+Copy `.env.SAMPLE` to `.env` and customize it.
 
 ```
-cp config.template.js config.js
+cp .env.SAMPLE .env
 ```
 
-The default config.template.js is:
+The default .env.SAMPLE contains:
 
 ```
-export default {
-  blog: 'http://example.com/',
-  cloudFormation: 'lambdaComments',
-  region: 'us-west-2',
-  stage: 'prod',
-  // akismet: '<api key from akismet.com>', // optional
-  // slackWebhook: 'https://hooks.slack.com/services/...', // optional
-}
+# The URL of your blog/website that will be hosting the comments
+# Used to generate CORS headers and also for Akismet
+BLOG=https://example.com/blog/
+
+# A name for your CloudFormation stack
+# Also prefixed to the API Gateway REST API name
+CLOUDFORMATION=myBlogComments
+
+# The AWS region to provision the resources in
+REGION=us-west-2
+
+# The name for the API Gateway stage
+STAGE=prod
+
+# The Akismet.com API key (optional, but recommended)
+# Akismet is a service for combatting blog spam from Automattic (WordPress)
+#AKISMET=0123456789ab
+
+# A Slack webhook to send notifications to (optional)
+#SLACK=https://hooks.slack.com/services/XXXXXXXXX/YYYYYYYYY/ZZZZZZZZZZZZZZZZZZZZZZZZ
 ```
+
+We use [dotenv](https://github.com/motdotla/dotenv) so it is also possible to
+configure the project by setting environment variables.
 
 ### Parameters
 
-**blog**: The full base url of the blog/website
+**BLOG**: The full base url of the blog/website
 
-**cloudFormation**: The name of the CloudFormation stack
+**CLOUDFORMATION**: The name of the CloudFormation stack
 
-**region**: The AWS region
+**REGION**: The AWS region
 
-**stage**: The API Gateway stage to create
+**STAGE**: The API Gateway stage to create
 
-**akismet**: (Optional, but recommended) API key from [akismet.com](https://akismet.com/) for spam filtering
+**AKISMET**: (Optional, but recommended) API key from [akismet.com](https://akismet.com/) for spam filtering
 
-**slackWebhook**: (Optional) Slack webhook - configure this if you want a notification in a Slack channel each time a comment is posted
+**SLACK**: (Optional) Slack webhook - configure this if you want a notification
+in a Slack channel each time a comment is posted
+
+## Installation
+
+For now, follow the step-by-step instructions below. In the future, we will
+develop a streamlined installation procedure.
 
 ## Use CloudFormation to create the AWS resources
 
@@ -209,7 +230,6 @@ This just executes `apex logs -f` in `build/apex`
 
 # To Do List
 
-* Convert config to dot-env
 * README for web page integration
 * README for client site dev
 * Support batches of records in worker

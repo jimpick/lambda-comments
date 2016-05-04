@@ -1,13 +1,12 @@
 import AWS from 'aws-sdk'
 import WError from 'verror'
-import config from '../../../config'
 import { resources } from './cloudFormation'
 
-const { region } = config
-const awsDynamoDb = new AWS.DynamoDB({ region })
 const dynamoDbTable = resources.JobStreamDynamoDBTable.PhysicalResourceId
 
 export function updateRecord (object) {
+  const { REGION: region } = process.env
+  const awsDynamoDb = new AWS.DynamoDB({ region })
   return new Promise((resolve, reject) => {
     const params = {
       TableName: dynamoDbTable,

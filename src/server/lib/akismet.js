@@ -1,43 +1,44 @@
 import akismet from '@jimpick/akismet-api'
-import config from '../../../config'
-
-const { akismet: apiKey, blog } = config
 
 export default class Akismet {
   constructor () {
+    const { AKISMET: apiKey, BLOG: blog } = process.env
+
     this.client = akismet.client({ blog, key: apiKey })
+    this.apiKey = apiKey
+    this.blog = blog
   }
 
   configured () {
-    return !!apiKey
+    return !!this.apiKey
   }
 
   verifyKey () {
-    if (!apiKey) {
+    if (!this.apiKey) {
       throw new Error('Missing Akismet API Key')
     }
     return this.client.verifyKey()
   }
 
   checkSpam (options) {
-    if (!apiKey) {
+    if (!this.apiKey) {
       throw new Error('Missing Akismet API Key')
     }
-    return this.client.checkSpam({ blog, ...options })
+    return this.client.checkSpam({ blog: this.blog, ...options })
   }
 
   submitSpam (options) {
-    if (!apiKey) {
+    if (!this.apiKey) {
       throw new Error('Missing Akismet API Key')
     }
-    return this.client.submitSpam({ blog, ...options })
+    return this.client.submitSpam({ blog: this.blog, ...options })
   }
 
   submitHam (options) {
-    if (!apiKey) {
+    if (!this.apiKey) {
       throw new Error('Missing Akismet API Key')
     }
-    return this.client.submitHam({ blog, ...options })
+    return this.client.submitHam({ blog: this.blog, ...options })
   }
 
 }

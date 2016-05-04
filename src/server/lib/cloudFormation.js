@@ -1,5 +1,4 @@
 import cloudFormation from '../../../deploy/state/cloudFormation.json'
-import config from '../../../config'
 
 const {
   stack: {
@@ -28,16 +27,24 @@ export const resources = cloudFormationResources.reduce((prev, resource) => {
   }
 }, {})
 
-const { region } = config
+export function getApiUrl () {
+  const { REGION: region, STAGE: stage } = process.env
+  return (
+    'https://' +
+    resources.RestApi.PhysicalResourceId +
+    '.execute-api.' +
+    region +
+    '.amazonaws.com/' +
+    stage
+  )
+}
 
-export const apiUrl = 'https://' +
-  resources.RestApi.PhysicalResourceId +
-  '.execute-api.' +
-  region +
-  '.amazonaws.com/prod'
-
-export const websiteUrl =
-  `https://s3-${region}.amazonaws.com/` +
-  resources.WebsiteS3.PhysicalResourceId
+export function getWebsiteUrl () {
+  const { REGION: region } = process.env
+  return (
+    `https://s3-${region}.amazonaws.com/` +
+    resources.WebsiteS3.PhysicalResourceId
+  )
+}
 
 export default cloudFormation

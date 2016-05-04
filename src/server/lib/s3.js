@@ -1,10 +1,7 @@
 import AWS from 'aws-sdk'
 import WError from 'verror'
-import config from '../../../config'
 import { resources } from './cloudFormation'
 
-const { region } = config
-const awsS3 = new AWS.S3({ region })
 const websiteBucket = resources.WebsiteS3.PhysicalResourceId
 const privateBucket = resources.PrivateS3.PhysicalResourceId
 
@@ -14,6 +11,8 @@ function upload ({
   data,
   contentType = 'application/octet-stream'
 }) {
+  const { REGION: region } = process.env
+  const awsS3 = new AWS.S3({ region })
   return new Promise((resolve, reject) => {
     const params = {
       Bucket: s3Bucket
@@ -41,6 +40,8 @@ export function uploadWebsite (params) {
 }
 
 export function download ({ s3Bucket, key }) {
+  const { REGION: region } = process.env
+  const awsS3 = new AWS.S3({ region })
   return new Promise((resolve, reject) => {
     const params = {
       Bucket: s3Bucket

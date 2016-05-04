@@ -1,7 +1,10 @@
 import path from 'path'
+import dotenv from 'dotenv'
 import StringReplacePlugin from 'string-replace-webpack-plugin'
 import { resources } from '../../src/server/lib/cloudFormation'
 import { DefinePlugin, NormalModuleReplacementPlugin } from 'webpack'
+
+dotenv.config()
 
 const nodeModulesDir = path.normalize(`${__dirname}/../../node_modules`)
 
@@ -71,7 +74,14 @@ export default {
     new NormalModuleReplacementPlugin(/\/iconv-loader$/, 'node-noop'),
     new StringReplacePlugin(),
     // https://github.com/visionmedia/superagent/wiki/Superagent-for-Webpack
-    new DefinePlugin({ "global.GENTLY": false }),
+    new DefinePlugin({
+      'global.GENTLY': false,
+      'process.env.BLOG': `'${process.env.BLOG}'`,
+      'process.env.REGION': `'${process.env.REGION}'`,
+      'process.env.STAGE': `'${process.env.STAGE}'`,
+      'process.env.AKISMET': `'${process.env.AKISMET}'`,
+      'process.env.SLACK': `'${process.env.SLACK}'`,
+    }),
   ],
   // From: https://github.com/webpack/webpack/issues/784
   // for modules

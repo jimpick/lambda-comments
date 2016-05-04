@@ -17,8 +17,8 @@ TAG='lambda-comments'
 DIR=`cd $(dirname $0); pwd`
 BABEL_NODE=$DIR/../../node_modules/babel-cli/bin/babel-node.js
 BIN_DIR=$DIR/../../bin
-STACK_NAME=$($BABEL_NODE $BIN_DIR/dump-config.js cloudFormation)
-ORIGIN=$($BABEL_NODE $BIN_DIR/dump-config.js origin)
+STACK_NAME=$($BABEL_NODE $BIN_DIR/dump-config.js CLOUDFORMATION)
+ORIGIN=$($BABEL_NODE $BIN_DIR/dump-config.js ORIGIN)
 
 if [ "$ACTION" = "delete-stack" ]; then
   aws cloudformation delete-stack \

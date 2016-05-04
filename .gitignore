@@ -1,4 +1,4 @@
-config.js
+.env
 node_modules
 deploy/state
 build

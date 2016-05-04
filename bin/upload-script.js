@@ -1,6 +1,9 @@
 import fs from 'fs'
 import path from 'path'
+import dotenv from 'dotenv'
 import { uploadWebsite } from '../src/server/lib/s3'
+
+dotenv.config()
 
 const filename = 'lambda-comments.js'
 const buildDir = path.normalize(`${__dirname}/../packages/frontend/.build`)

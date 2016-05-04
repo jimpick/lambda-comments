@@ -2,7 +2,9 @@ import fs from 'fs'
 import path from 'path'
 import mkdirp from 'mkdirp'
 import AWS from 'aws-sdk'
-import config from '../config'
+import dotenv from 'dotenv'
+
+dotenv.config()
 
 function describeStackResources ({ cloudFormation, stackName }) {
   return new Promise((resolve, reject) => {
@@ -43,7 +45,7 @@ function describeStack ({ cloudFormation, stackName }) {
 
 async function run () {
   try {
-    const { cloudFormation: stackName, region } = config
+    const { CLOUDFORMATION: stackName, REGION: region } = process.env
     const cloudFormation = new AWS.CloudFormation({ region })
     const resources = await describeStackResources({ cloudFormation, stackName })
     const stack = await describeStack({ cloudFormation, stackName })

@@ -1,6 +1,6 @@
 import assert from 'assert'
 import supertest from 'supertest'
-import { apiUrl } from '../../lib/cloudFormation'
+import { getApiUrl } from '../../lib/cloudFormation'
 import { apiKey } from '../../../../deploy/state/apiKey.json'
 import { expect } from 'chai'
 import { handler } from './index'
@@ -177,7 +177,7 @@ export function remote () {
         authorUrl: 'http://bob.example.com/'
       }
       const signature = hmac.sign(JSON.stringify(payload), apiKey)
-      const request = supertest(apiUrl)
+      const request = supertest(getApiUrl())
         .post('/comments')
         .send({ payload, signature })
       testResponse(request, done)
@@ -186,7 +186,7 @@ export function remote () {
     it('should fail if there is no data', function (done) {
       const payload = {}
       const signature = hmac.sign(JSON.stringify(payload), apiKey)
-      const request = supertest(apiUrl)
+      const request = supertest(getApiUrl())
         .post('/comments')
         .send({ payload, signature })
         .expect(400)

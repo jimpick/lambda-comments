@@ -1,7 +1,9 @@
 import { parse } from 'url'
-import config from '../config'
+import dotenv from 'dotenv'
 
-const { protocol, host } = parse(config.blog)
-config.origin = `${protocol}//${host}`
+dotenv.config()
 
-console.log(config[process.argv[2]])
+const { protocol, host } = parse(process.env.BLOG)
+process.env.ORIGIN = `${protocol}//${host}`
+
+console.log(process.env[process.argv[2]])

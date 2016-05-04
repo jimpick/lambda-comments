@@ -4,11 +4,14 @@ import slugid from 'slugid'
 import moment from 'moment'
 import { isEmail, isURL } from 'validator'
 import jwa from 'jwa'
+import dotenv from 'dotenv'
 import { generateReference } from '../../lib/references'
 import { uploadPrivate } from '../../lib/s3'
 import Akismet from '../../lib/akismet'
 import { updateRecord } from '../../lib/dynamoDb'
 import { apiKey } from '../../../../deploy/state/apiKey.json'
+
+dotenv.config({ silent: true })
 
 const hmac = jwa('HS256')
 

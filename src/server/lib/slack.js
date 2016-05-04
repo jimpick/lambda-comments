@@ -1,11 +1,10 @@
 import Slack from 'node-slack'
 import WError from 'verror'
-import config from '../../../config'
-
-const { slackWebhook } = config
-const slack = slackWebhook ? new Slack(slackWebhook) : null
 
 export function postToSlack ({ message, quiet }) {
+  const { SLACK: slackWebhook } = process.env
+  const slack = slackWebhook ? new Slack(slackWebhook) : null
+
   if (!slack) {
     return Promise.resolve()
   }
