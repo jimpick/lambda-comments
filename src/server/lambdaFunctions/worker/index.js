@@ -221,31 +221,36 @@ export async function handler (event, context, callback) {
   try {
     // console.log('Event', JSON.stringify(event, null, 2))
     const {
-      Records: [
-        {
-          dynamodb: {
-            NewImage: {
-              actionRef: {
-                S: actionRef
-              },
-              dirName: {
-                S: dirName
-              }
-            }
-          }
-        }
-      ],
+      Records: records,
       quiet,
       dryRun
     } = event
     if (!quiet) {
       console.log('Invocation count:', ++invocationCounter)
-      // console.log(JSON.stringify(event, null, 2))
-      console.log('dirName:', dirName)
-      console.log('actionRef:', actionRef)
     }
-    if (!dryRun) {
-      await downloadActionAndDispatch({ dirName, actionRef, quiet })
+    let count = 0
+    for (let record of records) {
+      const {
+        dynamodb: {
+          NewImage: {
+            actionRef: {
+              S: actionRef
+            },
+            dirName: {
+              S: dirName
+            }
+          }
+        }
+      } = record
+      count++
+      if (!quiet) {
+        console.log(`Record ${count} of ${records.length}`)
+        console.log('  dirName:', dirName)
+        console.log('  actionRef:', actionRef)
+      }
+      if (!dryRun) {
+        await downloadActionAndDispatch({ dirName, actionRef, quiet })
+      }
     }
     await saveAllComments({ quiet })
     callback( null, { success: true } )

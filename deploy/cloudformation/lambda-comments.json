@@ -185,7 +185,7 @@
     "WorkerLambdaEventSourceMapping": {
       "Type": "AWS::Lambda::EventSourceMapping",
       "Properties": {
-        "BatchSize": 1,
+        "BatchSize": 20,
         "Enabled": true,
         "EventSourceArn": { "Fn::GetAtt": [ "JobStreamDynamoDBTable", "StreamArn" ] },
         "FunctionName": { "Ref": "WorkerLambdaFunction" },
