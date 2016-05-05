@@ -3,7 +3,8 @@ import WError from 'verror'
 
 export function postToSlack ({ message, quiet }) {
   const { SLACK: slackWebhook } = process.env
-  const slack = slackWebhook ? new Slack(slackWebhook) : null
+  const slack = slackWebhook && slackWebhook !== 'undefined'
+    ? new Slack(slackWebhook) : null
 
   if (!slack) {
     return Promise.resolve()

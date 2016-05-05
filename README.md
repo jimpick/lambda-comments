@@ -108,8 +108,8 @@ develop a streamlined installation procedure.
 npm run create-cloudformation
 ```
 
-The command returns immediately, but it will take a while to complete.
-it's deploying a lot of resources. It's a good idea
+The command returns immediately, but it will take a while to complete
+(typically 3-4 minutes). It's a good idea
 to watch the CloudFormation task in the AWS Web Console to
 ensure that it completes without errors.
 
@@ -286,8 +286,6 @@ the development server into the page:
 
 # To Do List
 
-* Support batches of records in worker
-* Blog post
 * Simplified installation
 * Check that permalink and blog match
 * Override for path location
