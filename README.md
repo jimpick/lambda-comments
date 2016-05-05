@@ -42,8 +42,7 @@ It should cost very little to run. The following resources are provisioned:
 or  
 `git clone git@github.com:jimpick/lambda-comments.git` (git)
 * `cd lambda-comments`
-* `npm install`
-* Also install npm packages in the frontend code directory `(cd packages/frontend && npm install)`
+* `npm run install-all` (runs `npm install` in top directory as well as in `packages/frontend`)
 * Install [Apex](http://apex.run/)
 
 ## Configuration
