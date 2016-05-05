@@ -47,4 +47,13 @@ export function getWebsiteUrl () {
   )
 }
 
+export function getClientJsUrl () {
+  const { REGION: region } = process.env
+  return (
+    `//s3-${region}.amazonaws.com/` +
+    resources.WebsiteS3.PhysicalResourceId +
+    '/lambda-comments.js'
+  )
+}
+
 export default cloudFormation

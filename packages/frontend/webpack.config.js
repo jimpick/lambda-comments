@@ -47,9 +47,7 @@ function modifyClient (webpackConfig) {
   console.log('Entry before', entry)
   entry['lambda-comments'] = entry.app
   delete entry.app
-  if (process.env.NODE_ENV === 'production') {
-    delete entry._vendor
-  }
+  delete entry._vendor
   console.log('Entry after', entry)
   console.log('Output filename before', filename)
   filename = filename.replace('[chunkHash].js', '[name].js')
@@ -58,19 +56,7 @@ function modifyClient (webpackConfig) {
   console.log('Plugins before', plugins)
   plugins = plugins.filter(plugin => {
     const name = plugin.constructor.name
-    if (
-      process.env.NODE_ENV === 'production' &&
-      name === 'CommonsChunkPlugin'
-    ) {
-      return false
-    }
-    return name !== 'ExtractTextPlugin'
-  })
-  plugins.forEach(plugin => {
-    const name = plugin.constructor.name
-    if (name === 'CommonsChunkPlugin' && plugin.chunkNames === '_vendor') {
-      plugin.filenameTemplate = 'vendor.js'
-    }
+    return name !== 'ExtractTextPlugin' && name !== 'CommonsChunkPlugin'
   })
 
   plugins.push(new DefinePlugin({

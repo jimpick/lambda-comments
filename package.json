@@ -25,6 +25,7 @@
     "test": "mocha --compilers js:babel-core/register",
     "post-url": "babel-node bin/post-url.js http://jimpick.com/",
     "logs": "cd build/apex && apex logs -f",
+    "get-client-js-url": "babel-node bin/get-client-js-url.js",
     "clean": "rimraf build && rimraf deploy/state && cd packages/frontend && npm run clean"
   },
   "author": "Jim Pick <jim@jimpick.com>",
