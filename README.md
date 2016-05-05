@@ -283,6 +283,7 @@ the development server into the page:
 
 # To Do List
 
+* Backups
 * Support batches of records in worker
 * Blog post
 * Simplified installation
@@ -324,14 +325,33 @@ the development server into the page:
 
 Lots of related projects, many of which I haven't investigated yet.
 
+## Lambda / Serverless Frameworks
 * http://apex.run/ (Go, Terraform - we use Apex, but just for convenience to upload the functions)
 * https://github.com/serverless/serverless (CloudFormation)
 * https://github.com/motdotla/node-lambda
 * [Azure Cloud Functions vs. AWS Lambda](https://serifandsemaphore.io/azure-cloud-functions-vs-aws-lambda-caf8a90605dd#.qtdnojr54)
+
+## Lambda Libraries
+
 * https://github.com/smallwins/lambda
 * https://github.com/vandium-io/vandium-node
+
+## Awesome Lists
+
 * https://github.com/donnemartin/awesome-aws#lambda
 * https://github.com/donnemartin/awesome-aws#api-gateway
+
+## Serverless Comment Systems
+
 * http://kevinold.com/2016/02/01/serverless-graphql.html
 * https://github.com/serverless/serverless-graphql-blog
 * https://github.com/ummels/jekyll-aws-comments
+
+## Open-source Comment Systems
+
+* https://posativ.org/isso/
+
+## Hosted Comment Platforms
+
+* https://disqus.com/
+* http://web.livefyre.com/comments/
