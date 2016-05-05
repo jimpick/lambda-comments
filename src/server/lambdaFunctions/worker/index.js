@@ -6,7 +6,13 @@ import createLogger from 'redux-logger'
 import moment from 'moment'
 import dotenv from 'dotenv'
 import { postToSlack } from '../../lib/slack'
-import { downloadPrivate, downloadWebsite, uploadWebsite } from '../../lib/s3'
+import {
+  downloadPrivate,
+  downloadWebsite,
+  uploadPrivate,
+  uploadWebsite
+} from '../../lib/s3'
+import { generateReference } from '../../lib/references'
 
 dotenv.config({ silent: true })
 
@@ -190,6 +196,13 @@ async function saveAllComments ({ quiet }) {
     if (!quiet) {
       console.log('Saving', key)
     }
+    const now = moment.utc()
+    const backupRef = generateReference(now)
+    await uploadPrivate({
+      key: `${key}/.backup/${backupRef}/comments.json`,
+      data: JSON.stringify(allComments[key].comments, null, 2),
+      contentType: 'application/json'
+    })
     await uploadWebsite({
       key: `${key}/comments.json`,
       data: JSON.stringify(allComments[key].comments, null, 2),
