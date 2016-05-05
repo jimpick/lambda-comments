@@ -22,6 +22,21 @@ const lambdaDirNames = lambdas.reduce((lookupTable, logicalResourceId) => {
   }
 }, {})
 
+const defines = {
+  'global.GENTLY': false,
+  'process.env.BLOG': `'${process.env.BLOG}'`,
+  'process.env.REGION': `'${process.env.REGION}'`,
+  'process.env.STAGE': `'${process.env.STAGE}'`,
+}
+
+if (process.env.AKISMET) {
+  defines['process.env.AKISMET'] = `'${process.env.AKISMET}'`
+}
+
+if (process.env.SLACK) {
+  defines['process.env.SLACK'] = `'${process.env.SLACK}'`
+}
+
 export default {
   entry: {
     [lambdaDirNames['QueueComment']]: [
@@ -74,14 +89,7 @@ export default {
     new NormalModuleReplacementPlugin(/\/iconv-loader$/, 'node-noop'),
     new StringReplacePlugin(),
     // https://github.com/visionmedia/superagent/wiki/Superagent-for-Webpack
-    new DefinePlugin({
-      'global.GENTLY': false,
-      'process.env.BLOG': `'${process.env.BLOG}'`,
-      'process.env.REGION': `'${process.env.REGION}'`,
-      'process.env.STAGE': `'${process.env.STAGE}'`,
-      'process.env.AKISMET': `'${process.env.AKISMET}'`,
-      'process.env.SLACK': `'${process.env.SLACK}'`,
-    }),
+    new DefinePlugin(defines),
   ],
   // From: https://github.com/webpack/webpack/issues/784
   // for modules

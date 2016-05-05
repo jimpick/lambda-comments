@@ -10,7 +10,7 @@ export default class Akismet {
   }
 
   configured () {
-    return this.apiKey !== 'undefined'
+    return !!this.apiKey
   }
 
   verifyKey () {
