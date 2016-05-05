@@ -23,7 +23,7 @@ export function updateRecord (object) {
     }
     awsDynamoDb.updateItem(params, (err, result) => {
       if (err) {
-        return reject(new WError(err, 'S3'))
+        return reject(new WError(err, 'DynamoDB'))
       }
       resolve(result)
     })
