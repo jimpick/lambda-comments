@@ -88,11 +88,21 @@ export default class PostCommentForm extends Component {
       },
       pathname,
     } = nextProps
-    localStorage.setItem('pathname', pathname)
-    localStorage.setItem('commentContent', commentContent)
-    localStorage.setItem('authorName', authorName)
-    localStorage.setItem('authorEmail', authorEmail)
-    localStorage.setItem('authorUrl', authorUrl)
+    if (pathname !== null) {
+      localStorage.setItem('pathname', pathname)
+    }
+    if (commentContent !== null) {
+      localStorage.setItem('commentContent', commentContent)
+    }
+    if (authorName !== null) {
+      localStorage.setItem('authorName', authorName)
+    }
+    if (authorEmail !== null) {
+      localStorage.setItem('authorEmail', authorEmail)
+    }
+    if (authorUrl !== null) {
+      localStorage.setItem('authorUrl', authorUrl)
+    }
   }
 
   @autobind
