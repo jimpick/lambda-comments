@@ -300,6 +300,8 @@ the development server into the page:
 * Admin: submit ham/spam to akismet
 * Admin: Turn comments on/off
 * Support for editing blog posts for a limited time
+* Detect DDoS style attacks and automatically throttle
+  API Gateway to prevent unlimited charges
 * Mocks for AWS/API calls
 * Integration test
 * Selenium tests
