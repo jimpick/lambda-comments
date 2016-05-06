@@ -287,6 +287,7 @@ the development server into the page:
 
 # To Do List
 
+* Limit length of comments and metadata
 * Simplified installation
 * Check that permalink and blog match
 * Override for path location
@@ -303,6 +304,7 @@ the development server into the page:
 * Integration test
 * Selenium tests
 * Coverage
+* Emoji support
 * Handle DynamoDB ProvisionedThroughputExceededException
 * Investigate Swagger
 * Generate API docs
