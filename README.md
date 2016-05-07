@@ -4,6 +4,8 @@ This project which implements a minimal blog commenting service.
 
 Blog post: [Introducing lambda-comments](https://jimpick.com/2016/05/05/introducing-lambda-comments/) (you can try leaving a comment there)
 
+Hacker News thread: https://news.ycombinator.com/item?id=11644042
+
 It is completely "serverless", designed to use the following Amazon services:
 
 * [API Gateway](http://docs.aws.amazon.com/apigateway/latest/developerguide/welcome.html)
