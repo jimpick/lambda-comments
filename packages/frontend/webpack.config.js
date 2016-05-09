@@ -37,13 +37,18 @@ function modifyClient (webpackConfig) {
     }
   } = webpackConfig
   modify(webpackConfig)
-  console.log('Devtool before', devtool)
-  devtool = devtool.replace(
-    'cheap-module-eval-source-map',
-    'cheap-source-map'
-  )
-  webpackConfig.devtool = devtool
+  if (process.env.NODE_ENV === 'production') {
+    delete webpackConfig.devtool
+    console.log('Devtool cleared')
+  } else {
+    console.log('Devtool before', devtool)
+    devtool = devtool.replace(
+      'cheap-module-eval-source-map',
+      'cheap-source-map'
+    )
+    webpackConfig.devtool = devtool
   console.log('Devtool after', devtool)
+  }
   console.log('Entry before', entry)
   entry['lambda-comments'] = entry.app
   delete entry.app
