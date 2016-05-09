@@ -1,6 +1,7 @@
 import fetch from 'isomorphic-fetch'
 import { initialize as initializeReduxForm } from 'redux-form'
 import jwa from 'jwa'
+import store from 'store'
 
 const hmac = jwa('HS256')
 
@@ -157,14 +158,20 @@ export function postComment ({
 
 export function resetCommentForm ({ pathname, clearContent }) {
   return dispatch => {
-    const savedPathname = localStorage.getItem('pathname')
     const data = {
-      authorName: localStorage.getItem('authorName'),
-      authorEmail: localStorage.getItem('authorEmail'),
-      authorUrl: localStorage.getItem('authorUrl'),
+      authorName: '',
+      authorEmail: '',
+      authorUrl: '',
+      commentContent: '',
     }
-    if (!clearContent && pathname === savedPathname) {
-      data.commentContent = localStorage.getItem('commentContent')
+    if (store.enabled) {
+      const savedPathname = store.get('pathname')
+      data.authorName = store.get('authorName')
+      data.authorEmail = store.get('authorEmail')
+      data.authorUrl = store.get('authorUrl')
+      if (!clearContent && pathname === savedPathname) {
+        data.commentContent = store.get('commentContent')
+      }
     }
     dispatch(initializeReduxForm(FORM_NAME, data, FORM_FIELDS))
   }

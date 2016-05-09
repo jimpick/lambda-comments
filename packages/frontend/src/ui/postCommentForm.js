@@ -7,6 +7,7 @@ import Spinner from 'react-spinner'
 import '!style!css!react-spinner/react-spinner.css'
 import { autobind } from 'core-decorators'
 import { isEmail, isURL } from 'validator'
+import store from 'store'
 import gitHubSvg from 'octicons/svg/mark-github.svg'
 import Comment from './comment'
 import {
@@ -88,20 +89,22 @@ export default class PostCommentForm extends Component {
       },
       pathname,
     } = nextProps
-    if (pathname !== null) {
-      localStorage.setItem('pathname', pathname)
-    }
-    if (commentContent !== null) {
-      localStorage.setItem('commentContent', commentContent)
-    }
-    if (authorName !== null) {
-      localStorage.setItem('authorName', authorName)
-    }
-    if (authorEmail !== null) {
-      localStorage.setItem('authorEmail', authorEmail)
-    }
-    if (authorUrl !== null) {
-      localStorage.setItem('authorUrl', authorUrl)
+    if (store.enabled) {
+      if (pathname !== null) {
+        store.set('pathname', pathname)
+      }
+      if (commentContent !== null) {
+        store.set('commentContent', commentContent)
+      }
+      if (authorName !== null) {
+        store.set('authorName', authorName)
+      }
+      if (authorEmail !== null) {
+        store.set('authorEmail', authorEmail)
+      }
+      if (authorUrl !== null) {
+        store.set('authorUrl', authorUrl)
+      }
     }
   }
 
