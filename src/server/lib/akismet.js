@@ -1,4 +1,4 @@
-import akismet from '@jimpick/akismet-api'
+import akismet from 'akismet-api'
 
 export default class Akismet {
   constructor () {

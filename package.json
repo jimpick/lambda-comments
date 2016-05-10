@@ -48,7 +48,7 @@
     "webpack": "^1.12.14"
   },
   "dependencies": {
-    "@jimpick/akismet-api": "^2.0.0",
+    "akismet-api": "^2.1.0",
     "aws-sdk": "^2.3.5",
     "dotenv": "^2.0.0",
     "encoding": "^0.1.12",
@@ -61,7 +61,7 @@
     "redux-logger": "^2.6.1",
     "slugid": "^1.1.0",
     "superagent": "^1.8.0-beta.2",
-    "superagent-promise-plugin": "^2.1.0",
+    "superagent-promise-plugin": "^3.2.0",
     "validator": "^5.2.0",
     "verror": "^1.6.1"
   }
