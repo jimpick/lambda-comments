@@ -134,8 +134,9 @@ export async function handler (event, context, callback) {
       signature,
       payload: incomingPayload
     } = fields
+    const buffer = new Buffer(JSON.stringify(incomingPayload))
     const verification = hmac.verify(
-      JSON.stringify(incomingPayload),
+      buffer,
       signature,
       apiKey
     )

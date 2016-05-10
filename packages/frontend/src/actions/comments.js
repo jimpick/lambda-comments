@@ -2,6 +2,7 @@ import fetch from 'isomorphic-fetch'
 import { initialize as initializeReduxForm } from 'redux-form'
 import jwa from 'jwa'
 import store from 'store'
+import { Buffer } from 'buffer'
 
 const hmac = jwa('HS256')
 
@@ -106,8 +107,8 @@ export function postComment ({
       authorUrl,
     }
     dispatch({ type: POST_COMMENT, payload })
-    const signature = hmac.sign(JSON.stringify(payload), apiKey)
-    console.log('Jim', signature, payload)
+    const buffer = Buffer.from(JSON.stringify(payload))
+    const signature = hmac.sign(buffer, apiKey)
     const body = JSON.stringify({
       signature,
       payload,

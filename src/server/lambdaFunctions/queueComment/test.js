@@ -30,7 +30,8 @@ export function local () {
         authorEmail: 'bob@example.com',
         authorUrl: 'http://bob.example.com/',
       }
-      const signature = hmac.sign(JSON.stringify(payload), apiKey)
+      const buffer = Buffer.from(JSON.stringify(payload))
+      const signature = hmac.sign(buffer, apiKey)
       const event = {
         fields: {
           payload,
@@ -51,7 +52,8 @@ export function local () {
 
     it('should fail if there is no data', function (done) {
       const payload = {}
-      const signature = hmac.sign(JSON.stringify(payload), apiKey)
+      const buffer = Buffer.from(JSON.stringify(payload))
+      const signature = hmac.sign(buffer, apiKey)
       const event = {
         fields: {
           payload,
@@ -85,7 +87,8 @@ export function local () {
         authorEmail: 'bob@example.com',
         authorUrl: 'http://bob.example.com/',
       }
-      const signature = hmac.sign(JSON.stringify(payload), apiKey)
+      const buffer = Buffer.from(JSON.stringify(payload))
+      const signature = hmac.sign(buffer, apiKey)
       const event = {
         fields: {
           payload,
@@ -118,7 +121,8 @@ export function local () {
         authorEmail: 'bob@example.com',
         authorUrl: 'http://bob.example.com/',
       }
-      const signature = hmac.sign(JSON.stringify(payload), 'bad api key')
+      const buffer = Buffer.from(JSON.stringify(payload))
+      const signature = hmac.sign(buffer, 'bad api key')
       const event = {
         fields: {
           payload,
@@ -152,7 +156,8 @@ export function local () {
         authorEmail: 'bob@example.com',
         authorUrl: 'http://bob.example.com/',
       }
-      const signature = hmac.sign(JSON.stringify(payload), apiKey)
+      const buffer = Buffer.from(JSON.stringify(payload))
+      const signature = hmac.sign(buffer, apiKey)
       const event = {
         fields: {
           payload,
@@ -206,7 +211,8 @@ export function remote () {
         authorEmail: 'bob@example.com',
         authorUrl: 'http://bob.example.com/'
       }
-      const signature = hmac.sign(JSON.stringify(payload), apiKey)
+      const buffer = Buffer.from(JSON.stringify(payload))
+      const signature = hmac.sign(buffer, apiKey)
       const request = supertest(getApiUrl())
         .post('/comments')
         .send({ payload, signature })
@@ -215,7 +221,8 @@ export function remote () {
 
     it('should fail if there is no data', function (done) {
       const payload = {}
-      const signature = hmac.sign(JSON.stringify(payload), apiKey)
+      const buffer = Buffer.from(JSON.stringify(payload))
+      const signature = hmac.sign(buffer, apiKey)
       const request = supertest(getApiUrl())
         .post('/comments')
         .send({ payload, signature })
@@ -242,7 +249,8 @@ export function remote () {
         authorEmail: 'bob@example.com',
         authorUrl: 'http://bob.example.com/',
       }
-      const signature = hmac.sign(JSON.stringify(payload), apiKey)
+      const buffer = Buffer.from(JSON.stringify(payload))
+      const signature = hmac.sign(buffer, apiKey)
       const request = supertest(getApiUrl())
         .post('/comments')
         .send({ payload, signature })
