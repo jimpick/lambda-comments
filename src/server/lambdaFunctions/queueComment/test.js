@@ -142,6 +142,36 @@ export function local () {
       })
     })
 
+    it('should allow posting hangul characters', function (done) {
+      const payload = {
+        permalink: 'http://example.com/blog/1/',
+        userAgent: 'testhost/1.0 | node-akismet/0.0.1',
+        referrer: 'http://jimpick.com/',
+        commentContent: '비빔밥(乒乓飯)은 대표적인 한국 요리의 하나로, 사발 그릇에 밥과 여러 가지 나물, 고기, 계란, 고추장 등을 넣고 섞어서 먹는 음식이다.',
+        authorName: 'Bob Bob',
+        authorEmail: 'bob@example.com',
+        authorUrl: 'http://bob.example.com/',
+      }
+      const signature = hmac.sign(JSON.stringify(payload), apiKey)
+      const event = {
+        fields: {
+          payload,
+          signature
+        },
+        sourceIp: '64.46.22.7',
+        dryRun: true,
+        quiet: true,
+        skipSpamCheck: true,
+        isTest: true,
+      }
+      handler(event, null, (error, result) => {
+        expect(error).to.be.null
+        checkBody(result)
+        done()
+      })
+    })
+
+
     // it('should write a json file to S3')
 
     // it('should write to DynamoDB')
@@ -201,6 +231,25 @@ export function remote () {
         })
         .end(done)
     })
+
+    it('should allow posting hangul characters', function (done) {
+      const payload = {
+        permalink: 'http://example.com/blog/1/',
+        userAgent: 'testhost/1.0 | node-akismet/0.0.1',
+        referrer: 'http://jimpick.com/',
+        commentContent: '비빔밥(乒乓飯)은 대표적인 한국 요리의 하나로, 사발 그릇에 밥과 여러 가지 나물, 고기, 계란, 고추장 등을 넣고 섞어서 먹는 음식이다.',
+        authorName: 'Bob Bob',
+        authorEmail: 'bob@example.com',
+        authorUrl: 'http://bob.example.com/',
+      }
+      const signature = hmac.sign(JSON.stringify(payload), apiKey)
+      const request = supertest(getApiUrl())
+        .post('/comments')
+        .send({ payload, signature })
+      testResponse(request, done)
+    })
+
+
 
   })
 

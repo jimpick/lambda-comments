@@ -107,6 +107,7 @@ export function postComment ({
     }
     dispatch({ type: POST_COMMENT, payload })
     const signature = hmac.sign(JSON.stringify(payload), apiKey)
+    console.log('Jim', signature, payload)
     const body = JSON.stringify({
       signature,
       payload,
