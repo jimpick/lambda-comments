@@ -13,7 +13,7 @@
     "gen-api-key": "babel-node bin/gen-api-key.js",
     "setup-apex": "babel-node bin/setup-apex.js",
     "compile-lambda": "rimraf build/apex/functions && webpack --config deploy/apex/webpack.config.js --display-exclude --display-modules --display-chunks --display-error-details --display-origins --display-cached --display-cached-assets --bail",
-    "deploy-lambda": "cd build/apex && apex deploy",
+    "deploy-lambda": "export AWS_REGION=$(babel-node bin/dump-config.js REGION) && cd build/apex && apex deploy",
     "deploy-backend": "npm run compile-lambda && npm run deploy-lambda",
     "build-frontend": "cd packages/frontend && npm run build-prod",
     "upload-script": "babel-node bin/upload-script.js",
@@ -24,7 +24,7 @@
     "test-remote": "mocha --compilers js:babel-core/register -g remote",
     "test": "mocha --compilers js:babel-core/register",
     "post-url": "babel-node bin/post-url.js http://jimpick.com/",
-    "logs": "cd build/apex && apex logs -f",
+    "logs": "export AWS_REGION=$(babel-node bin/dump-config.js REGION) && cd build/apex && apex logs -f",
     "get-client-js-url": "babel-node bin/get-client-js-url.js",
     "clean": "rimraf build && rimraf deploy/state && cd packages/frontend && npm run clean",
     "install-all": "npm install && cd packages/frontend && npm install"
