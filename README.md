@@ -2,7 +2,10 @@
 
 This project which implements a minimal blog commenting service.
 
-Blog post: [Introducing lambda-comments](https://jimpick.com/2016/05/05/introducing-lambda-comments/) (you can try leaving a comment there)
+Blog posts:
+
+* [Introducing lambda-comments](https://jimpick.com/2016/05/05/introducing-lambda-comments/) (you can try leaving a comment there)
+* [A day on the Hacker News home page: lambda-comments](https://jimpick.com/2016/05/10/after-hacker-news-lambda-comments/)
 
 Hacker News thread: https://news.ycombinator.com/item?id=11644042
 
