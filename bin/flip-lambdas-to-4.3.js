@@ -1,7 +1,12 @@
 import AWS from 'aws-sdk'
 import { resources } from '../src/server/lib/cloudFormation'
+import dotenv from 'dotenv'
 
-const lambda = new AWS.Lambda()
+dotenv.config()
+
+const lambda = new AWS.Lambda({
+  region: process.env.REGION
+})
 
 function update (functionName) {
   return new Promise((resolve, reject) => {
