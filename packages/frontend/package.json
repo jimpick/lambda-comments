@@ -1,6 +1,6 @@
 {
   "name": "@jimpick/lambda-comments-frontend",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "",
   "react-project": {
     "server": "src/server.js",
