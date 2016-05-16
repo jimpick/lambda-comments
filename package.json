@@ -26,8 +26,9 @@
     "post-url": "babel-node bin/post-url.js http://jimpick.com/",
     "logs": "export AWS_REGION=$(babel-node bin/dump-config.js REGION) && cd build/apex && apex logs -f",
     "get-client-js-url": "babel-node bin/get-client-js-url.js",
-    "clean": "rimraf build && rimraf deploy/state && cd packages/frontend && npm run clean",
-    "install-all": "npm install && cd packages/frontend && npm install"
+    "clean": "rimraf build && rimraf deploy/state && lerna run clean",
+    "clean-dist": "lerna run clean-dist && rimraf node_modules",
+    "install-all": "npm install && lerna bootstrap"
   },
   "author": "Jim Pick <jim@jimpick.com>",
   "license": "ISC",
@@ -40,6 +41,7 @@
     "babel-preset-stage-0": "^6.5.0",
     "chai": "^3.5.0",
     "json-loader": "^0.5.4",
+    "lerna": "^2.0.0-beta.9",
     "mkdirp": "^0.5.1",
     "mocha": "^2.4.5",
     "rimraf": "^2.5.2",
@@ -63,6 +65,7 @@
     "superagent": "^1.8.0-beta.2",
     "superagent-promise-plugin": "^3.2.0",
     "validator": "^5.2.0",
-    "verror": "^1.6.1"
+    "verror": "^1.6.1",
+    "lerna": "2.0.0-beta.9"
   }
 }

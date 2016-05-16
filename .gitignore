@@ -4,3 +4,4 @@ deploy/state
 build
 deploy.log
 npm-debug.log
+lerna-debug.log
