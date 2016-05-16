@@ -1,6 +1,6 @@
 {
   "name": "@jimpick/lambda-comments",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Blog commenting system built with AWS Lambda",
   "repository": "jimpick/lambda-comments",
   "main": "config.js",
