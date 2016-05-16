@@ -31,6 +31,10 @@
     "install-all": "npm install && lerna bootstrap"
   },
   "author": "Jim Pick <jim@jimpick.com>",
+  "bugs": {
+    "url": "https://github.com/jimpick/lambda-comments/issues"
+  },
+  "homepage": "https://github.com/jimpick/lambda-comments#readme",
   "license": "ISC",
   "devDependencies": {
     "babel-cli": "^6.5.1",
@@ -50,6 +54,8 @@
     "webpack": "^1.12.14"
   },
   "dependencies": {
+    "@jimpick/lambda-comments-lambda": "file:./packages/lambda",
+    "@jimpick/lambda-comments-utils": "file:./packages/utils",
     "akismet-api": "^2.1.0",
     "aws-sdk": "^2.3.5",
     "dotenv": "^2.0.0",

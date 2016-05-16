@@ -1,5 +1,5 @@
 import AWS from 'aws-sdk'
-import { resources } from '../src/server/lib/cloudFormation'
+import { resources } from '@jimpick/lambda-comments-utils/src/cloudFormation'
 import dotenv from 'dotenv'
 
 dotenv.config()

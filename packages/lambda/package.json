@@ -1,0 +1,15 @@
+{
+  "name": "@jimpick/lambda-comments-lambda",
+  "version": "0.0.3",
+  "description": "AWS Lambda functions for lambda-comments",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": "jimpick/lambda-comments",
+  "author": "Jim Pick <jim@jimpick.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jimpick/lambda-comments/issues"
+  },
+  "homepage": "https://github.com/jimpick/lambda-comments#readme"
+}

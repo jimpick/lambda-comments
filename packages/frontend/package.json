@@ -1,7 +1,7 @@
 {
   "name": "@jimpick/lambda-comments-frontend",
   "version": "0.0.3",
-  "description": "",
+  "description": "React.js front end UI for lambda-comments",
   "react-project": {
     "server": "src/server.js",
     "client": "src/client.js",
@@ -16,8 +16,13 @@
     "clean": "rimraf .build",
     "clean-dist": "npm run clean && rimraf node_modules"
   },
-  "author": "",
+  "repository": "jimpick/lambda-comments",
+  "author": "Jim Pick <jim@jimpick.com>",
   "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jimpick/lambda-comments/issues"
+  },
+  "homepage": "https://github.com/jimpick/lambda-comments#readme",
   "dependencies": {
     "babel-cli": "6.8.0",
     "babel-core": "6.8.0",
