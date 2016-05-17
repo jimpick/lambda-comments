@@ -3,7 +3,7 @@ import fs from 'fs'
 import rimraf from 'rimraf'
 import mkdirp from 'mkdirp'
 import dotenv from 'dotenv'
-import { outputs } from '../src/server/lib/cloudFormation'
+import { outputs } from 'lambda-comments-utils/src/cloudFormation'
 
 dotenv.config()
 

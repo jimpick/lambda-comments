@@ -5,14 +5,14 @@ import { createStore, applyMiddleware } from 'redux'
 import createLogger from 'redux-logger'
 import moment from 'moment'
 import dotenv from 'dotenv'
-import { postToSlack } from '../../lib/slack'
+import { postToSlack } from 'lambda-comments-utils/src/slack'
 import {
   downloadPrivate,
   downloadWebsite,
   uploadPrivate,
   uploadWebsite
-} from '../../lib/s3'
-import { generateReference } from '../../lib/references'
+} from 'lambda-comments-utils/src/s3'
+import { generateReference } from 'lambda-comments-utils/src/references'
 
 dotenv.config({ silent: true })
 

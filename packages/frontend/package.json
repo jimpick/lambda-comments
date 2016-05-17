@@ -1,5 +1,5 @@
 {
-  "name": "@jimpick/lambda-comments-frontend",
+  "name": "lambda-comments-frontend",
   "version": "0.0.3",
   "description": "React.js front end UI for lambda-comments",
   "react-project": {
@@ -10,11 +10,11 @@
   "scripts": {
     "start": "if-env NODE_ENV=production && npm run react-project:start:prod || npm run react-project:start:dev",
     "test": "karma start",
-    "react-project:start:dev": "eslint src && react-project start",
-    "react-project:start:prod": "rm -rf .build && react-project build && cd .build && serve -p 9876",
-    "build-prod": "npm run clean && NODE_ENV=production react-project build",
+    "react-project:start:dev": "eslint src && node ./react-project.js start",
+    "react-project:start:prod": "rm -rf .build && node ./react-project.js build && cd .build && serve -p 9876",
+    "build-prod": "npm run clean && NODE_ENV=production node ./react-project.js build",
     "clean": "rimraf .build",
-    "clean-dist": "npm run clean && rimraf node_modules"
+    "dist-clean": "npm run clean && rimraf node_modules"
   },
   "repository": "jimpick/lambda-comments",
   "author": "Jim Pick <jim@jimpick.com>",
@@ -62,6 +62,7 @@
     "karma-mocha-reporter": "1.2.0",
     "karma-sourcemap-loader": "0.3.7",
     "karma-webpack": "1.7.0",
+    "lambda-comments-utils": "0.0.3",
     "lodash": "4.11.1",
     "markdown-it": "6.0.1",
     "mocha": "2.4.5",

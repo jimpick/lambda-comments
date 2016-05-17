@@ -4,7 +4,8 @@ import postcssNested from 'postcss-nested'
 import { DefinePlugin } from 'webpack'
 import 'babel-register'
 import { apiKey } from '../../../deploy/state/apiKey.json'
-import { getApiUrl, getWebsiteUrl } from '../../../src/server/lib/cloudFormation'
+import { getApiUrl, getWebsiteUrl } from
+  'lambda-comments-utils/src/cloudFormation'
 
 dotenv.config()
 dotenv.config({ path: '../../.env' })

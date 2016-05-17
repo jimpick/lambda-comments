@@ -1,7 +1,7 @@
 import fs from 'fs'
 import path from 'path'
 import dotenv from 'dotenv'
-import { uploadWebsite } from '../src/server/lib/s3'
+import { uploadWebsite } from 'lambda-comments-utils/src/s3'
 
 dotenv.config()
 

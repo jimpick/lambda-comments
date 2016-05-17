@@ -7,4 +7,6 @@ require('babel-register')({
     return filename.match(/node_modules/)
   }
 })
-module.exports = require('./webpack.config.es6')
+
+// console.log(process.argv[2])
+require(process.argv[2])

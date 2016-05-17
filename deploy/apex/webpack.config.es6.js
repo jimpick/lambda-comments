@@ -1,7 +1,7 @@
 import path from 'path'
 import dotenv from 'dotenv'
 import StringReplacePlugin from 'string-replace-webpack-plugin'
-import { resources } from '../../src/server/lib/cloudFormation'
+import { resources } from 'lambda-comments-utils/src/cloudFormation'
 import { DefinePlugin, NormalModuleReplacementPlugin } from 'webpack'
 
 dotenv.config()
@@ -41,11 +41,11 @@ export default {
   entry: {
     [lambdaDirNames['QueueComment']]: [
       'babel-polyfill',
-      './src/server/lambdaFunctions/queueComment/index.js'
+      './packages/lambda/src/queueComment/index.js'
     ],
     [lambdaDirNames['Worker']]: [
       'babel-polyfill',
-      './src/server/lambdaFunctions/worker/index.js'
+      './packages/lambda/src/worker/index.js'
     ]
   },
   output: {

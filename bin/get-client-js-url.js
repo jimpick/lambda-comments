@@ -1,5 +1,5 @@
 import dotenv from 'dotenv'
-import { getClientJsUrl } from '../src/server/lib/cloudFormation'
+import { getClientJsUrl } from 'lambda-comments-utils/src/cloudFormation'
 
 dotenv.config()
 
