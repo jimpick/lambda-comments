@@ -8,11 +8,11 @@ const lambdaFunctions = [
   'worker'
 ]
 const localTests = lambdaFunctions.reduce((prev, test) => ({
-  [test]: require(`../src/server/lambdaFunctions/${test}/test`).local,
+  [test]: require(`../packages/lambda/src/${test}/test`).local,
   ...prev
 }), {})
 const remoteTests = lambdaFunctions.reduce((prev, test) => ({
-  [test]: require(`../src/server/lambdaFunctions/${test}/test`).remote,
+  [test]: require(`../packages/lambda/src/${test}/test`).remote,
   ...prev
 }), {})
 

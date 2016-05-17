@@ -1,6 +1,7 @@
 import assert from 'assert'
 import supertest from 'supertest'
-import { apiUrl } from '../../lib/cloudFormation'
+import { apiUrl } from 'lambda-comments-utils/src/cloudFormation'
+
 import { expect } from 'chai'
 import { handler } from './index'
 
