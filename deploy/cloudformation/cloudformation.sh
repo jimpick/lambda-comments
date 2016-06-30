@@ -19,16 +19,17 @@ BABEL_NODE=$DIR/../../node_modules/babel-cli/bin/babel-node.js
 BIN_DIR=$DIR/../../bin
 STACK_NAME=$($BABEL_NODE $BIN_DIR/dump-config.js CLOUDFORMATION)
 ORIGIN=$($BABEL_NODE $BIN_DIR/dump-config.js ORIGIN)
+REGION=$($BABEL_NODE $BIN_DIR/dump-config.js REGION)
 
 if [ "$ACTION" = "delete-stack" ]; then
   aws cloudformation delete-stack \
-      --region us-west-2 \
+      --region $REGION \
       --stack-name $STACK_NAME
   exit 0
 fi
 
 aws cloudformation $ACTION \
-    --region us-west-2 \
+    --region $REGION \
     --stack-name $STACK_NAME \
     --template-body file://$DIR/lambda-comments.json \
     --capabilities CAPABILITY_IAM \
