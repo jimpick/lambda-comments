@@ -14,6 +14,7 @@ import { apiKey } from '../../../../deploy/state/apiKey.json'
 dotenv.config({ silent: true })
 
 const hmac = jwa('HS256')
+const { REQEMAIL: authorEmailRequired, REQNAME: authorNameRequired } = process.env
 
 let akismet = null
 
@@ -55,6 +56,12 @@ function validate (payload) {
   }
   if (commentContent && commentContent.length < 3) {
     errors.commentContent = 'Must be at least 3 characters'
+  }
+  if (authorNameRequired && !authorName) {
+    errors.authorName = authorNameRequired
+  }
+  if (authorEmailRequired && !authorEmail) {
+    errors.authorEmail = authorEmailRequired
   }
   if (authorEmail && !isEmail(authorEmail)) {
     errors.authorEmail = 'Email format not valid'
