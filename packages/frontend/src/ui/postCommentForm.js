@@ -175,7 +175,7 @@ export default class PostCommentForm extends Component {
         }
         <input
           type="text"
-          placeholder="Name (optional)"
+          placeholder="Name"
           className={
             authorName.touched && authorName.error && hasError
           }
@@ -189,7 +189,7 @@ export default class PostCommentForm extends Component {
         }
         <input
           type="email"
-          placeholder="Email (optional, not shown)"
+          placeholder="Email (not shown)"
           className={
             authorEmail.touched && authorEmail.error && hasError
           }

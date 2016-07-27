@@ -37,6 +37,15 @@ if (process.env.SLACK) {
   defines['process.env.SLACK'] = `'${process.env.SLACK}'`
 }
 
+if (process.env.REQEMAIL) {
+  defines['process.env.REQEMAIL'] = `'${process.env.REQEMAIL}'`
+}
+
+if (process.env.REQNAME) {
+  defines['process.env.REQNAME'] = `'${process.env.REQNAME}'`
+}
+
+
 export default {
   entry: {
     [lambdaDirNames['QueueComment']]: [
