@@ -97,6 +97,13 @@
   }
 }
 
+.commentCounter {
+ font-size: 13px;
+ color: gray;
+ text-decoration: none;
+ padding-left: 10px;
+}
+
 .previewWrapper {
   overflow-y: hidden;
 }

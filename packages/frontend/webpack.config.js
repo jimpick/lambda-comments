@@ -12,6 +12,9 @@ dotenv.config({ path: '../../.env' })
 
 const apiUrl = getApiUrl()
 const websiteUrl = getWebsiteUrl()
+const { REQEMAIL: authorEmailRequired, REQNAME: authorNameRequired } = process.env
+const { SIZELIMIT: contentSizeLimit, DISALLOW_EMPTY: disallowEmptyContent } = process.env
+
 
 function modify (webpackConfig) {
   webpackConfig.postcss = () => {
@@ -69,7 +72,11 @@ function modifyClient (webpackConfig) {
     '__CONFIG__': JSON.stringify({
       apiUrl,
       websiteUrl,
-      apiKey
+      apiKey,
+      authorNameRequired,
+      authorEmailRequired,
+      contentSizeLimit,
+      disallowEmptyContent
     })
   }))
   webpackConfig.plugins = plugins

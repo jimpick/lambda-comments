@@ -83,7 +83,12 @@ STAGE=prod
 
 # A Slack webhook to send notifications to (optional)
 #SLACK=https://hooks.slack.com/services/XXXXXXXXX/YYYYYYYYY/ZZZZZZZZZZZZZZZZZZZZZZZZ
-```
+
+# Require author email address - string is error message to display.
+#REQEMAIL='Email is required.'
+
+# Require author name - string is error message to display.
+#REQNAME='Name is required.'
 
 We use [dotenv](https://github.com/motdotla/dotenv) so it is also possible to
 configure the project by setting environment variables.

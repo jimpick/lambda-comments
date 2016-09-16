@@ -37,6 +37,22 @@ if (process.env.SLACK) {
   defines['process.env.SLACK'] = `'${process.env.SLACK}'`
 }
 
+if (process.env.REQEMAIL) {
+  defines['process.env.REQEMAIL'] = `'${process.env.REQEMAIL}'`
+}
+
+if (process.env.REQNAME) {
+  defines['process.env.REQNAME'] = `'${process.env.REQNAME}'`
+}
+
+if (process.env.SIZELIMIT) {
+  defines['process.env.SIZELIMIT'] = `'${process.env.SIZELIMIT}'`
+}
+
+if (process.env.DISALLOW_EMPTY) {
+  defines['process.env.DISALLOW_EMPTY'] = `'${process.env.DISALLOW_EMPTY}'`
+}
+
 export default {
   entry: {
     [lambdaDirNames['QueueComment']]: [

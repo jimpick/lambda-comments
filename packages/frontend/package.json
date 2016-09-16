@@ -78,6 +78,7 @@
     "react-measure": "0.3.5",
     "react-motion": "0.4.2",
     "react-project": "0.0.30",
+    "react-redux": "4.4.5",
     "react-router": "2.0.0",
     "react-router-redux": "4.0.2",
     "react-spinner": "0.2.6",
