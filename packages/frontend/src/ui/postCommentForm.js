@@ -16,6 +16,7 @@ import {
   errorMessage,
   postCommentFormHeader,
   markdownNote,
+  commentCounter,
   previewWrapper,
   preview,
   spinnerButton,
@@ -27,14 +28,33 @@ import {
 } from './comments.css'
 import { FORM_NAME, FORM_FIELDS } from '../actions/comments'
 
+const authorNameRequired = __CONFIG__.authorNameRequired
+const authorEmailRequired = __CONFIG__.authorEmailRequired
+const contentSizeLimit = __CONFIG__.contentSizeLimit
+const disallowEmptyContent = __CONFIG__.disallowEmptyContent
+
+let contentRegex = /\w+/
+
 function validate (values) {
   const errors = {}
-  const { commentContent, authorEmail, authorUrl } = values
+  const { commentContent, authorName, authorEmail, authorUrl } = values
   if (!commentContent) {
     errors.commentContent = 'Required'
   }
   if (commentContent && commentContent.length < 3) {
     errors.commentContent = 'Must be at least 3 characters'
+  }
+  if (commentContent && contentSizeLimit && (commentContent.length > parseInt(contentSizeLimit))) {
+    errors.commentContent = 'Comment has exceeded content length of: ' + parseInt(contentSizeLimit) + ' characters.'
+  }
+  if (commentContent && disallowEmptyContent && !commentContent.match(contentRegex)) {
+    errors.commentContent = disallowEmptyContent
+  }
+  if (authorNameRequired && !authorName) {
+    errors.authorName = authorNameRequired
+  }
+  if (authorEmailRequired && !authorEmail) {
+    errors.authorEmail = authorEmailRequired
   }
   if (authorEmail && !isEmail(authorEmail)) {
     errors.authorEmail = 'Email format not valid'
@@ -138,6 +158,7 @@ export default class PostCommentForm extends Component {
       date: new Date(),
       commentContent: commentContent.value,
     }
+    const length = commentContent.value ? commentContent.value.length : 0
     return (
       <form
         className={postCommentForm}
@@ -145,6 +166,7 @@ export default class PostCommentForm extends Component {
       >
         <div className={postCommentFormHeader}>
           <strong>Add your comment</strong>
+          <span className={commentCounter}>{length}</span>
           <span className={markdownNote}>
             <a
               target="_blank"
@@ -175,7 +197,7 @@ export default class PostCommentForm extends Component {
         }
         <input
           type="text"
-          placeholder="Name"
+          placeholder={authorNameRequired ? "Name (required)" : "Name"}
           className={
             authorName.touched && authorName.error && hasError
           }
@@ -189,7 +211,7 @@ export default class PostCommentForm extends Component {
         }
         <input
           type="email"
-          placeholder="Email (not shown)"
+          placeholder={authorEmailRequired ? "Email (required - not shown)" : "Email (not shown)"}
           className={
             authorEmail.touched && authorEmail.error && hasError
           }

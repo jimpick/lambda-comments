@@ -25,6 +25,10 @@ export const FORM_FIELDS = [
 const websiteUrl = __CONFIG__.websiteUrl
 const apiUrl = __CONFIG__.apiUrl
 const apiKey = __CONFIG__.apiKey
+const authorNameRequired = __CONFIG__.authorNameRequired
+const authorEmailRequired = __CONFIG__.authorEmailRequired
+const contentSizeLimit = __CONFIG__.contentSizeLimit
+const disallowEmptyContent = __CONFIG__.disallowEmptyContent
 
 class ValidationError extends Error {
   constructor (data) {
