@@ -15,8 +15,10 @@ dotenv.config({ silent: true })
 
 const hmac = jwa('HS256')
 const { REQEMAIL: authorEmailRequired, REQNAME: authorNameRequired } = process.env
+const { SIZELIMIT: contentSizeLimit, DISALLOW_EMPTY: disallowEmptyContent } = process.env
 
 let akismet = null
+let contentRegex = /\w+/
 
 class ValidationError extends Error {
   constructor (data) {
@@ -56,6 +58,12 @@ function validate (payload) {
   }
   if (commentContent && commentContent.length < 3) {
     errors.commentContent = 'Must be at least 3 characters'
+  }
+  if (commentContent && contentSizeLimit && (commentContent.length > parseInt(contentSizeLimit))) {
+    errors.commentContent = 'Comment has exceeded content length of: ' + parseInt(contentSizeLimit) + ' characters.'
+  }
+  if (commentContent && disallowEmptyContent && !commentContent.match(contentRegex)) {
+    errors.commentContent = disallowEmptyContent
   }
   if (authorNameRequired && !authorName) {
     errors.authorName = authorNameRequired
